@@ -4,11 +4,13 @@ from dotenv import load_dotenv
 from pymongo.mongo_client import MongoClient
 import os
 from fastapi.encoders import jsonable_encoder
+import routers.interview as softskills_interview
 
 load_dotenv()
 client = MongoClient(os.getenv("MONGODB_URI"))
 db = client['AppData']
 app = FastAPI()
+app.include_router(softskills_interview.router)
 
 # root route
 @app.get("/")
