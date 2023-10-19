@@ -6,7 +6,7 @@ import os
 from fastapi.encoders import jsonable_encoder
 import routers.interview as softskills_interview
 
-load_dotenv()
+load_dotenv('../.env')
 client = MongoClient(os.getenv("MONGODB_URI"))
 db = client['AppData']
 app = FastAPI()
