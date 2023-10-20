@@ -18,7 +18,7 @@ const Loading = () => {
                 </div>
             </>
            
-            <div className='pt-16 sm:pl-80 sm:pr-80 inline-grid grid-cols-1 gap-4'>
+            <div className='pt-16 sm:pl-24 sm:pr-24 inline-grid grid-cols-1 gap-4'>
                 <ColorfulDiv
                     color="bg-red-400"
                     active={currentImg === 0}
@@ -55,7 +55,7 @@ const ColorfulDiv = ({ color, active, transitionDelay, text }) => {
                 } transition-opacity duration-700 ease-in-out`}
             style={{ animationDelay: `${transitionDelay}ms` }}
         >
-            <h1 className='text-center font-bold text-xs sm:text-xl'>
+            <h1 className='text-center font-bold text-xs sm:text-lg'>
                 {text}
             </h1>
 
