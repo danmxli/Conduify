@@ -19,7 +19,8 @@ router = APIRouter(
 
 class Company(BaseModel):
     name: str
-    position: list[str]
+    position: str
+    languages: list[str]
 
 @router.post("/search")
 def get_company(company: Company):
@@ -35,7 +36,7 @@ def get_company(company: Company):
         return 404
     else:
         info_dict = scrape_url(url)
-        question = interview_question(info_dict, company.position)
+        question = interview_question(info_dict, company.position, company.languages)
 
         new_id = CompanyInfo.find_one(sort=[("_id", -1)])  # Get the latest document
         if new_id is not None:
@@ -49,6 +50,7 @@ def get_company(company: Company):
             "business": info_dict["business"],
             "description": info_dict["description"],
             "position": company.position,
+            "languages": company.languages,
             "question": [question]
         }
         

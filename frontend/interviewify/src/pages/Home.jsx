@@ -1,15 +1,77 @@
 import '../App.css'
+import { useState } from 'react'
+import { useNavigate } from "react-router-dom";
+import Loading from '../components/Loading';
 
 const Home = () => {
+    const [selectedLanguages, setSelectedLanguages] = useState([])
+    const [company, setCompany] = useState('Cohere') // default values
+    const [position, setPosition] = useState('software-engineer')
+    const [loading, setLoading] = useState(false);
+
+    const navigate = useNavigate()
+
+    const handleCompanyChange = (e) => {
+        setCompany(e.target.value);
+    };
+    const handlePositionChange = (e) => {
+        setPosition(e.target.value);
+    };
+
+    const handleLanguageChange = (e) => {
+        const value = e.target.value;
+        if (selectedLanguages.includes(value)) {
+            setSelectedLanguages(selectedLanguages.filter(lang => lang !== value));
+        } else {
+            setSelectedLanguages([...selectedLanguages, value]);
+        }
+    };
+
+    const handleStart = async () => {
+        setLoading(true);
+        console.log(company)
+        console.log(position)
+        console.log(selectedLanguages)
+        
+        const requestBody = {
+            name: company,
+            position: position,
+            languages: selectedLanguages,
+        };
+
+        try {
+            const response = await fetch('http://localhost:8001/company/search', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestBody),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log('Successful response:', data);
+                navigate("/chat");
+            } else {
+                console.error('Request failed with status:', response.status);
+            }
+        } catch (error) {
+            console.error('Request failed:', error);
+        }
+        setLoading(false)
+
+    }
+
     return (
         <div className="grid grid-cols-1 sm:grid-cols-2">
+            {loading && <Loading />}
             <div className="bg-gray-100 rounded-full flex items-center justify-center h-screen">
                 <div className="bg-white p-8 rounded-3xl shadow-lg">
                     <h2 className="text-lg sm:text-2xl font-semibold mb-3">Get Ready For Your Interview!</h2>
                     <div className='inline-grid grid-cols-2 gap-4'>
                         <div>
                             <div>
-                                <form>
+                                <>
                                     <div className="mb-4">
                                         <label htmlFor="username" className="block text-sm font-medium text-gray-700">I am interested in applying to...</label>
                                         <input
@@ -17,12 +79,19 @@ const Home = () => {
                                             id="username"
                                             name="username"
                                             placeholder="Awesome Tech Company"
+                                            value={company}
+                                            onChange={handleCompanyChange}
                                             className="mt-1 p-2 w-full border border-gray-300 rounded focus:ring focus:ring-indigo-200"
                                         />
                                     </div>
                                     <div className="mb-4">
                                         <label htmlFor="role" className="block text-sm font-medium text-gray-700">As a...</label>
-                                        <select id="role" name="role" className="mt-1 p-2 w-full border border-gray-300 rounded focus:ring focus:ring-indigo-200">
+                                        <select
+                                            id="role"
+                                            name="role"
+                                            value={position}
+                                            onChange={handlePositionChange}
+                                            className="mt-1 p-2 w-full border border-gray-300 rounded focus:ring focus:ring-indigo-200">
                                             <option value="software-engineer">Software Engineer</option>
                                             <option value="ml-engineer">ML Engineer</option>
                                             <option value="devops-engineer">DevOps Engineer</option>
@@ -36,8 +105,9 @@ const Home = () => {
                                     <button
                                         type="submit"
                                         className="w-full bg-indigo-500 text-white p-2 rounded hover:bg-indigo-600 transition duration-300"
+                                        onClick={async () => { handleStart() }}
                                     >Start</button>
-                                </form>
+                                </>
                             </div>
                             <div className='mt-6'>
                                 <h3 className="text-lg font-semibold mb-2">An Enriching Learning Platform.</h3>
@@ -55,6 +125,8 @@ const Home = () => {
                                             <input
                                                 type="checkbox"
                                                 value="Python"
+                                                checked={selectedLanguages.includes("Python")}
+                                                onChange={handleLanguageChange}
                                             /> Python
                                         </label>
                                     </div>
@@ -63,6 +135,8 @@ const Home = () => {
                                             <input
                                                 type="checkbox"
                                                 value="Cpp"
+                                                checked={selectedLanguages.includes("Cpp")}
+                                                onChange={handleLanguageChange}
                                             /> C++
                                         </label>
                                     </div>
@@ -71,6 +145,8 @@ const Home = () => {
                                             <input
                                                 type="checkbox"
                                                 value="Go"
+                                                checked={selectedLanguages.includes("Go")}
+                                                onChange={handleLanguageChange}
                                             /> Go
                                         </label>
                                     </div>
@@ -79,6 +155,8 @@ const Home = () => {
                                             <input
                                                 type="checkbox"
                                                 value="R"
+                                                checked={selectedLanguages.includes("R")}
+                                                onChange={handleLanguageChange}
                                             /> R
                                         </label>
                                     </div>
@@ -89,6 +167,8 @@ const Home = () => {
                                             <input
                                                 type="checkbox"
                                                 value="SQL"
+                                                checked={selectedLanguages.includes("SQL")}
+                                                onChange={handleLanguageChange}
                                             /> SQL
                                         </label>
                                     </div>
@@ -97,6 +177,8 @@ const Home = () => {
                                             <input
                                                 type="checkbox"
                                                 value="CSharp"
+                                                checked={selectedLanguages.includes("CSharp")}
+                                                onChange={handleLanguageChange}
                                             /> C#
                                         </label>
                                     </div>
@@ -105,6 +187,8 @@ const Home = () => {
                                             <input
                                                 type="checkbox"
                                                 value="PHP"
+                                                checked={selectedLanguages.includes("PHP")}
+                                                onChange={handleLanguageChange}
                                             /> PHP
                                         </label>
                                     </div>
@@ -113,6 +197,8 @@ const Home = () => {
                                             <input
                                                 type="checkbox"
                                                 value="Java"
+                                                checked={selectedLanguages.includes("Java")}
+                                                onChange={handleLanguageChange}
                                             /> Java
                                         </label>
                                     </div>
@@ -123,6 +209,8 @@ const Home = () => {
                                             <input
                                                 type="checkbox"
                                                 value="JavaScript"
+                                                checked={selectedLanguages.includes("JavaScript")}
+                                                onChange={handleLanguageChange}
                                             /> JavaScript
                                         </label>
                                     </div>
@@ -131,6 +219,8 @@ const Home = () => {
                                             <input
                                                 type="checkbox"
                                                 value="Rust"
+                                                checked={selectedLanguages.includes("Rust")}
+                                                onChange={handleLanguageChange}
                                             /> Rust
                                         </label>
                                     </div>
@@ -139,6 +229,8 @@ const Home = () => {
                                             <input
                                                 type="checkbox"
                                                 value="TypeScript"
+                                                checked={selectedLanguages.includes("TypeScript")}
+                                                onChange={handleLanguageChange}
                                             /> TypeScript
                                         </label>
                                     </div>
@@ -146,7 +238,9 @@ const Home = () => {
                                         <label>
                                             <input
                                                 type="checkbox"
-                                                value="TypeScript"
+                                                value="Other"
+                                                checked={selectedLanguages.includes("Other")}
+                                                onChange={handleLanguageChange}
                                             /> Other
                                         </label>
                                     </div>
@@ -155,7 +249,7 @@ const Home = () => {
                         </div>
                     </div>
 
-                    
+
                 </div>
             </div>
 

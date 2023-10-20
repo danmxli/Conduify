@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import Home from './pages/Home'
+import Chat from './pages/Chat';
 
 function App() {
 
@@ -7,6 +8,10 @@ function App() {
     {
       url: '/',
       component: <Home />
+    },
+    {
+      url: '/chat',
+      component: <Chat />
     }
   ]
 
