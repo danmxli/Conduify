@@ -27,19 +27,17 @@ def get_link(user_query):
 
     company_url = None
 
-    # Look for the link with LinkedIn's expected URL structures
     for link in search_results:
         href = link["href"]
         if "trueup.io/co/" in href:
             company_url = href
             break
 
-    # Extract the exact LinkedIn URL
     if company_url:
         company_url = re.search(r'(https://\S+/co/[^&]*)', company_url)
         if company_url:
-            company_url = company_url.group(0)
+            company_url = trim_url(company_url.group(0))
 
-    return trim_url(company_url)
+    return company_url
 
 

@@ -5,12 +5,14 @@ from pymongo.mongo_client import MongoClient
 import os
 from fastapi.encoders import jsonable_encoder
 import routers.interview as softskills_interview
+import routers.company as getcompany
 
 load_dotenv('../.env')
 client = MongoClient(os.getenv("MONGODB_URI"))
 db = client['AppData']
 app = FastAPI()
 app.include_router(softskills_interview.router)
+app.include_router(getcompany.router)
 
 # root route
 @app.get("/")
