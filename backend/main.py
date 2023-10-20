@@ -30,7 +30,7 @@ def connect_db():
 
 # get user info
 @app.get("/users/{_id}")
-def read_item(_id: str):
+def read_item(_id: int):
     collection = db['UserInfo']
     user = collection.find_one({"_id": _id})
     if not user:
