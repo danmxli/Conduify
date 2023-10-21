@@ -1,13 +1,11 @@
 import '../App.css'
 import { useState } from 'react'
 import { useNavigate } from "react-router-dom";
-import Loading from '../components/Loading';
 
 const Home = () => {
     const [selectedLanguages, setSelectedLanguages] = useState([])
     const [company, setCompany] = useState('Cohere') // default values
-    const [position, setPosition] = useState('software-engineer')
-    const [loading, setLoading] = useState(false);
+    const [position, setPosition] = useState('Software Engineer')
 
     const navigate = useNavigate()
 

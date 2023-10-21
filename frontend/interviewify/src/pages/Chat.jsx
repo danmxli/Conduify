@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import Loading from '../components/Loading';
+import Sidebar from '../components/Sidebar';
 
 const Chat = () => {
     const location = useLocation();
@@ -8,6 +9,7 @@ const Chat = () => {
     const [companyData, setCompanyData] = useState(null);
     const fetchExecuted = useRef(false);
     const [loading, setLoading] = useState(true);
+    const [open, SetOpen] = useState(true);
 
     useEffect(() => {
         if (navigatedFromHome === 'true' && !fetchExecuted.current) {
@@ -40,6 +42,7 @@ const Chat = () => {
                 .then(data => {
                     if (data) {
                         console.log('Successful response:', data);
+                        setCompanyData(data)
                         setLoading(false)
                     }
                 })
@@ -55,9 +58,9 @@ const Chat = () => {
 
     if (navigatedFromHome === 'true') {
         return (
-            <div>
+            <div className="inline-grid grid-cols-2 h-screen">
                 {loading && <Loading />}
-                <h1>Chat Page</h1>
+                <Sidebar open={open} toggleSidebar={SetOpen} companyData={companyData} /> {/* Use the Sidebar component here */}
             </div>
         );
     } else {
