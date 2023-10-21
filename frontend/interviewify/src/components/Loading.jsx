@@ -14,7 +14,7 @@ const Loading = () => {
         <div className="fixed w-full h-full bg-gray-800 items-center">
             <>
                 <div className='text-xl sm:text-6xl text-center text-slate-400 mt-6 animate-pulse'>
-                    Loading...
+                    Generating...
                 </div>
             </>
            

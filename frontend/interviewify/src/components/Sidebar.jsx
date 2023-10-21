@@ -13,7 +13,7 @@ const Sidebar = ({ open, toggleSidebar, companyData }) => {
                                     }`}
                                 onClick={() => toggleSidebar(!open)}
                             />
-                            <h2 className={`text-xl font-semibold ml-2 mt-2 ${open ? '' : 'hidden'} duration-100`}> Information</h2>
+                            <h2 className={`text-md sm:text-xl font-semibold ml-2 mt-2 ${open ? '' : 'hidden'} duration-100`}> Information</h2>
                         </div>
 
                         <ul className={`bg-gray-100 border border-gray-300 rounded-r-3xl mr-2 p-2 ${open ? '' : 'hidden'} duration-100`}>
@@ -28,7 +28,7 @@ const Sidebar = ({ open, toggleSidebar, companyData }) => {
                             </li>
                         </ul>
                         <ul className={`mt-2 bg-gray-100 border border-gray-300 rounded-r-3xl mr-2 p-2 ${open ? '' : 'hidden'} duration-100`}>
-                            <li>{companyData.question[0]}</li>
+                            <li>{companyData.question}</li>
                         </ul>
                         <ul className={`mt-2 bg-gray-100 border border-gray-300 rounded-r-3xl mr-2 p-2 ${open ? '' : 'hidden'} duration-100`}>
                             <li>
