@@ -6,7 +6,16 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      height: {
+        '128': '512px',
+        '150': '600px'
+      },
+      width: {
+        '128': '512px',
+        '150': '600px'
+      }
+    },
   },
   plugins: [
     scrollbarHide

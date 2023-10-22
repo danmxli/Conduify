@@ -48,6 +48,7 @@ def get_company(company: Company):
         new_question = interview_question(
             info_dict, company.position, company.languages)
         CompanyInfo.update_one(filter, {"$set": {"question": new_question}})
+        CompanyInfo.update_one(filter, {"$set": {"interview_session": []}})
 
         return CompanyInfo.find_one(filter)
 

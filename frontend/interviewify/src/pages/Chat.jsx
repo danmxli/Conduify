@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 import Loading from '../components/Loading';
 import Sidebar from '../components/Sidebar';
+import DialogueWindow from '../components/DialogueWindow';
 
 const Chat = () => {
     const location = useLocation();
@@ -59,9 +60,11 @@ const Chat = () => {
     if (navigatedFromHome === 'true') {
         return (
             loading ? <Loading /> : (
-                <div className="inline-grid grid-cols-2 h-screen">
+                <div className="flex">
                     <Sidebar open={open} toggleSidebar={SetOpen} companyData={companyData} />
-                    {/* Use the Sidebar component here */}
+                    <div className='pl-2 pr-2'>
+                        <DialogueWindow />
+                    </div>
                 </div>
             )
         );
