@@ -19,3 +19,19 @@ def interview_question(info_dict, positions, languages):
         prompt=prompt,
     )
     return response.generations[0].text
+
+def response_evaluation(company_info, response):
+    ...
+    company_name = company_info["name"]
+    company_business = company_info["business"]
+    company_description = company_info["description"]
+    company_question = company_info["question"]
+
+    prompt = f"You are grading the interviewee. The interviewee is applying for {company_name}, a {company_business} company. {company_description}. The company recruiter asked this question: {company_question} This is the interviewee response: {response} Grade the interviewee. Provide the interviewee with strengths and areas for improvement. Keep it clear and concise."
+
+    response = co.generate(
+        model="command-xlarge-nightly",
+        prompt=prompt
+    )
+    return response.generations[0].text
+

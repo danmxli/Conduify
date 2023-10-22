@@ -74,7 +74,8 @@ def get_company(company: Company):
                 "description": info_dict["description"],
                 "position": company.position,
                 "languages": company.languages,
-                "question": question
+                "question": question,
+                "interview_session":[]
             }
 
             result = CompanyInfo.insert_one(doc)

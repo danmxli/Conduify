@@ -16,7 +16,19 @@ const Sidebar = ({ open, toggleSidebar, companyData }) => {
                             <h2 className={`text-md sm:text-xl font-semibold ml-2 mt-2 ${open ? '' : 'hidden'} duration-100`}> Information</h2>
                         </div>
 
-                        <ul className={`bg-gray-100 border border-gray-300 rounded-r-3xl mr-2 p-2 ${open ? '' : 'hidden'} duration-100`}>
+                        <div className={`${open ? '' : 'hidden'}`}>
+                            <button
+                                className='text-white bg-indigo-500 hover:bg-indigo-600 transition duration-300 mb-2 p-2 rounded-r-3xl'
+                                type='submit'
+                                onClick={() => {
+                                    window.location.reload()
+                                }}
+                            >
+                                Reload Interview
+                            </button>
+                        </div>
+
+                        <ul className={`bg-gray-100 border border-gray-300 rounded-r-3xl mr-2 p-2 ${open ? '' : 'hidden'} duration-100 text-sm sm:text-base`}>
                             <li>
                                 <strong>Company:</strong> {companyData.name}
                             </li>
@@ -27,10 +39,10 @@ const Sidebar = ({ open, toggleSidebar, companyData }) => {
                                 <strong>Description:</strong> {companyData.description}
                             </li>
                         </ul>
-                        <ul className={`mt-2 bg-gray-100 border border-gray-300 rounded-r-3xl mr-2 p-2 ${open ? '' : 'hidden'} duration-100`}>
+                        <ul className={`mt-2 bg-gray-100 border border-gray-300 rounded-r-3xl mr-2 p-2 ${open ? '' : 'hidden'} duration-100 text-sm sm:text-base`}>
                             <li>{companyData.question}</li>
                         </ul>
-                        <ul className={`mt-2 bg-gray-100 border border-gray-300 rounded-r-3xl mr-2 p-2 ${open ? '' : 'hidden'} duration-100`}>
+                        <ul className={`mt-2 bg-gray-100 border border-gray-300 rounded-r-3xl mr-2 mb-2 p-2 ${open ? '' : 'hidden'} duration-100 text-sm sm:text-base`}>
                             <li>
                                 <strong>Applied Position:</strong> {companyData.position}
                             </li>

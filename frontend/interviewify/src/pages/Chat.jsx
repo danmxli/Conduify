@@ -58,10 +58,12 @@ const Chat = () => {
 
     if (navigatedFromHome === 'true') {
         return (
-            <div className="inline-grid grid-cols-2 h-screen">
-                {loading && <Loading />}
-                <Sidebar open={open} toggleSidebar={SetOpen} companyData={companyData} /> {/* Use the Sidebar component here */}
-            </div>
+            loading ? <Loading /> : (
+                <div className="inline-grid grid-cols-2 h-screen">
+                    <Sidebar open={open} toggleSidebar={SetOpen} companyData={companyData} />
+                    {/* Use the Sidebar component here */}
+                </div>
+            )
         );
     } else {
         return <Navigate to="/" />;
