@@ -20,6 +20,9 @@ def interview_question(info_dict, positions, languages):
     )
     return response.generations[0].text
 
+    # testing purposes 
+    # return("testing for interview_question")
+
 def response_evaluation(company_info, response):
     ...
     company_name = company_info["name"]
@@ -27,7 +30,7 @@ def response_evaluation(company_info, response):
     company_description = company_info["description"]
     company_question = company_info["question"]
 
-    prompt = f"You are grading the interviewee. The interviewee is applying for {company_name}, a {company_business} company. {company_description}. The company recruiter asked this question: {company_question} This is the interviewee response: {response} Grade the interviewee. Provide the interviewee with strengths and areas for improvement. Keep it clear and concise."
+    prompt = f"You are grading the interviewee. The interviewee is applying for {company_name}, a {company_business} company. {company_description}. The company recruiter asked this question: {company_question} This is the interviewee response: {response} Grade the interviewee. Provide the interviewee with strengths and areas for improvement. Then, prompt the user to try again. Keep it clear and concise."
 
     response = co.generate(
         model="command-xlarge-nightly",
@@ -35,3 +38,5 @@ def response_evaluation(company_info, response):
     )
     return response.generations[0].text
 
+    # testing purposes.
+    # return("testing for response_evaluation")

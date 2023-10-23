@@ -1,9 +1,10 @@
 import React from 'react';
 import { BsPhoneFlip } from 'react-icons/bs'
+import { FaUserAstronaut } from 'react-icons/fa'
 
 const Sidebar = ({ open, toggleSidebar, companyData }) => {
     return (
-        <div className={`${open ? 'w-1/3' : 'w-10'} bg-white border-r border-gray-300 duration-700`}>
+        <div className={`${open ? 'w-1/3 sm:w-150' : 'w-10'} bg-white border-r border-gray-300 duration-700`}>
             <div className="overflow-scroll sm:overflow-clip">
                 {companyData && (
                     <div className="h-screen overflow-scroll scrollbar-hide">
@@ -28,7 +29,7 @@ const Sidebar = ({ open, toggleSidebar, companyData }) => {
                             </button>
                         </div>
 
-                        <ul className={`bg-gray-100 border border-gray-300 rounded-r-3xl mr-2 p-2 ${open ? '' : 'hidden'} duration-100 text-sm sm:text-base`}>
+                        <ul className={`bg-gray-100 border border-gray-300 rounded-r-3xl mr-2 p-2 ${open ? '' : 'hidden'} duration-100 text-sm sm:text-base break-words`}>
                             <li>
                                 <strong>Company:</strong> {companyData.name}
                             </li>
@@ -39,10 +40,10 @@ const Sidebar = ({ open, toggleSidebar, companyData }) => {
                                 <strong>Description:</strong> {companyData.description}
                             </li>
                         </ul>
-                        <ul className={`mt-2 bg-gray-100 border border-gray-300 rounded-r-3xl mr-2 p-2 ${open ? '' : 'hidden'} duration-100 text-sm sm:text-base`}>
-                            <li><strong>👨‍💼:</strong> {companyData.question}</li>
+                        <ul className={`mt-2 bg-gray-100 border border-gray-300 rounded-r-3xl mr-2 p-2 ${open ? '' : 'hidden'} duration-100 text-sm sm:text-base break-words`}>
+                            <li><strong><FaUserAstronaut /></strong> {companyData.question}</li>
                         </ul>
-                        <ul className={`mt-2 bg-gray-100 border border-gray-300 rounded-r-3xl mr-2 mb-2 p-2 ${open ? '' : 'hidden'} duration-100 text-sm sm:text-base`}>
+                        <ul className={`mt-2 bg-gray-100 border border-gray-300 rounded-r-3xl mr-2 mb-2 p-2 ${open ? '' : 'hidden'} duration-100 text-sm sm:text-base break-words`}>
                             <li>
                                 <strong>Applied Position:</strong> {companyData.position}
                             </li>

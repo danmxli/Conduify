@@ -49,8 +49,8 @@ def create_dialogue(user: User):
             {"_id": latest_document["_id"]},
             {"$push": {"interview_session": bot_doc}}
         )
-        
-        return bot_response
+
+        return {"dialogs": CompanyInfo.find_one(sort=[("_id", -1)])["interview_session"]}
 
 
     else:

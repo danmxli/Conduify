@@ -53,7 +53,7 @@ const Home = () => {
                                             placeholder="Awesome Tech Company"
                                             value={company}
                                             onChange={handleCompanyChange}
-                                            className="mt-1 p-2 w-full border border-gray-300 rounded focus:ring focus:ring-indigo-200"
+                                            className="mt-1 p-2 w-full border border-gray-300 rounded focus:outline-none focus:border-indigo-500 transition"
                                         />
                                     </div>
                                     <div className="mb-4">
