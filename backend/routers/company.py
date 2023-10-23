@@ -6,6 +6,8 @@ from pydantic import BaseModel
 from data.search import get_link
 from data.info import scrape_url
 from data.generate import interview_question
+from uuid import uuid4
+import datetime
 
 load_dotenv('../.env')
 client = MongoClient(os.getenv("MONGODB_URI"))
@@ -61,15 +63,9 @@ def get_company(company: Company):
             question = interview_question(
                 info_dict, company.position, company.languages)
 
-            new_id = CompanyInfo.find_one(
-                sort=[("_id", -1)])  # Get the latest document
-            if new_id is not None:
-                new_id = new_id["_id"] + 1  # Increment the latest _id
-            else:
-                new_id = 1  # First entry
-
             doc = {
-                "_id": new_id,
+                "_id": str(uuid4()),
+                "time_created": int(datetime.datetime.now().timestamp()),
                 "name": info_dict["name"],
                 "business": info_dict["business"],
                 "description": info_dict["description"],
