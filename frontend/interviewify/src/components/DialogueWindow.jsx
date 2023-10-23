@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FaUserAlt, FaUserAstronaut } from 'react-icons/fa'
 import { AiOutlineSend, AiOutlineLoading3Quarters } from 'react-icons/ai'
+import SubmitText from './SubmitText';
 
 const DialogueWindow = () => {
     const [messages, setMessages] = useState([]);
@@ -83,17 +84,16 @@ const DialogueWindow = () => {
 
 
             </div>
-            <div className="mt-4 sm:flex sm:gap-2 sm:h-40 overflow-y-scroll m-1">
-                <textarea
+            <div className="ml-3 mr-3 mt-3">
+                <SubmitText
                     value={userMessage}
                     onChange={handleUserInput}
                     placeholder="Enter your response..."
-                    className="w-full p-2 rounded-md border text-sm sm:text-base transition h-40 sm:flex-1 focus:outline-none focus:border-indigo-500"
-                ></textarea>
-                <button onClick={handleSendMessage} className="mr-2 p-4 sm:w-auto self-start bg-indigo-500 hover:bg-indigo-600 duration-300 text-white p-2 rounded-md">
-                    {fetching ? <AiOutlineLoading3Quarters className='animate-spin' /> : <AiOutlineSend />}
-                </button>
+                />
             </div>
+            <button onClick={handleSendMessage} className="ml-3 mt-1 sm:w-auto self-start bg-gray-400 hover:bg-gray-600 p-2 pl-16 pr-16 duration-300 text-white p-0 rounded-3xl">
+                {fetching ? <AiOutlineLoading3Quarters className='animate-spin' /> : <AiOutlineSend />}
+            </button>
         </div>
     );
 };

@@ -90,7 +90,7 @@ const Home = () => {
                             <div className='text-center bg-gray-100 text-md sm:text-lg font-semibold'>
                                 I am skilled in...
                             </div>
-                            <div className='inline-grid grid-cols-2 md:grid-cols-3 gap-4 p-0 sm:p-3'>
+                            <div className='inline-grid grid-cols-2 md:grid-cols-3 gap-4 p-0 sm:p-3 break-words'>
                                 <div>
                                     <div className='mb-4'>
                                         <label>

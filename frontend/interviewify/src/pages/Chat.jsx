@@ -3,6 +3,7 @@ import { Navigate, useLocation } from 'react-router-dom';
 import Loading from '../components/Loading';
 import Sidebar from '../components/Sidebar';
 import DialogueWindow from '../components/DialogueWindow';
+import PromptNextPage from '../components/PromptNextPage';
 
 const Chat = () => {
     const location = useLocation();
@@ -60,11 +61,14 @@ const Chat = () => {
     if (navigatedFromHome === 'true') {
         return (
             loading ? <Loading /> : (
-                <div className="flex">
-                    <Sidebar open={open} toggleSidebar={SetOpen} companyData={companyData} />
-                    <div className='pl-2 pr-2'>
-                        <DialogueWindow />
+                <div className='sm:flex inline-grid'>
+                    <div className="flex flex-row">
+                        <Sidebar open={open} toggleSidebar={SetOpen} companyData={companyData} />
+                        <div className='pl-2 pr-2'>
+                            <DialogueWindow />
+                        </div>
                     </div>
+                    <PromptNextPage open={open} toggleSidebar={SetOpen} companyData={companyData}/>
                 </div>
             )
         );

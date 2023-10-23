@@ -14,7 +14,7 @@ const Sidebar = ({ open, toggleSidebar, companyData }) => {
                                     }`}
                                 onClick={() => toggleSidebar(!open)}
                             />
-                            <h2 className={`text-sm sm:text-xl font-semibold ml-2 mt-3 sm:mt-2 ${open ? '' : 'hidden'} duration-100`}> Information</h2>
+                            <h2 className={`text-xs sm:text-xl font-semibold ml-2 mt-3 sm:mt-2 ${open ? '' : 'hidden'} duration-100`}> Information</h2>
                         </div>
 
                         <div className={`${open ? '' : 'hidden'}`}>
