@@ -39,7 +39,9 @@ def get_company(company: Company):
     }
     url = get_link(company.name)
     if url is None:
-        return 404
+        return {
+            "information": "not found"
+        }
     # populat info_dict with company details
     info_dict = scrape_url(url)
     
@@ -96,7 +98,9 @@ def get_company(company: Company):
                 "user_session": session_list
             }
         else:
-            return 404
+            return {
+                "information": "not found"
+            }
 
 
 def update_user_session(interview_id, company_name, position, languages):

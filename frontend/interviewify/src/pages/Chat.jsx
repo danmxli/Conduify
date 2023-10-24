@@ -4,6 +4,7 @@ import Loading from '../components/Loading';
 import Sidebar from '../components/Sidebar';
 import DialogueWindow from '../components/DialogueWindow';
 import PromptNextPage from '../components/PromptNextPage';
+import CompanyNotFound from '../components/CompanyNotFound';
 
 const Chat = () => {
     const location = useLocation();
@@ -12,6 +13,7 @@ const Chat = () => {
     const [sessionData, setSessionData] = useState(null);
     const fetchExecuted = useRef(false);
     const [loading, setLoading] = useState(true);
+    const [found, setFound] = useState(false)
     const [open, SetOpen] = useState(true);
 
     useEffect(() => {
@@ -44,7 +46,13 @@ const Chat = () => {
                 })
                 .then(data => {
                     if (data) {
-                        console.log('Successful response:', data);
+                        if (data["information"] === "not found") {
+                            setFound(false)
+                            console.log("Company data not found")
+                        }
+                        else {
+                            setFound(true)
+                        }
                         setCompanyData(data["information"])
                         setSessionData(data["user_session"])
                         setLoading(false)
@@ -63,15 +71,19 @@ const Chat = () => {
     if (navigatedFromHome === 'true') {
         return (
             loading ? <Loading /> : (
-                <div className='sm:flex inline-grid bg-white'>
-                    <div className="flex flex-row">
-                        <Sidebar open={open} toggleSidebar={SetOpen} companyData={companyData} sessionData={sessionData} />
-                        <div className='pl-2 pr-2'>
-                            <DialogueWindow />
+                (found ? (
+                    <div className='sm:flex inline-grid bg-white'>
+                        <div className="flex flex-row">
+                            <Sidebar open={open} toggleSidebar={SetOpen} companyData={companyData} sessionData={sessionData} />
+                            <div className='pl-2 pr-2'>
+                                <DialogueWindow />
+                            </div>
                         </div>
+                        <PromptNextPage open={open} toggleSidebar={SetOpen} companyData={companyData} />
                     </div>
-                    <PromptNextPage open={open} toggleSidebar={SetOpen} companyData={companyData}/>
-                </div>
+                ) : (
+                    <CompanyNotFound />
+                    ))
             )
         );
     } else {
