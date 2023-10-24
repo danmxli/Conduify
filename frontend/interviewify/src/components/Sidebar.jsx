@@ -1,8 +1,11 @@
 import React from 'react';
 import { BsPhoneFlip } from 'react-icons/bs'
 import { FaUserAstronaut } from 'react-icons/fa'
+import { useNavigate } from "react-router-dom";
 
-const Sidebar = ({ open, toggleSidebar, companyData }) => {
+const Sidebar = ({ open, toggleSidebar, companyData, sessionData }) => {
+    const navigate = useNavigate()
+
     return (
         <div className={`${open ? 'w-1/3 sm:w-150' : 'w-10'} bg-white border-r border-gray-300 duration-700`}>
             <div className="overflow-scroll sm:overflow-clip">
@@ -18,6 +21,22 @@ const Sidebar = ({ open, toggleSidebar, companyData }) => {
                         </div>
 
                         <div className={`${open ? '' : 'hidden'}`}>
+                            <div className='p-2 bg-gray-300 inline-flex rounded-tr-xl mr-2'>
+                                <strong>Your Progress</strong>
+                            </div>
+
+                            <div className='mr-2 p-2 bg-gray-100 border border-gray-300 mb-2 rounded-br-3xl sm:rounded-r-3xl max-h-48 overflow-scroll scrollbar-hide'>
+                                {sessionData.map((item, index) => (
+                                    <div key={index} className={`inline-grid bg-gray-500 text-white p-1 rounded m-1 ${index === sessionData.length - 1 ? 'bg-indigo-700' : ''}`}>
+                                        <p>{item.company_name}</p>
+                                        <p className='text-gray-100 text-sm'>{item.position}</p>
+                                        <p className='text-gray-200 text-xs'>{item.languages.join(', ')}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className={`${open ? '' : 'hidden'}`}>
                             <button
                                 className='text-white bg-indigo-500 hover:bg-indigo-600 transition duration-300 mb-2 p-2 rounded-r-3xl text-xs sm:text-base'
                                 type='submit'
@@ -26,6 +45,15 @@ const Sidebar = ({ open, toggleSidebar, companyData }) => {
                                 }}
                             >
                                 Reload Interview
+                            </button>
+                            <button
+                                className='text-white bg-indigo-500 hover:bg-indigo-600 transition duration-300 mb-2 sm:ml-2 p-2 rounded-r-3xl sm:rounded-3xl text-xs sm:text-base'
+                                type='submit'
+                                onClick={() => {
+                                    navigate("/");
+                                }}
+                            >
+                                Start New Interview
                             </button>
                         </div>
 

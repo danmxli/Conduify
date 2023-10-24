@@ -44,8 +44,22 @@ def connect_db():
 # get user info
 @app.get("/users/{_id}")
 def read_item(_id: int):
-    collection = db['UserInfo']
+    collection = db['SessionInfo']
     user = collection.find_one({"_id": _id})
     if not user:
         return {"message": "user not found"}, 404
     return user
+
+# clear data
+@app.get("/clear-collections")
+def clear_collections():
+    try:
+        collection_names = db.list_collection_names()
+
+        # Iterate through collections and drop (delete) each one
+        for collection_name in collection_names:
+            db[collection_name].drop()
+
+        return {"message": "All collections cleared successfully"}
+    except Exception as e:
+        return {"error": f"An error occurred: {str(e)}"}

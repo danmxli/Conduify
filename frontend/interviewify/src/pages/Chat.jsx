@@ -9,6 +9,7 @@ const Chat = () => {
     const location = useLocation();
     const navigatedFromHome = localStorage.getItem('navigatedFromHome');
     const [companyData, setCompanyData] = useState(null);
+    const [sessionData, setSessionData] = useState(null);
     const fetchExecuted = useRef(false);
     const [loading, setLoading] = useState(true);
     const [open, SetOpen] = useState(true);
@@ -44,7 +45,8 @@ const Chat = () => {
                 .then(data => {
                     if (data) {
                         console.log('Successful response:', data);
-                        setCompanyData(data)
+                        setCompanyData(data["information"])
+                        setSessionData(data["user_session"])
                         setLoading(false)
                     }
                 })
@@ -63,7 +65,7 @@ const Chat = () => {
             loading ? <Loading /> : (
                 <div className='sm:flex inline-grid'>
                     <div className="flex flex-row">
-                        <Sidebar open={open} toggleSidebar={SetOpen} companyData={companyData} />
+                        <Sidebar open={open} toggleSidebar={SetOpen} companyData={companyData} sessionData={sessionData} />
                         <div className='pl-2 pr-2'>
                             <DialogueWindow />
                         </div>

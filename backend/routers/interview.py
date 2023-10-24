@@ -51,7 +51,7 @@ def create_dialogue(user: User):
         )
 
         return {"dialogs": CompanyInfo.find_one(sort=[("time_created", -1)])["interview_session"]}
-
+        
 
     else:
         return {"message": "No documents found in the collection"}, 404

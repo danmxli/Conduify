@@ -13,6 +13,7 @@ load_dotenv('../.env')
 client = MongoClient(os.getenv("MONGODB_URI"))
 db = client['AppData']
 CompanyInfo = db['CompanyInfo']
+SessionInfo = db['SessionInfo']
 
 router = APIRouter(
     prefix='/company',
@@ -28,55 +29,94 @@ class Company(BaseModel):
 
 @router.post("/search")
 def get_company(company: Company):
+    session_list = []
     ...
-    # search mongodb for existing documents
-    filter = {
-        "name": company.name,
-        "position": company.position,
-        "languages": company.languages
-    }
+    # scrape the company details first
     info_dict = {
         "name": str,
         "business": str,
         "description": str,
     }
+    url = get_link(company.name)
+    if url is None:
+        return 404
+    # populat info_dict with company details
+    info_dict = scrape_url(url)
+    
+    filter = { # add company name to filter
+        "name": info_dict['name'],
+        "position": company.position,
+        "languages": company.languages
+    }
+    
     result = CompanyInfo.find_one(filter)
     if result:
-        info_dict = {
-            "name": result["name"],
-            "business": result["business"],
-            "description": result["description"]
-        }
+        # generate interview_question
         new_question = interview_question(
             info_dict, company.position, company.languages)
+        # update the question and interview_sessions list
         CompanyInfo.update_one(filter, {"$set": {"question": new_question}})
         CompanyInfo.update_one(filter, {"$set": {"interview_session": []}})
 
-        return CompanyInfo.find_one(filter)
+
+        found = CompanyInfo.find_one(filter)
+        for i in update_user_session(found["_id"], found["name"], found["position"], found["languages"]):
+            if i not in session_list:
+                session_list.append(i)
+
+        return {
+            "information": found,
+            "user_session": session_list
+        }
 
     else:
-        url = get_link(company.name)
-        if url is None:
-            return 404
-        else:
-            info_dict = scrape_url(url)
-            question = interview_question(
-                info_dict, company.position, company.languages)
+        question = interview_question(
+            info_dict, company.position, company.languages)
 
-            doc = {
-                "_id": str(uuid4()),
-                "time_created": int(datetime.datetime.now().timestamp()),
-                "name": info_dict["name"],
-                "business": info_dict["business"],
-                "description": info_dict["description"],
-                "position": company.position,
-                "languages": company.languages,
-                "question": question,
-                "interview_session":[]
+        doc = {
+            "_id": str(uuid4()),
+            "time_created": int(datetime.datetime.now().timestamp()),
+            "name": info_dict["name"],
+            "business": info_dict["business"],
+            "description": info_dict["description"],
+            "position": company.position,
+            "languages": company.languages,
+            "question": question,
+            "interview_session": []
+        }
+
+        for i in update_user_session(doc["_id"], doc["name"], doc["position"], doc["languages"]):
+            if i not in session_list:
+                session_list.append(i)
+
+        result = CompanyInfo.insert_one(doc)
+        if result.inserted_id:
+            return {
+                "information": doc,
+                "user_session": session_list
             }
+        else:
+            return 404
 
-            result = CompanyInfo.insert_one(doc)
-            if result.inserted_id:
-                return doc
-            else:
-                return 404
+
+def update_user_session(interview_id, company_name, position, languages):
+    doc_list = []
+    doc = {
+        "interview_id": interview_id,
+        "company_name": company_name,
+        "position": position,
+        "languages": languages
+    }
+    # insert one if doc with matching criteria does not exist
+    if not SessionInfo.find_one(doc):
+        result = SessionInfo.insert_one(doc)
+        if not result.inserted_id:
+            return 404
+    
+    cursor = SessionInfo.find()
+    for document in cursor:
+        del document["_id"]  # Remove the _id field
+        doc_list.append(document)
+    return doc_list
+
+    
