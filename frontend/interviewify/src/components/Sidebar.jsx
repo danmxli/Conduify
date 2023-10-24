@@ -21,11 +21,29 @@ const Sidebar = ({ open, toggleSidebar, companyData, sessionData }) => {
                         </div>
 
                         <div className={`${open ? '' : 'hidden'}`}>
-                            <div className='p-2 bg-gray-300 inline-flex rounded-tr-xl mr-2'>
-                                <strong>Your Progress</strong>
+                            <div className='p-1 bg-gray-600 text-white inline-flex rounded-r-xl sm:rounded-t-xl mr-2 text-xs sm:text-base'>
+                                Your Progress
                             </div>
-
-                            <div className='mr-2 p-2 bg-gray-100 border border-gray-300 mb-2 rounded-br-3xl sm:rounded-r-3xl max-h-48 overflow-scroll scrollbar-hide'>
+                            <button
+                                className='text-white bg-indigo-500 hover:bg-indigo-600 transition duration-300 p-1 rounded-r-xl sm:rounded-t-xl text-xs sm:text-base'
+                                type='submit'
+                                onClick={() => {
+                                    window.location.reload()
+                                }}
+                            >
+                                Reload Interview
+                            </button>
+                            <button
+                                className='sm:ml-2 mb-2 sm:mb-0 text-white bg-indigo-500 hover:bg-indigo-600 transition duration-300 p-1 rounded-r-xl sm:rounded-t-xl text-xs sm:text-base'
+                                type='submit'
+                                onClick={() => {
+                                    navigate("/");
+                                }}
+                            >
+                                Start New Interview
+                            </button>
+                            
+                            <div className='mr-2 p-2 bg-gray-100 border border-gray-300 mb-2 rounded-r-3xl max-h-48 overflow-scroll scrollbar-hide'>
                                 {sessionData.map((item, index) => (
                                     <div key={index} className={`inline-grid bg-gray-500 text-white p-1 rounded m-1 ${index === sessionData.length - 1 ? 'bg-indigo-700' : ''}`}>
                                         <p>{item.company_name}</p>
@@ -35,50 +53,19 @@ const Sidebar = ({ open, toggleSidebar, companyData, sessionData }) => {
                                 ))}
                             </div>
                         </div>
-
-                        <div className={`${open ? '' : 'hidden'}`}>
-                            <button
-                                className='text-white bg-indigo-500 hover:bg-indigo-600 transition duration-300 mb-2 p-2 rounded-r-3xl text-xs sm:text-base'
-                                type='submit'
-                                onClick={() => {
-                                    window.location.reload()
-                                }}
-                            >
-                                Reload Interview
-                            </button>
-                            <button
-                                className='text-white bg-indigo-500 hover:bg-indigo-600 transition duration-300 mb-2 sm:ml-2 p-2 rounded-r-3xl sm:rounded-3xl text-xs sm:text-base'
-                                type='submit'
-                                onClick={() => {
-                                    navigate("/");
-                                }}
-                            >
-                                Start New Interview
-                            </button>
-                        </div>
-
-                        <ul className={`bg-gray-100 border border-gray-300 rounded-r-3xl mr-2 p-2 ${open ? '' : 'hidden'} duration-100 text-sm sm:text-base break-words`}>
-                            <li>
-                                <strong>Company:</strong> {companyData.name}
-                            </li>
-                            <li>
-                                <strong>Business:</strong> {companyData.business}
-                            </li>
+                        <ul className={`bg-gray-50 border border-gray-300 rounded-r-3xl mr-2 mb-2 p-2 ${open ? '' : 'hidden'} duration-100 text-sm sm:text-base break-words`}>
                             <li>
                                 <strong>Description:</strong> {companyData.description}
                             </li>
                         </ul>
-                        <ul className={`mt-2 bg-gray-100 border border-gray-300 rounded-r-3xl mr-2 p-2 ${open ? '' : 'hidden'} duration-100 text-sm sm:text-base break-words`}>
-                            <li><strong><FaUserAstronaut /></strong> {companyData.question}</li>
-                        </ul>
-                        <ul className={`mt-2 bg-gray-100 border border-gray-300 rounded-r-3xl mr-2 mb-2 p-2 ${open ? '' : 'hidden'} duration-100 text-sm sm:text-base break-words`}>
-                            <li>
-                                <strong>Applied Position:</strong> {companyData.position}
-                            </li>
-                            <li>
-                                <strong>Proficient Languages:</strong> {companyData.languages.join(', ')}
-                            </li>
-                        </ul>
+                        <div className='max-h-96 overflow-scroll scrollbar-hide pb-2'>
+                            
+                            <ul className={`bg-gray-50 border border-gray-300 rounded-r-3xl p-2 mr-2 ${open ? '' : 'hidden'} duration-100 text-sm sm:text-base break-words`}>
+                                <li><strong><FaUserAstronaut /></strong> {companyData.question}</li>
+                            </ul>
+                        </div>
+
+                        
                     </div>
                 )}
             </div>

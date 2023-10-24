@@ -63,7 +63,7 @@ const Chat = () => {
     if (navigatedFromHome === 'true') {
         return (
             loading ? <Loading /> : (
-                <div className='sm:flex inline-grid'>
+                <div className='sm:flex inline-grid bg-white'>
                     <div className="flex flex-row">
                         <Sidebar open={open} toggleSidebar={SetOpen} companyData={companyData} sessionData={sessionData} />
                         <div className='pl-2 pr-2'>

@@ -2,12 +2,12 @@ import { BsFillArrowLeftCircleFill } from 'react-icons/bs'
 
 const PromptNextPage = ({ open, toggleSidebar, companyData }) => {
     return (
-        <div className='bg-indigo-200 w-full sm:rounded-l-3xl flex flex-col justify-center items-center'>
+        <div className='bg-indigo-500 w-full sm:rounded-l-3xl flex flex-col justify-center items-center'>
             <div className="m-5 sm:mt-0 p-4 bg-indigo-800 rounded-3xl inline-grid text-white">
                 <p className="sm:text-3xl">Ready to take it to the next level?</p>
                 <p className="mt-1 mb-2 text-xs sm:text-base">Attempt a hands-on techincal interview!</p>
                 <div className='inline-flex'>
-                    <BsFillArrowLeftCircleFill className={`rounded-md text-2xl sm:text-5xl duration-700 cursor-pointer text-indigo-500 hover:text-white ${open && 'rotate-[540deg]'
+                    <BsFillArrowLeftCircleFill className={`rounded-md text-2xl sm:text-5xl duration-700 cursor-pointer text-indigo-300 hover:text-white ${open && 'rotate-[540deg]'
                         }`}
                         onClick={() => toggleSidebar(!open)} />
                         {!open && <p className='ml-3 text-lg text-purple-400'>Go back to Session</p>}
@@ -32,7 +32,7 @@ const PromptNextPage = ({ open, toggleSidebar, companyData }) => {
                         </li>
                     </ul>
                     <button
-                        className='mt-2 text-white bg-indigo-500 hover:bg-indigo-600 transition duration-300 mb-2 p-2 rounded-xl text-xs sm:text-base'
+                        className='mt-2 text-indigo-950 font-bold bg-indigo-300 hover:bg-white transition duration-300 mb-2 p-2 rounded-xl text-xs sm:text-base'
                         type='submit'
                         onClick={() => {
                             
