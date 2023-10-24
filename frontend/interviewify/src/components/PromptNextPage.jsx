@@ -1,6 +1,7 @@
 import { BsFillArrowLeftCircleFill } from 'react-icons/bs'
 
 const PromptNextPage = ({ open, toggleSidebar, companyData }) => {
+    // CURRENTLY UNDER DEVELOPMENT
     return (
         <div className='bg-indigo-500 w-full sm:rounded-l-3xl flex flex-col justify-center items-center'>
             <div className="m-5 sm:mt-0 p-4 bg-indigo-800 rounded-3xl inline-grid text-white">
@@ -10,9 +11,9 @@ const PromptNextPage = ({ open, toggleSidebar, companyData }) => {
                     <BsFillArrowLeftCircleFill className={`rounded-md text-2xl sm:text-5xl duration-700 cursor-pointer text-indigo-300 hover:text-white ${open && 'rotate-[540deg]'
                         }`}
                         onClick={() => toggleSidebar(!open)} />
-                        {!open && <p className='ml-3 text-lg text-purple-400'>Go back to Session</p>}
+                    {!open && <p className='ml-3 text-lg text-white'>Go back to Session</p>}
                 </div>
-                
+
             </div>
             <div className="ml-2 mr-2 sm:ml-16 sm:mr-16 p-4 bg-indigo-400 rounded-3xl inline-grid text-white">
                 Remember that a hands-on technical interview focuses on solving real-world problems, often using code. Be prepared to think spontaneously and critically!
@@ -40,6 +41,9 @@ const PromptNextPage = ({ open, toggleSidebar, companyData }) => {
                     >
                         Start
                     </button>
+                    <div className='bg-purple-500/30 text-center rounded-lg text-purple-400'>
+                        This feature is in development.
+                    </div>
                 </div>)}
         </div>
     );
