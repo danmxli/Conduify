@@ -45,7 +45,7 @@ const Sidebar = ({ open, toggleSidebar, companyData, sessionData }) => {
             <div className="overflow-scroll sm:overflow-clip">
                 {companyData && (
                     <div className="h-screen overflow-scroll scrollbar-hide">
-                        <div className="inline-flex bg-gray-100 border border-gray-300 sm:p-1 sm:pr-4 mb-2 rounded-r-3xl">
+                        <div className="inline-flex bg-gray-100 border border-gray-300 sm:pr-4 mb-2 rounded-r-3xl">
                             <BsPhoneFlip
                                 className={`rounded-md mt-1 text-4xl duration-700 cursor-pointer ${open && 'rotate-[540deg]'
                                     }`}

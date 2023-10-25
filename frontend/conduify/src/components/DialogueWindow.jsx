@@ -3,7 +3,7 @@ import { FaUserAlt, FaUserAstronaut } from 'react-icons/fa'
 import { AiOutlineSend, AiOutlineLoading3Quarters } from 'react-icons/ai'
 import SubmitText from './SubmitText';
 
-const DialogueWindow = () => {
+const DialogueWindow = ({ sessionUser }) => {
     const [messages, setMessages] = useState([]);
     const [userMessage, setUserMessage] = useState('');
     const [fetching, setFetching] = useState(false);
@@ -18,6 +18,7 @@ const DialogueWindow = () => {
 
         // request body
         const requestBody = {
+            name: sessionUser,
             response: userMessage,
         };
         setFetching(true)

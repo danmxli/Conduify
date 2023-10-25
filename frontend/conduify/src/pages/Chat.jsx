@@ -15,10 +15,12 @@ const Chat = () => {
     const [loading, setLoading] = useState(true);
     const [found, setFound] = useState(false)
     const [open, SetOpen] = useState(true);
+    const [sessionUser, setSessionUser] = useState()
 
     useEffect(() => {
         if (navigatedFromHome === 'true' && !fetchExecuted.current) {
             const { company, position, selectedLanguages, userName } = location.state;
+            setSessionUser(userName)
             handleFetchFromHome(company, position, selectedLanguages, userName);
         }
     }, [navigatedFromHome, location.state, fetchExecuted]);
@@ -78,7 +80,7 @@ const Chat = () => {
                         <div className="flex flex-row">
                             <Sidebar open={open} toggleSidebar={SetOpen} companyData={companyData} sessionData={sessionData} />
                             <div className='pl-2 pr-2'>
-                                <DialogueWindow />
+                                <DialogueWindow sessionUser={sessionUser} />
                             </div>
                         </div>
                         <PromptNextPage open={open} toggleSidebar={SetOpen} companyData={companyData} />
