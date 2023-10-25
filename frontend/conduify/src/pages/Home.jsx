@@ -56,7 +56,7 @@ const Home = () => {
                     ) : (
                         <div>
                             <div className=''>
-                                <img src='../../public/interviewify.svg' alt='Logo' className='h-36' />
+                                <img src='/interviewify.svg' alt='Logo' className='h-36' />
                             </div>
 
                             <h1 className='text-2xl font-semibold text-zinc-600'>
