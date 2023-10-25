@@ -7,6 +7,7 @@ import os
 from fastapi.encoders import jsonable_encoder
 import routers.interview as softskills_interview
 import routers.company as getcompany
+import routers.users as user
 
 load_dotenv('../.env')
 client = MongoClient(os.getenv("MONGODB_URI"))
@@ -27,6 +28,7 @@ app.add_middleware(
 )
 app.include_router(softskills_interview.router)
 app.include_router(getcompany.router)
+app.include_router(user.router)
 
 # root route
 @app.get("/")
