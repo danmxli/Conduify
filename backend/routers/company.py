@@ -14,6 +14,7 @@ client = MongoClient(os.getenv("MONGODB_URI"))
 db = client['AppData']
 CompanyInfo = db['CompanyInfo']
 SessionInfo = db['SessionInfo']
+UserInfo = db['UserInfo']
 
 router = APIRouter(
     prefix='/company',
@@ -25,6 +26,7 @@ class Company(BaseModel):
     name: str
     position: str
     languages: list[str]
+    interviewee: str
 
 
 @router.post("/search")
@@ -48,8 +50,10 @@ def get_company(company: Company):
     filter = { # add company name to filter
         "name": info_dict['name'],
         "position": company.position,
-        "languages": company.languages
+        "languages": company.languages,
+        "interviewee": company.interviewee
     }
+    print(filter)
     
     result = CompanyInfo.find_one(filter)
     if result:
@@ -62,7 +66,7 @@ def get_company(company: Company):
 
 
         found = CompanyInfo.find_one(filter)
-        for i in update_user_session(found["_id"], found["name"], found["position"], found["languages"]):
+        for i in update_user_session(found["_id"], found["name"], found["position"], found["languages"], company.interviewee):
             if i not in session_list:
                 session_list.append(i)
 
@@ -83,11 +87,12 @@ def get_company(company: Company):
             "description": info_dict["description"],
             "position": company.position,
             "languages": company.languages,
+            "interviewee": company.interviewee,
             "question": question,
             "interview_session": []
         }
 
-        for i in update_user_session(doc["_id"], doc["name"], doc["position"], doc["languages"]):
+        for i in update_user_session(doc["_id"], doc["name"], doc["position"], doc["languages"], company.interviewee):
             if i not in session_list:
                 session_list.append(i)
 
@@ -103,7 +108,7 @@ def get_company(company: Company):
             }
 
 
-def update_user_session(interview_id, company_name, position, languages):
+def update_user_session(interview_id, company_name, position, languages, interviewee):
     doc_list = []
     doc = {
         "interview_id": interview_id,
@@ -111,16 +116,21 @@ def update_user_session(interview_id, company_name, position, languages):
         "position": position,
         "languages": languages
     }
+    # find document corresponding to that interviewee
+    user = UserInfo.find_one({"username": interviewee})
+    if not user:
+        return {"message": "user not found"}  
+
     # insert one if doc with matching criteria does not exist
-    if not SessionInfo.find_one(doc):
-        result = SessionInfo.insert_one(doc)
-        if not result.inserted_id:
-            return 404
+    history = user.get("history", [])
+    if doc not in history:
+        history.append(doc)
+    UserInfo.update_one({"username": interviewee}, {"$set": {"history": history}})
     
-    cursor = SessionInfo.find()
-    for document in cursor:
-        del document["_id"]  # Remove the _id field
-        doc_list.append(document)
+    # append the doc_list
+    for i in UserInfo.find_one({"username": interviewee}).get("history", []):
+        doc_list.append(i)
+
     return doc_list
 
     

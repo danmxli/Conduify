@@ -8,6 +8,7 @@ from fastapi.encoders import jsonable_encoder
 import routers.interview as softskills_interview
 import routers.company as getcompany
 import routers.users as user
+from pydantic import BaseModel
 
 load_dotenv('../.env')
 client = MongoClient(os.getenv("MONGODB_URI"))
@@ -42,7 +43,6 @@ def connect_db():
     result = list(collection.find({}))
     return result
 
-# sign user up
 
 # get user info
 @app.get("/users/{_id}")
@@ -53,16 +53,24 @@ def read_item(_id: int):
         return {"message": "user not found"}, 404
     return user
 
+class User(BaseModel):
+    name: str
+
 # clear data
-@app.get("/clear-collections")
-def clear_collections():
+@app.post("/clear_user_companyinfo")
+def clear_collections(user: User):
     try:
-        collection_names = db.list_collection_names()
+        db['CompanyInfo'].delete_many({"interviewee": user.name})
+        
+        db['UserInfo'].update_one({
+            "username": user.name
+        },
+        {
+            "$set": {
+                "history": []
+            }
+        })
 
-        # Iterate through collections and drop (delete) each one
-        for collection_name in collection_names:
-            db[collection_name].drop()
-
-        return {"message": "All collections cleared successfully"}
+        return {"message": f'successfuly deleted CompanyInfo and UserInfo history for {user.name}'}
     except Exception as e:
         return {"error": f"An error occurred: {str(e)}"}

@@ -18,17 +18,19 @@ const Chat = () => {
 
     useEffect(() => {
         if (navigatedFromHome === 'true' && !fetchExecuted.current) {
-            const { company, position, selectedLanguages } = location.state;
-            handleFetchFromHome(company, position, selectedLanguages);
+            const { company, position, selectedLanguages, userName } = location.state;
+            handleFetchFromHome(company, position, selectedLanguages, userName);
         }
     }, [navigatedFromHome, location.state, fetchExecuted]);
 
-    const handleFetchFromHome = (company, position, selectedLanguages) => {
+    const handleFetchFromHome = (company, position, selectedLanguages, userName) => {
         const requestBody = {
             name: company,
             position: position,
             languages: selectedLanguages,
+            interviewee: userName
         };
+        console.log(requestBody)
         try {
             fetch('http://localhost:8001/company/search', {
                 method: 'POST',

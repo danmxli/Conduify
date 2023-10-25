@@ -25,12 +25,13 @@ def home_registration(user: User):
     ...
     match = UserInfo.find_one({"username": user.name})
     if match:
-        return{"username": "already exists"}
+        return match
 
     doc = {
         "_id": str(uuid4()),
         "time_created": int(datetime.datetime.now().timestamp()),
-        "username": user.name
+        "username": user.name,
+        "history": []
     }
     result = UserInfo.insert_one(doc)
 

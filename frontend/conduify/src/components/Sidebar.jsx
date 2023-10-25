@@ -6,12 +6,17 @@ const Sidebar = ({ open, toggleSidebar, companyData, sessionData }) => {
     const navigate = useNavigate()
 
     const clearSessions = () => {
+        const requestBody = {
+            "name": companyData.interviewee
+        }
+        console.log(requestBody)
         try {
-            fetch('http://localhost:8001/clear-collections', {
-                method: 'GET',
+            fetch('http://localhost:8001/clear_user_companyinfo', {
+                method: 'POST',
                 headers: {
-                    'Accept': 'application/json'
+                    'Content-Type': 'application/json',
                 },
+                body: JSON.stringify(requestBody)
             })
                 .then(response => {
                     if (response.ok) {
@@ -40,13 +45,15 @@ const Sidebar = ({ open, toggleSidebar, companyData, sessionData }) => {
             <div className="overflow-scroll sm:overflow-clip">
                 {companyData && (
                     <div className="h-screen overflow-scroll scrollbar-hide">
-                        <div className="inline-flex">
+                        <div className="inline-flex bg-gray-100 border border-gray-300 sm:p-1 sm:pr-4 mb-2 rounded-r-3xl">
                             <BsPhoneFlip
-                                className={`rounded-md mt-1 text-4xl duration-700 cursor-pointer hover:bg-indigo-200 ${open && 'rotate-[540deg]'
+                                className={`rounded-md mt-1 text-4xl duration-700 cursor-pointer ${open && 'rotate-[540deg]'
                                     }`}
                                 onClick={() => toggleSidebar(!open)}
                             />
-                            <h2 className={`text-xs sm:text-xl font-semibold ml-2 mt-3 sm:mt-2 ${open ? '' : 'hidden'} duration-100`}> Information</h2>
+                            <h2 className={`wrap-words text-xs sm:text-xl font-semibold ml-2 mt-3 sm:mt-2 ${open ? '' : 'hidden'} duration-100`}>
+                                Information for: {companyData.interviewee}
+                            </h2>
                         </div>
 
                         <div className={`${open ? '' : 'hidden'}`}>

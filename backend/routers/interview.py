@@ -16,12 +16,13 @@ router = APIRouter(
 )
 
 class User(BaseModel):
+    name: str
     response: str
 
 @router.post("/create_dialogue")
 def create_dialogue(user: User):
     ...
-    latest_document = CompanyInfo.find_one(sort=[("time_created", -1)])
+    latest_document = CompanyInfo.find_one({"interviewee": user.name}, sort=[("time_created", -1)])
 
     if latest_document:
         info_dict = {
@@ -50,7 +51,7 @@ def create_dialogue(user: User):
             {"$push": {"interview_session": bot_doc}}
         )
 
-        return {"dialogs": CompanyInfo.find_one(sort=[("time_created", -1)])["interview_session"]}
+        return {"dialogs": CompanyInfo.find_one({"interviewee": user.name}, sort=[("time_created", -1)])["interview_session"]}
         
 
     else:
