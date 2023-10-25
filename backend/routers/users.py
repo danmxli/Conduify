@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from uuid import uuid4
 import datetime
 
-load_dotenv('../.env')
+load_dotenv('.env')
 client = MongoClient(os.getenv("MONGODB_URI"))
 db = client['AppData']
 CompanyInfo = db['CompanyInfo']

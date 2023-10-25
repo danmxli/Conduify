@@ -10,7 +10,7 @@ import routers.company as getcompany
 import routers.users as user
 from pydantic import BaseModel
 
-load_dotenv('../.env')
+load_dotenv('.env')
 client = MongoClient(os.getenv("MONGODB_URI"))
 db = client['AppData']
 app = FastAPI()

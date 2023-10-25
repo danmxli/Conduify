@@ -5,7 +5,7 @@ from pydantic import BaseModel
 from data.generate import response_evaluation
 import os
 
-load_dotenv('../.env')
+load_dotenv('.env')
 client = MongoClient(os.getenv("MONGODB_URI"))
 db = client['AppData']
 CompanyInfo = db['CompanyInfo']
