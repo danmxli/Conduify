@@ -20,7 +20,6 @@ def interview_question(info_dict, positions, languages):
     )
     return response.generations[0].text
 
-    # testing purposes 
     # return("testing for interview_question")
 
 def response_evaluation(company_info, response):
@@ -38,5 +37,4 @@ def response_evaluation(company_info, response):
     )
     return response.generations[0].text
 
-    # testing purposes.
     # return("testing for response_evaluation")
