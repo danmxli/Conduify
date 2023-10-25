@@ -229,19 +229,19 @@ const Home = () => {
                 <div className="flex items-center justify-center h-screen">
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 p-2 sm:p-10">
                         <div className="bg-gray-100 p-3 rounded-lg">
-                            <h1 className="text-xl sm:text-5xl break-words">Meet Interviewify.</h1>
+                            <h1 className="text-xl sm:text-5xl break-words">Meet Conduify.</h1>
                             <code className='text-indigo-500'>your personal interview preparation assistant.</code>
                             <p className='mt-3'>
-                                Ace your interviews with interviewify. With test-driven methodologies and a plethora of coding challenges inspired by Leetcode coming soon, you will be way ahead of the competition!
+                                Ace your interviews with Conduify. With test-driven methodologies and a plethora of coding challenges inspired by Leetcode coming soon, you will be way ahead of the competition!
                             </p>
                         </div>
                         <div className="bg-gray-100 p-3 rounded-lg">
                             <h1 className="text-xl">Amazing Experience. 🚀</h1>
-                            <p className='italic'>Interviewify made me realize how capable I am in the tech industry. I am starting an internship as a front end developer and I am thrilled I discovered this app! ~ anonymous</p>
+                            <p className='italic'>Conduify made me realize how capable I am in the tech industry. I am starting an internship as a front end developer and I am thrilled I discovered this app! ~ anonymous</p>
                             <h1 className="mt-2 text-xl">Super Interactive. 💫</h1>
                             <p className='italic'>The questions are custom tailored to my position, exactly what I needed! ~ anonymous</p>
                         </div>
-                        <div className="bg-gray-100 p-3 rounded-lg">
+                        <div className="bg-gray-100 p-3 rounded-lg text-center">
                             <a href='https://www.linkedin.com/in/danli591/' className='text-indigo-500 hover:text-indigo-600'>
                                 <h1 className="text-lg font-bold">Reach out to the Creator</h1>
                             </a>

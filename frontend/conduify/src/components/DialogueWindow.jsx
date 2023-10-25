@@ -55,7 +55,7 @@ const DialogueWindow = () => {
             <div className="h-96 sm:h-128 w-fit sm:w-150 overflow-scroll scrollbar-hide text-xs sm:text-base">
                 {dialogPreview ? (
                     <div className="text-gray-400 text-center mt-12 sm:mt-32">
-                        <p className='text-2xl'>Welcome to Interviewify Dialogues!</p>
+                        <p className='text-2xl'>Welcome to Conduify Dialogues!</p>
                         <div className='mt-3 inline-flex text-5xl gap-4'>
                             <FaUserAlt />
                             <AiOutlineSend />
