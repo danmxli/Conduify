@@ -9,6 +9,7 @@ import routers.interview as softskills_interview
 import routers.company as getcompany
 import routers.users as user
 from pydantic import BaseModel
+import uvicorn
 
 load_dotenv('.env')
 client = MongoClient(os.getenv("MONGODB_URI"))
@@ -74,3 +75,7 @@ def clear_collections(user: User):
         return {"message": f'successfuly deleted CompanyInfo and UserInfo history for {user.name}'}
     except Exception as e:
         return {"error": f"An error occurred: {str(e)}"}
+    
+
+if __name__ == "__main__":
+  uvicorn.run("main:app", host="0.0.0.0", port=8001, reload=True)
