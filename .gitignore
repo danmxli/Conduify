@@ -1,6 +1,8 @@
 .venv
 .env
 /schemas
+Dockerfile
+.DockerIgnore
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
