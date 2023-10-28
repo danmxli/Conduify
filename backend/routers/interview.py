@@ -1,28 +1,23 @@
-from fastapi import APIRouter
 from dotenv import load_dotenv
 from pymongo.mongo_client import MongoClient
-from pydantic import BaseModel
 from data.generate import response_evaluation
 import os
+from flask import Blueprint, jsonify, request
 
 load_dotenv('.env')
 client = MongoClient(os.getenv("MONGODB_URI"))
 db = client['AppData']
 CompanyInfo = db['CompanyInfo']
 
-router = APIRouter(
-    prefix='/interview',
-    tags=['interview']
-)
+interview_blueprint = Blueprint('interview', __name__)
 
-class User(BaseModel):
-    name: str
-    response: str
-
-@router.post("/create_dialogue")
-def create_dialogue(user: User):
+@interview_blueprint.route('/create_dialogue', methods=["POST"])
+def create_dialogue():
     ...
-    latest_document = CompanyInfo.find_one({"interviewee": user.name}, sort=[("time_created", -1)])
+    data = request.get_json()
+    name = data.get("name")
+    user_response = data.get("response")
+    latest_document = CompanyInfo.find_one({"interviewee": name}, sort=[("time_created", -1)])
 
     if latest_document:
         info_dict = {
@@ -33,7 +28,7 @@ def create_dialogue(user: User):
         }
 
         user_doc = {
-            "message": user.response,
+            "message": user_response,
             "speaker": "user"
         }
         CompanyInfo.update_one(
@@ -41,7 +36,7 @@ def create_dialogue(user: User):
             {"$push": {"interview_session": user_doc}}
         )
 
-        bot_response = response_evaluation(info_dict, user.response)
+        bot_response = response_evaluation(info_dict, user_response)
         bot_doc = {
             "message": bot_response,
             "speaker": "bot"
@@ -51,7 +46,7 @@ def create_dialogue(user: User):
             {"$push": {"interview_session": bot_doc}}
         )
 
-        return {"dialogs": CompanyInfo.find_one({"interviewee": user.name}, sort=[("time_created", -1)])["interview_session"]}
+        return {"dialogs": CompanyInfo.find_one({"interviewee": name}, sort=[("time_created", -1)])["interview_session"]}
         
 
     else:

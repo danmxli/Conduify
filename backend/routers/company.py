@@ -1,13 +1,12 @@
-from fastapi import APIRouter
 from dotenv import load_dotenv
 from pymongo.mongo_client import MongoClient
 import os
-from pydantic import BaseModel
 from data.search import get_link
 from data.info import scrape_url
 from data.generate import interview_question
 from uuid import uuid4
 import datetime
+from flask import Blueprint, jsonify, request
 
 load_dotenv('.env')
 client = MongoClient(os.getenv("MONGODB_URI"))
@@ -16,22 +15,17 @@ CompanyInfo = db['CompanyInfo']
 SessionInfo = db['SessionInfo']
 UserInfo = db['UserInfo']
 
-router = APIRouter(
-    prefix='/company',
-    tags=['company']
-)
+company_blueprint = Blueprint('company', __name__)
 
 
-class Company(BaseModel):
-    name: str
-    position: str
-    languages: list[str]
-    interviewee: str
-
-
-@router.post("/search")
-def get_company(company: Company):
+@company_blueprint.route('/search', methods=["POST"])
+def get_company():
     session_list = []
+    data = request.get_json()
+    name = data.get("name")
+    position = data.get("position")
+    languages = data.get("languages")
+    interviewee = data.get("interviewee")
     ...
     # scrape the company details first
     info_dict = {
@@ -39,7 +33,7 @@ def get_company(company: Company):
         "business": str,
         "description": str,
     }
-    url = get_link(company.name)
+    url = get_link(name)
     if url is None:
         return {
             "information": "not found"
@@ -49,9 +43,9 @@ def get_company(company: Company):
     
     filter = { # add company name to filter
         "name": info_dict['name'],
-        "position": company.position,
-        "languages": company.languages,
-        "interviewee": company.interviewee
+        "position": position,
+        "languages": languages,
+        "interviewee": interviewee
     }
     print(filter)
     
@@ -59,14 +53,14 @@ def get_company(company: Company):
     if result:
         # generate interview_question
         new_question = interview_question(
-            info_dict, company.position, company.languages)
+            info_dict, position, languages)
         # update the question and interview_sessions list
         CompanyInfo.update_one(filter, {"$set": {"question": new_question}})
         CompanyInfo.update_one(filter, {"$set": {"interview_session": []}})
 
 
         found = CompanyInfo.find_one(filter)
-        for i in update_user_session(found["_id"], found["name"], found["position"], found["languages"], company.interviewee):
+        for i in update_user_session(found["_id"], found["name"], found["position"], found["languages"], interviewee):
             if i not in session_list:
                 session_list.append(i)
 
@@ -77,7 +71,7 @@ def get_company(company: Company):
 
     else:
         question = interview_question(
-            info_dict, company.position, company.languages)
+            info_dict, position, languages)
 
         doc = {
             "_id": str(uuid4()),
@@ -85,14 +79,14 @@ def get_company(company: Company):
             "name": info_dict["name"],
             "business": info_dict["business"],
             "description": info_dict["description"],
-            "position": company.position,
-            "languages": company.languages,
-            "interviewee": company.interviewee,
+            "position": position,
+            "languages": languages,
+            "interviewee": interviewee,
             "question": question,
             "interview_session": []
         }
 
-        for i in update_user_session(doc["_id"], doc["name"], doc["position"], doc["languages"], company.interviewee):
+        for i in update_user_session(doc["_id"], doc["name"], doc["position"], doc["languages"], interviewee):
             if i not in session_list:
                 session_list.append(i)
 

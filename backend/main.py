@@ -1,70 +1,45 @@
-from typing import Union
-from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 from pymongo.mongo_client import MongoClient
 import os
-from fastapi.encoders import jsonable_encoder
-import routers.interview as softskills_interview
-import routers.company as getcompany
-import routers.users as user
-from pydantic import BaseModel
-import uvicorn
+from flask import Flask, jsonify, request
+from flask_cors import CORS
+from routers.company import company_blueprint
+from routers.interview import interview_blueprint
+from routers.users import users_blueprint
 
 load_dotenv('.env')
 client = MongoClient(os.getenv("MONGODB_URI"))
 db = client['AppData']
-app = FastAPI()
-# Configure CORS
-origins = [
-    "http://127.0.0.1:5173",
-    "http://localhost:5173" 
-]
+app = Flask(__name__)
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-app.include_router(softskills_interview.router)
-app.include_router(getcompany.router)
-app.include_router(user.router)
+# Configure CORS and register routes
+CORS(app)
+app.register_blueprint(company_blueprint, url_prefix='/company')
+app.register_blueprint(interview_blueprint, url_prefix='/interview')
+app.register_blueprint(users_blueprint, url_prefix='/users')
 
 # root route
-@app.get("/")
+@app.route('/', methods=["GET"])
 def read_root():
-    return {"Root Route": True}
+    return jsonify({"message" : "root route reached"})
 
 # testing db connection
-@app.get("/connect")
+@app.route('/connect', methods=["GET"])
 def connect_db():
     collection = db["UserInfo"]
     result = list(collection.find({}))
-    return result
-
-
-# get user info
-@app.get("/users/{_id}")
-def read_item(_id: int):
-    collection = db['SessionInfo']
-    user = collection.find_one({"_id": _id})
-    if not user:
-        return {"message": "user not found"}, 404
-    return user
-
-class User(BaseModel):
-    name: str
+    return jsonify(result)
 
 # clear data
-@app.post("/clear_user_companyinfo")
-def clear_collections(user: User):
+@app.route('/clear_user_companyinfo', methods=["POST"])
+def clear_collections():
+    data = request.get_json()
+    username = data.get("username")
     try:
-        db['CompanyInfo'].delete_many({"interviewee": user.name})
+        db['CompanyInfo'].delete_many({"interviewee": username})
         
         db['UserInfo'].update_one({
-            "username": user.name
+            "username": username
         },
         {
             "$set": {
@@ -72,10 +47,10 @@ def clear_collections(user: User):
             }
         })
 
-        return {"message": f'successfuly deleted CompanyInfo and UserInfo history for {user.name}'}
+        return {"message": f'successfuly deleted CompanyInfo and UserInfo history for {username}'}
     except Exception as e:
         return {"error": f"An error occurred: {str(e)}"}
     
 
-if __name__ == "__main__":
-  uvicorn.run("main:app", host="0.0.0.0", port=os.getenv("PORT", default=8001), reload=True)
+if __name__ == '__main__':
+    app.run(debug=True, port=os.getenv("PORT", default=5000))

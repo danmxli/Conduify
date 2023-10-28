@@ -1,10 +1,9 @@
-from fastapi import APIRouter
 from dotenv import load_dotenv
 from pymongo.mongo_client import MongoClient
 import os
-from pydantic import BaseModel
 from uuid import uuid4
 import datetime
+from flask import Blueprint, jsonify, request
 
 load_dotenv('.env')
 client = MongoClient(os.getenv("MONGODB_URI"))
@@ -12,25 +11,21 @@ db = client['AppData']
 CompanyInfo = db['CompanyInfo']
 UserInfo = db['UserInfo']
 
-router = APIRouter(
-    prefix='/users',
-    tags=['users']
-)
+users_blueprint = Blueprint('users', __name__)
 
-class User(BaseModel):
-    name: str
-
-@router.post("/home_registration")
-def home_registration(user: User):
+@users_blueprint.route('/home_registration', methods=["POST"])
+def home_registration():
     ...
-    match = UserInfo.find_one({"username": user.name})
+    data = request.get_json()
+    name = data.get("name")
+    match = UserInfo.find_one({"username": name})
     if match:
         return match
 
     doc = {
         "_id": str(uuid4()),
         "time_created": int(datetime.datetime.now().timestamp()),
-        "username": user.name,
+        "username": name,
         "history": []
     }
     result = UserInfo.insert_one(doc)
