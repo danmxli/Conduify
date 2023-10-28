@@ -17,7 +17,6 @@ UserInfo = db['UserInfo']
 
 company_blueprint = Blueprint('company', __name__)
 
-
 @company_blueprint.route('/search', methods=["POST"])
 def get_company():
     session_list = []
