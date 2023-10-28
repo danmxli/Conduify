@@ -25,7 +25,7 @@ const DialogueWindow = ({ sessionUser }) => {
         setDialogPreview(false)
 
         try {
-            const response = await fetch('http://localhost:8001/interview/create_dialogue', {
+            const response = await fetch('https://conduify-production.up.railway.app/interview/create_dialogue', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

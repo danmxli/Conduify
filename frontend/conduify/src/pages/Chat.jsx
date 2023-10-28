@@ -34,7 +34,7 @@ const Chat = () => {
         };
         console.log(requestBody)
         try {
-            fetch('http://localhost:8001/company/search', {
+            fetch('https://conduify-production.up.railway.app/company/search', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

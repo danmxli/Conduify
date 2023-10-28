@@ -19,7 +19,7 @@ const Home = () => {
         setHasSignedUp(true)
         setRegisteringUser(true)
         try {
-            fetch('http://localhost:8001/users/home_registration', {
+            fetch('https://conduify-production.up.railway.app/users/home_registration', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

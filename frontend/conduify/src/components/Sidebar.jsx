@@ -7,11 +7,11 @@ const Sidebar = ({ open, toggleSidebar, companyData, sessionData }) => {
 
     const clearSessions = () => {
         const requestBody = {
-            "name": companyData.interviewee
+            "username": companyData.interviewee
         }
         console.log(requestBody)
         try {
-            fetch('http://localhost:8001/clear_user_companyinfo', {
+            fetch('https://conduify-production.up.railway.app/clear_user_companyinfo', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -93,7 +93,11 @@ const Sidebar = ({ open, toggleSidebar, companyData, sessionData }) => {
                                     <div key={index} className={`inline-grid bg-gray-500 text-white p-1 rounded text-xs sm:text-base m-1 ${index === sessionData.length - 1 ? 'bg-indigo-700' : ''}`}>
                                         <p>{item.company_name}</p>
                                         <p className='text-gray-100 text-sm'>{item.position}</p>
-                                        <p className='text-gray-200 text-xs'>{item.languages.join(', ')}</p>
+                                        {Array.isArray(item.languages) ? (
+                                            <p className='text-gray-200 text-xs'>{item.languages.join(', ')}</p>
+                                        ) : (
+                                            <p className='text-gray-200 text-xs'>Languages not specified</p>
+                                        )}
                                     </div>
                                 ))}
                             </div>
