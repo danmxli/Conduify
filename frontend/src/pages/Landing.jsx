@@ -60,7 +60,6 @@ const Landing = () => {
                     className="flex gap-[15px] mt-8 md:mt-0">
                     <button
                         className='rounded-full min-w-[180px] py-4 font-semibold flex items-center justify-center bg-gray-900 text-white hover:cursor-pointer flex gap-x-2'
-                        href='https://github.com/danmxli/Conduify'
                         onClick={() => {
                             navigate('/home')
                         }}

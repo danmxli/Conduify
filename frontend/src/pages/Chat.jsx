@@ -91,7 +91,7 @@ const Chat = () => {
             )
         );
     } else {
-        return <Navigate to="/" />;
+        return <Navigate to="/home" />;
     }
 };
 

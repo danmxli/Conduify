@@ -62,7 +62,7 @@ const Home = () => {
                             <h1 className='text-2xl font-semibold text-zinc-600'>
                                 Build Incredible Things. Forge Powerful Connections.
                             </h1>
-                            <p className='mb-3 text-gray-400'><code>Enter your username to get started below.</code></p>
+                            <p className='mb-3 text-gray-400'><code>Enter your name to get started below.</code></p>
                             <input
                                 type="text"
                                 id="username"
