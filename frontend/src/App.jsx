@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
+import Landing from './pages/Landing';
 import Home from './pages/Home'
 import Chat from './pages/Chat';
 
@@ -7,6 +8,10 @@ function App() {
   const pages = [
     {
       url: '/',
+      component: <Landing />
+    },
+    {
+      url: '/home',
       component: <Home />
     },
     {
