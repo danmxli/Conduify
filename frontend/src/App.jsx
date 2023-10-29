@@ -1,5 +1,6 @@
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import Landing from './pages/Landing';
+import About from './pages/About';
 import Home from './pages/Home'
 import Chat from './pages/Chat';
 
@@ -26,6 +27,7 @@ function App() {
     >
       <Routes>
         <Route path='/' element={<Landing />} />
+        <Route path='/about' element={<About />} />
         <Route path='/home' element={
           <>
             <SignedIn>

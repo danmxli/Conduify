@@ -1,7 +1,7 @@
 import { UserButton } from '@clerk/clerk-react';
 import { useNavigate } from 'react-router-dom';
 
-const DisplayAbout = () => {
+const RightPanels = () => {
     const navigate = useNavigate()
 
     return (
@@ -25,7 +25,7 @@ const DisplayAbout = () => {
                     <div className='text-sm text-indigo-800 bg-indigo-100 p-1 border border-indigo-300 rounded'>Sign-in Success!</div>
                     <UserButton />
                     <button
-                        className='text-sm text-stone-800 bg-stone-100 hover:bg-stone-200 p-1 border border-stone-400 rounded'
+                        className='text-sm text-stone-600 bg-stone-100 hover:bg-stone-200 p-1 border border-stone-400 rounded'
                         onClick={() => {
                             navigate('/')
                         }}
@@ -36,4 +36,4 @@ const DisplayAbout = () => {
     )
 }
 
-export default DisplayAbout
+export default RightPanels

@@ -37,15 +37,15 @@ const Landing = () => {
                             Forging the Conduit to Success.
                         </h2>
                         <p className="text-xs sm:text-sm leading-[20px] font-normal">
-                            Our mission is to get you ready for the next big step on your path towards landing that dream tech job.
+                            Aspiring engineer or computer scientist? Our mission is to prepare you for the next big step of your career path.
                         </p>
                     </div>
-                    <div className="w-1/2">
+                    <div className="w-1/2 ml-3 sm:ml-0">
                         <h2 className="flex items-center font-semibold sm:text-xl">
                             Coherent and Clear.
                         </h2>
                         <p className="text-xs sm:text-sm leading-[20px] font-normal">
-                            Our powerful assistant is driven by artificial intelligence. Accelerate your productiveness with cutting edge technologies.
+                            Our powerful assistant is driven by <a className='text-indigo-500' href='https://cohere.com/'>artificial intelligence.</a> Accelerate your productiveness with cutting edge technologies.
                         </p>
                     </div>
                 </motion.div>
@@ -57,7 +57,7 @@ const Landing = () => {
                         duration: 0.55,
                         ease: [0.075, 0.82, 0.965, 1],
                     }}
-                    className="flex gap-[15px] mt-8 md:mt-0">
+                    className="sm:flex gap-[15px] mt-8 md:mt-0">
                     <button
                         className='rounded-full min-w-[180px] py-4 font-semibold flex items-center justify-center bg-gray-900 text-white hover:cursor-pointer flex gap-x-2'
                         onClick={() => {
@@ -66,13 +66,21 @@ const Landing = () => {
                     >
                         Begin your journey
                     </button>
+                    <button
+                        className='mt-2 sm:mt-0 rounded-full min-w-[180px] py-4 font-semibold flex items-center justify-center bg-gray-400 text-white hover:cursor-pointer flex gap-x-2'
+                        onClick={() => {
+                            navigate('/about')
+                        }}
+                    >
+                        Learn more
+                    </button>
                 </motion.div>
             </main>
             <img
-                className="z-50 fixed top-0 right-[-2px] w-[80%] md:w-1/3 h-screen opacity-20"
+                className="z-50 fixed top-0 right-[-2px] w-[80%] md:w-1/3 h-screen opacity-0 sm:opacity-20"
                 src='/interviewify.svg' alt='Logo'
             ></img>
-            <div className="h-[60px] bg-gray-950 text-gray-700 fixed bottom-0 z-20 w-full flex flex-row items-center justify-evenly text-xs sm:text-2xl">
+            <div className="h-[60px] bg-gray-950 text-gray-400 fixed bottom-0 z-20 w-full flex flex-row items-center justify-evenly sm:text-2xl pl-2 sm:pl-0 pr-2 sm:pr-0">
                 <>
                     <code className="text-xs sm:text-base">Practice interviews for companies including:</code>
                 </>
@@ -100,7 +108,7 @@ const Landing = () => {
                 <div className='inline-flex'>
                     <BiLogoShopify className='sm:text-3xl' />
                 </div>
-
+                
             </div>
         </div>
     )

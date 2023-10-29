@@ -1,7 +1,7 @@
 import '../App.css'
 import { useState } from 'react'
 import InterviewSetup from '../components/InterviewSetup';
-import DisplayAbout from '../components/DisplayAbout';
+import RightPanels from '../components/RightPanels';
 
 const Home = () => {
     const [hasSignedUp, setHasSignedUp] = useState(false)
@@ -87,7 +87,7 @@ const Home = () => {
             </div>
 
             <div>
-                <DisplayAbout />
+                <RightPanels />
             </div>
         </div>
 

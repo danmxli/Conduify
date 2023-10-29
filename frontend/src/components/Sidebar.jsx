@@ -73,7 +73,7 @@ const Sidebar = ({ open, toggleSidebar, companyData, sessionData }) => {
                                 className='sm:ml-2 text-white bg-indigo-500 hover:bg-indigo-600 transition duration-300 p-1 rounded-r-xl sm:rounded-t-xl text-xs sm:text-base'
                                 type='submit'
                                 onClick={() => {
-                                    navigate("/");
+                                    navigate("/home");
                                 }}
                             >
                                 Start New Interview
