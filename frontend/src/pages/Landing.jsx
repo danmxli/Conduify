@@ -9,8 +9,8 @@ const Landing = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="min-h-[100vh] sm:min-h-screen w-screen flex flex-col overflow-hidden">
-            <main className="flex flex-col justify-center h-[90%] static md:fixed w-screen overflow-hidden grid-rows-[1fr_repeat(3,auto)_1fr] z-[100] pt-[30px] pb-[320px] px-4 md:px-20 md:py-0">
+        <div className="min-h-[100vh] sm:min-h-screen w-screen flex flex-col mb-8 sm:mb-0">
+            <main className="flex flex-col justify-center h-[90%] w-screen overflow-scroll scrollbar-hide grid-rows-3 p-2 sm:p-16">
                 <motion.h1
                     initial={{ opacity: 0, y: 40 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -31,7 +31,7 @@ const Landing = () => {
                         duration: 0.95,
                         ease: [0.165, 0.84, 0.44, 1],
                     }}
-                    className="flex flex-row justify-center z-20 mx-0 mb-0 mt-8 md:mt-0 md:mb-[35px] max-w-2xl md:space-x-8">
+                    className="flex flex-row justify-center z-20 mx-0 mb-0 mt-8 md:mt-0 md:mb-[35px] max-w-3xl md:space-x-8">
                     <div className="w-1/2">
                         <h2 className="flex items-center font-semibold sm:text-xl">
                             Forging the Conduit to Success.
@@ -48,6 +48,22 @@ const Landing = () => {
                             Our powerful assistant is driven by <a className='text-indigo-500' href='https://cohere.com/'>artificial intelligence.</a> Accelerate your productiveness with cutting edge technologies.
                         </p>
                     </div>
+                    <a href='https://conduitcode.vercel.app/'>
+                        <div className="ml-3 sm:ml-0 bg-gray-100 hover:bg-indigo-50 shadow-md p-1 rounded-xl">
+                            <img
+                                className='h-12'
+                                src='/codeBuddy.svg' alt='code'
+                            >
+                            </img>
+                            <h2 className="text-sm sm:text-base flex items-center">
+                                Meet conduitCode.
+                            </h2>
+                            <p className='text-xs text-indigo-500'>
+                                <code>your online code optimization assistant.</code>
+                            </p>
+                        </div>
+                    </a>
+
                 </motion.div>
                 <motion.div
                     initial={{ opacity: 0, y: 40 }}
@@ -57,9 +73,9 @@ const Landing = () => {
                         duration: 0.55,
                         ease: [0.075, 0.82, 0.965, 1],
                     }}
-                    className="sm:flex gap-[15px] mt-8 md:mt-0">
+                    className="flex gap-[15px] text-sm sm:text-base mt-8 md:mt-0">
                     <button
-                        className='rounded-full min-w-[180px] py-4 font-semibold flex items-center justify-center bg-gray-900 text-white hover:cursor-pointer flex gap-x-2'
+                        className='rounded-full w-56 py-4 font-semibold flex items-center justify-center bg-gray-900 text-white hover:cursor-pointer flex gap-x-2'
                         onClick={() => {
                             navigate('/home')
                         }}
@@ -67,7 +83,7 @@ const Landing = () => {
                         Begin your journey
                     </button>
                     <button
-                        className='mt-2 sm:mt-0 rounded-full min-w-[180px] py-4 font-semibold flex items-center justify-center bg-gray-400 text-white hover:cursor-pointer flex gap-x-2'
+                        className='rounded-full w-56 py-4 font-semibold flex items-center justify-center bg-gray-400 text-white hover:cursor-pointer flex gap-x-2'
                         onClick={() => {
                             navigate('/about')
                         }}
@@ -108,7 +124,7 @@ const Landing = () => {
                 <div className='inline-flex'>
                     <BiLogoShopify className='sm:text-3xl' />
                 </div>
-                
+
             </div>
         </div>
     )

@@ -21,7 +21,7 @@ const About = () => {
                         className="bg-white mt-8 mb-8 ml-8 mr-8 sm:mr-0 p-8 h-screen rounded-3xl overflow-scroll scrollbar-hide"
                     >
                         <button
-                            className='text-sm font-bold text-stone-600 bg-stone-100 hover:bg-stone-200 p-1 border border-stone-400 rounded'
+                            className='text-sm font-bold text-indigo-600 bg-indigo-100 hover:bg-indigo-200 p-1 border border-indigo-400 rounded'
                             onClick={() => {
                                 navigate('/')
                             }}
@@ -133,12 +133,12 @@ const About = () => {
                             About the creator.
                         </h1>
                         <div className='inline-flex gap-4 mt-3 mb-3'>
-                            <img src='/headshot.png' alt='Logo' className='h-24 rounded' />
+                            <img src='/headshot.png' alt='Logo' className='h-24 rounded-xl' />
                             <p className='text-gray-400'><code>Dan Li | Computer Engineering Candidate at The University of Waterloo.</code></p>
                         </div>
 
 
-                        <p>
+                        <p className='p-2 border border-2 border-indigo-100 bg-indigo-50/30 text-indigo-900 rounded-xl'>
                             As a student, finding internships is often a challenge. When I first embarked on the Conduify project, I wanted to build a platform that other people can use to practice interviews, research companies, and elevate their confidence. The future of the tech industry depends on capable engineers, scientists, and developers. Conduify will enable those individuals to shine brighter.
                         </p>
                     </motion.div>
@@ -154,18 +154,18 @@ const About = () => {
                         <h1 className='mb-2 text-lg font-semibold text-indigo-950'>
                             Open to connect.
                         </h1>
-                        <div className="inline-grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 text-white">
-                            <div className="bg-indigo-400 p-4 rounded-lg shadow-md hover:ring-4 ring-indigo-200 duration-300">
+                        <div className="inline-grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4 text-white">
+                            <div className="bg-indigo-500 p-4 rounded-lg shadow-md hover:ring-4 ring-indigo-200 duration-300">
                                 <a className="duration-300 cursor-pointer" href="mailto:danmuxingli@gmail.com">
                                     <AiFillMail className="lg:text-4xl" />
                                 </a>
                             </div>
-                            <div className="bg-indigo-400 p-4 rounded-lg shadow-md hover:ring-4 ring-indigo-200 duration-300">
+                            <div className="bg-indigo-500 p-4 rounded-lg shadow-md hover:ring-4 ring-indigo-200 duration-300">
                                 <a className="duration-300 cursor-pointer" href="https://www.linkedin.com/in/danli591/">
                                     <AiFillLinkedin className="lg:text-4xl" />
                                 </a>
                             </div>
-                            <div className="bg-indigo-400 p-4 rounded-lg shadow-md hover:ring-4 ring-indigo-200 duration-300">
+                            <div className="bg-indigo-500 p-4 rounded-lg shadow-md hover:ring-4 ring-indigo-200 duration-300">
                                 <a className="duration-300 cursor-pointer" href="https://github.com/danmxli">
                                     <AiFillGithub className="lg:text-4xl" />
                                 </a>
