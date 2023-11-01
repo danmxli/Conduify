@@ -6,6 +6,7 @@ from flask_cors import CORS
 from routers.company import company_blueprint
 from routers.interview import interview_blueprint
 from routers.users import users_blueprint
+import time
 
 load_dotenv('.env')
 client = MongoClient(os.getenv("MONGODB_URI"))
@@ -51,6 +52,11 @@ def clear_collections():
     except Exception as e:
         return {"error": f"An error occurred: {str(e)}"}
     
+# dummy route
+@app.route('/dummy', methods=["POST"])
+def dummy():
+    time.sleep(5)
+    return jsonify({})    
 
 if __name__ == '__main__':
     app.run(debug=True, port=os.getenv("PORT", default=5000))
