@@ -12,7 +12,7 @@ const RightPanels = () => {
                     <p className='mt-3 mb-2'>
                         Ace your interviews with Conduify. With test-driven methodologies and a plethora of coding challenges inspired by Leetcode coming soon, you will be way ahead of the competition!
                     </p>
-                    <a href="https://github.com/danmxli/Conduify" className="p-1 bg-emerald-100 hover:bg-emerald-200 border border-emerald-500 rounded">Conduify Beta Version 1.0.0</a>
+                    <a href="https://github.com/danmxli/Conduify" className="p-1 bg-emerald-100 hover:bg-emerald-200 border border-emerald-500 rounded">Conduify Beta Version 1.0.1</a>
                 </div>
                 <div className="bg-gray-100 p-3 rounded-lg">
                     <h1 className="text-xl">Amazing Experience. 🚀</h1>
