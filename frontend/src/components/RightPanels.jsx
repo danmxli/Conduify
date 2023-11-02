@@ -1,4 +1,3 @@
-import { UserButton } from '@clerk/clerk-react';
 import { useNavigate } from 'react-router-dom';
 
 const RightPanels = () => {
@@ -23,7 +22,6 @@ const RightPanels = () => {
                 </div>
                 <div className="bg-gray-100 p-3 rounded-lg text-center inline-flex justify-center items-center gap-2">
                     <div className='text-sm text-indigo-800 bg-indigo-100 p-1 border border-indigo-300 rounded'>Sign-in Success!</div>
-                    <UserButton />
                     <button
                         className='text-sm text-stone-600 bg-stone-100 hover:bg-stone-200 p-1 border border-stone-400 rounded'
                         onClick={() => {

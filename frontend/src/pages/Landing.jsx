@@ -77,7 +77,7 @@ const Landing = () => {
                     <button
                         className='rounded-full w-56 py-4 font-semibold flex items-center justify-center bg-gray-900 text-white hover:cursor-pointer flex gap-x-2'
                         onClick={() => {
-                            navigate('/home')
+                            navigate('/portal')
                         }}
                     >
                         Begin your journey
