@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 
-const RightPanels = ({ userInfo }) => {
+const RightPanels = ({ username }) => {
     const navigate = useNavigate()
     return (
         <div className="flex items-center justify-center h-screen">
@@ -8,7 +8,7 @@ const RightPanels = ({ userInfo }) => {
                 <div className="bg-gray-100 p-3 rounded-lg">
                     <h1 className="text-xl sm:text-5xl break-words mb-1">Meet Conduify.</h1>
                     <code className='text-indigo-500'>your personal interview preparation assistant.</code>
-                    <div className='text-indigo-800 bg-indigo-100 p-1 border border-indigo-300 rounded'>Welcome aboard: {userInfo.username}</div>
+                    <div className='text-indigo-800 bg-indigo-100 p-1 border border-indigo-300 rounded'>Welcome aboard: {username}</div>
                     <p className='mt-3 mb-2'>
                         Ace your interviews with Conduify. With test-driven methodologies and an interactive AI assistant at your command, you will be way ahead of the competition!
                     </p>

@@ -1,65 +1,69 @@
-import { useState, useEffect } from 'react';
+import { motion } from "framer-motion";
 
-const Loading = () => {
-    const [currentImg, setCurrentImg] = useState(0);
+const colors = ["#d1d5db", "#6b45fa", "#1e1b4b", "#9ca3af", "#a5b4fc"];
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentImg((currentImg) => (currentImg + 1) % 4);
-        }, 2000);
-        return () => clearInterval(interval);
-    }, []);
-
-    return (
-        <div className="fixed w-full h-full bg-indigo-600 items-center">
-            <>
-                <div className='text-xl sm:text-6xl text-center text-gray-200 mt-6 animate-pulse'>
-                    Generating...
-                </div>
-            </>
-           
-            <div className='pt-16 sm:pl-24 sm:pr-24 inline-grid grid-cols-1 gap-4'>
-                <ColorfulDiv
-                    color="bg-indigo-400"
-                    active={currentImg === 0}
-                    transitionDelay={0}
-                    text='Our goal is to provide prompts that are reliable, fast, and responsive to your interview preparation efforts through the best possible integration with language models. We seamlessly fit into every company description, and our engineering response time is outstanding.'
-                />
-                <ColorfulDiv
-                    color="bg-indigo-400"
-                    active={currentImg === 1}
-                    transitionDelay={100}
-                    text='We collect real-time information about the business operations, culture, valuation, and description of the company. All of this is done to ensure that the user has a flawless experience while utilizing the full potential of our application.'
-                />
-                <ColorfulDiv
-                    color="bg-indigo-400"
-                    active={currentImg === 2}
-                    transitionDelay={100}
-                    text='In order for you to concentrate on the most important aspects of our application, namely the interview preparation proccess, we designed the user interface to be aesthetically pleasing, responsive, and clear.'
-                />
-                <ColorfulDiv
-                    color="bg-indigo-400"
-                    active={currentImg === 3}
-                    transitionDelay={100}
-                    text='We provide succinct, straightforward questions along with thorough evaluations that point out the advantages and disadvantages of each response. Each grading experience you have as the user will only make your tools stronger.'
-                />
-            </div>
-        </div>
-    );
+const containerVariants = {
+    initial: {},
+    animate: {
+        transition: {
+            when: "beforeChildren",
+            staggerChildren: 0.1
+        }
+    }
 };
 
-const ColorfulDiv = ({ color, active, transitionDelay, text }) => {
-    return (
-        <div
-            className={`p-4 animate-bounce rounded-lg ${color} ${active ? 'opacity-100' : 'opacity-0'
-                } transition-opacity duration-700 ease-in-out`}
-            style={{ animationDelay: `${transitionDelay}ms` }}
-        >
-            <h1 className='text-center font-bold text-xs sm:text-lg'>
-                {text}
-            </h1>
+const dotVariants = {
+    initial: {},
+    animate: {
+        height: [40, 100, 40],
+        transition: {
+            repeat: Infinity
+        }
+    }
+};
 
-        </div>
+const Loading = ({ count = 5 }) => {
+    return (
+        <motion.div
+            initial={{ opacity: 0, x: -100 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{
+                delay: 0.15,
+                duration: 0.95,
+                ease: [0.165, 0.84, 0.44, 1],
+            }}
+            className="h-screen w-screen grid items-center justify-center">
+            <motion.div
+
+                variants={containerVariants}
+                initial="initial"
+                animate="animate"
+                style={{
+                    display: "flex",
+                    gap: 16,
+                    height: 100,
+                    alignItems: "center"
+                }}
+            >
+                {Array(count)
+                    .fill(null)
+                    .map((_, index) => {
+                        return (
+                            <motion.div
+                                key={index}
+                                variants={dotVariants}
+                                style={{
+                                    height: 40,
+                                    width: 40,
+                                    backgroundColor: colors[index % colors.length],
+                                    borderRadius: 20
+                                }}
+                            />
+                        );
+                    })}
+            </motion.div>
+        </motion.div>
+
     );
 };
 
