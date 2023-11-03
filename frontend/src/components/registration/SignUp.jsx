@@ -2,18 +2,24 @@ import { motion } from "framer-motion"
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineLoading3Quarters } from 'react-icons/ai'
+import CheckPasswordStrength from "./Check";
 
-const SignUp = ({ name, updateName, password, updatePassword, userType, updateUserType, updatePhase, updateUserData }) => {
+const SignUp = ({ updatePhase, updateUserData }) => {
     const navigate = useNavigate()
-    const [pwdAgain, setPwdAgain] = useState("")
+
+    const [name, setName] = useState('')
+    const [password, setPassword] = useState('')
+    const [pwdAgain, setPwdAgain] = useState('')
+    const [userType, setUserType] = useState('I am a general STEM enthusiast')
+
     const [isFetchingUsers, setIsFetchingUsers] = useState(false)
     const [isExistingUser, setIsExistingUser] = useState(false)
 
     const handleUserChange = (e) => {
-        updateName(e.target.value);
+        setName(e.target.value);
     };
     const handleUpdatePassword = (e) => {
-        updatePassword(e.target.value)
+        setPassword(e.target.value)
     }
     const handleConfirmPassword = (e) => {
         setPwdAgain(e.target.value)
@@ -42,6 +48,8 @@ const SignUp = ({ name, updateName, password, updatePassword, userType, updateUs
                 })
                 .then(data => {
                     if (data['username'] === 'existing') {
+                        setPassword('')
+                        setPwdAgain('')
                         setIsExistingUser(true)
                     }
                     else {
@@ -85,30 +93,33 @@ const SignUp = ({ name, updateName, password, updatePassword, userType, updateUs
                 Customized and powerful optimization for your coding journey.
             </h1>
             <p className='mb-3 text-gray-400'><code>Conduify is proud to serve a plethora of users.</code></p>
-            <div className="grid grid-cols-3 gap-3 pb-3 items-center">
-                <div className="col-span-1 font-semibold p-1 border rounded text-center">Your Username</div>
+            <div className="grid grid-cols-8 gap-3 pb-3 items-center">
+                <div className="col-span-3 font-semibold p-1 border rounded text-center">Your Username</div>
                 <input
                     value={name}
                     onChange={handleUserChange}
-                    className="col-span-2 border border-gray-400 ring-2 ring-gray-200 rounded focus:outline-none p-1
+                    className="col-span-5 border border-gray-400 ring-2 ring-gray-200 rounded focus:outline-none p-1
                 "/>
             </div>
-            <div className="grid grid-cols-3 gap-3 pb-3 items-center">
-                <div className="col-span-1 font-semibold p-1 border rounded text-center">Your Password</div>
+            <div className="grid grid-cols-8 gap-3 pb-3 items-center">
+                <div className={`col-span-3 font-semibold p-1 border rounded text-center`}>
+                    Your Password
+                    <p className={`text-xs font-normal p-0.5 border rounded ${CheckPasswordStrength(password) ? "bg-green-200 text-green-700 border-green-300" : "bg-gray-50 text-gray-500"}`}>Must contain at least 8 characters, have both uppercase and lowercase letters, at least one number, one special character</p>
+                </div>
                 <input
                     type="password"
                     value={password}
                     onChange={handleUpdatePassword}
-                    className="col-span-2 border border-gray-400 ring-2 ring-gray-200 rounded focus:outline-none p-1
+                    className="col-span-5 border border-gray-400 ring-2 ring-gray-200 rounded focus:outline-none p-1
                 "/>
             </div>
-            <div className="grid grid-cols-3 gap-3 items-center mb-3">
-                <div className={`col-span-1 font-semibold p-1 border rounded text-center ${password !== "" && pwdAgain !== "" && password === pwdAgain ? "bg-green-200 text-green-700 border-green-300" : "bg-red-200 text-red-700 border-red-300"}`}>Password Confirmation</div>
+            <div className="grid grid-cols-8 gap-3 items-center mb-3">
+                <div className={`col-span-3 font-semibold p-1 border rounded text-center ${password !== "" && pwdAgain !== "" && password === pwdAgain ? "bg-green-200 text-green-700 border-green-300" : "bg-red-200 text-red-700 border-red-300"}`}>Password Confirmation</div>
                 <input
                     type="password"
                     value={pwdAgain}
                     onChange={handleConfirmPassword}
-                    className="col-span-2 border border-gray-400 ring-2 ring-gray-200 rounded focus:outline-none p-1
+                    className="col-span-5 border border-gray-400 ring-2 ring-gray-200 rounded focus:outline-none p-1
                 "/>
             </div>
             <>
@@ -117,7 +128,7 @@ const SignUp = ({ name, updateName, password, updatePassword, userType, updateUs
                         <li key={index} className="m-2">
                             <button
                                 className={`border p-2 rounded duration-200 ${userType === option ? 'border-indigo-500 ring-2 ring-indigo-200' : ''}`}
-                                onClick={() => { updateUserType(option) }}
+                                onClick={() => { setUserType(option) }}
                             >
                                 {option}
                             </button>
@@ -143,7 +154,7 @@ const SignUp = ({ name, updateName, password, updatePassword, userType, updateUs
                     Existing user? Sign in
                 </button>
                 {
-                    name !== "" && password !== "" && pwdAgain !== "" && password === pwdAgain ? (
+                    CheckPasswordStrength(password) && name !== "" && password !== "" && pwdAgain !== "" && password === pwdAgain ? (
                         <button
                             className={`bg-indigo-500 text-white p-2 pl-20 pr-20 rounded`}
                             onClick={

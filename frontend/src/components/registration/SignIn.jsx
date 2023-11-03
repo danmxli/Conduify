@@ -2,17 +2,22 @@ import { motion } from "framer-motion"
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AiOutlineLoading3Quarters } from 'react-icons/ai'
+import CheckPasswordStrength from "./Check";
 
-const SignIn = ({ name, updateName, password, updatePassword, updatePhase, updateUserData }) => {
+const SignIn = ({ updatePhase, updateUserData }) => {
     const navigate = useNavigate()
+
+    const [name, setName] = useState('')
+    const [password, setPassword] = useState('')
+
     const [isFetchingUsers, setIsFetchingUsers] = useState(false)
     const [userNotFound, setUserNotFound] = useState(false)
 
     const handleUserChange = (e) => {
-        updateName(e.target.value);
+        setName(e.target.value);
     };
     const handleUpdatePassword = (e) => {
-        updatePassword(e.target.value)
+        setPassword(e.target.value)
     }
     const verifyUser = () => {
         const requestBody = {
@@ -37,6 +42,7 @@ const SignIn = ({ name, updateName, password, updatePassword, updatePhase, updat
                 })
                 .then(data => {
                     if(data['username'] === 'not_found') {
+                        setPassword('')
                         setUserNotFound(true)
                     }
                     else {
@@ -71,21 +77,24 @@ const SignIn = ({ name, updateName, password, updatePassword, updatePhase, updat
                 Customized and powerful optimization for your coding journey.
             </h1>
             <p className='mb-3 text-gray-400'><code>Conduify is proud to serve a plethora of users.</code></p>
-            <div className="grid grid-cols-3 gap-3 pb-3 items-center">
-                <div className="col-span-1 font-semibold p-1 border rounded text-center">Your Username</div>
+            <div className="grid grid-cols-8 gap-3 pb-3 items-center">
+                <div className="col-span-3 font-semibold p-1 border rounded text-center">Your Username</div>
                 <input
                     value={name}
                     onChange={handleUserChange}
-                    className="col-span-2 border border-gray-400 ring-2 ring-gray-200 rounded focus:outline-none p-1
+                    className="col-span-5 border border-gray-400 ring-2 ring-gray-200 rounded focus:outline-none p-1
                 "/>
             </div>
-            <div className="grid grid-cols-3 gap-3 pb-3 items-center">
-                <div className="col-span-1 font-semibold p-1 border rounded text-center">Your Password</div>
+            <div className="grid grid-cols-8 gap-3 pb-3 items-center">
+                <div className={`col-span-3 font-semibold p-1 border rounded text-center`}>
+                    Your Password
+                    <p className={`text-xs font-normal p-0.5 border rounded ${CheckPasswordStrength(password) ? "bg-green-200 text-green-700 border-green-300" : "bg-gray-50 text-gray-500"}`}>Must contain at least 8 characters, have both uppercase and lowercase letters, at least one number, one special character</p>
+                </div>
                 <input
                     type="password"
                     value={password}
                     onChange={handleUpdatePassword}
-                    className="col-span-2 border border-gray-400 ring-2 ring-gray-200 rounded focus:outline-none p-1
+                    className="col-span-5 border border-gray-400 ring-2 ring-gray-200 rounded focus:outline-none p-1
                 "/>
             </div>
             <div className="inline-flex gap-3 mt-3">
@@ -105,7 +114,7 @@ const SignIn = ({ name, updateName, password, updatePassword, updatePhase, updat
                 >
                     New user? Sign Up
                 </button>
-                {name !== "" && password !== "" ? (
+                {CheckPasswordStrength(password) && name !== "" && password !== "" ? (
                     <button
                         className={`bg-indigo-500 text-white p-2 pl-20 pr-20 rounded`}
                         onClick={verifyUser}

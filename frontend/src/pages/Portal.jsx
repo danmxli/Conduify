@@ -28,8 +28,8 @@ const Portal = () => {
     }
 
     const portalPhases = {
-        userSignUp: <SignUp name={name} updateName={updateName} password={password} updatePassword={updatePassword} userType={userType} updateUserType={updateUserType} updatePhase={updatePhase} updateUserData={updateUserData} />,
-        userSignIn: <SignIn name={name} updateName={updateName} password={password} updatePassword={updatePassword} updatePhase={updatePhase} updateUserData={updateUserData} />
+        userSignUp: <SignUp updatePhase={updatePhase} updateUserData={updateUserData} />,
+        userSignIn: <SignIn updatePhase={updatePhase} updateUserData={updateUserData} />
     }
 
     return (
