@@ -13,6 +13,14 @@ UserInfo = db['UserInfo']
 
 users_blueprint = Blueprint('users', __name__)
 
+@users_blueprint.route('/info', methods=["POST"])
+def userInfo():
+    data = request.get_json()
+    user_id = data.get("user_id")
+    match = UserInfo.find_one({"_id": user_id})
+    if match:
+        return (match)
+    return (jsonify({"_id": "not found"}))
 
 @users_blueprint.route('/signup', methods=["POST"])
 def signup():
