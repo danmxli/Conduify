@@ -41,13 +41,13 @@ const SignUp = ({ name, updateName, password, updatePassword, userType, updateUs
                     }
                 })
                 .then(data => {
-                    console.log(data['username'])
                     if (data['username'] === 'existing') {
                         setIsExistingUser(true)
                     }
                     else {
                         setIsExistingUser(false)
                         updateUserData(data)
+                        localStorage.setItem('userId', JSON.stringify(data["_id"]))
                         navigate('/home')
                     }
                     setIsFetchingUsers(false)

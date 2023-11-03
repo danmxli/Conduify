@@ -36,13 +36,13 @@ const SignIn = ({ name, updateName, password, updatePassword, updatePhase, updat
                     }
                 })
                 .then(data => {
-                    console.log(data['username'])
                     if(data['username'] === 'not_found') {
                         setUserNotFound(true)
                     }
                     else {
                         setUserNotFound(false)
                         updateUserData(data)
+                        localStorage.setItem('userId', JSON.stringify(data["_id"]))
                         navigate('/home')
                     }
                     setIsFetchingUsers(false)

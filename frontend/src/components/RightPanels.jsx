@@ -25,9 +25,10 @@ const RightPanels = () => {
                     <button
                         className='text-sm text-stone-600 bg-stone-100 hover:bg-stone-200 p-1 border border-stone-400 rounded'
                         onClick={() => {
+                            localStorage.setItem('userId', JSON.stringify(null))
                             navigate('/')
                         }}
-                    >Go to Landing Page</button>
+                    >Sign Out</button>
                 </div>
             </div>
         </div>
