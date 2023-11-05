@@ -26,7 +26,7 @@ const SignIn = ({ updatePhase, updateUserData }) => {
         }
         setIsFetchingUsers(true)
         try {
-            fetch('http://127.0.0.1:5000/users/signin', {
+            fetch('https://conduify-production.up.railway.app/users/signin', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
