@@ -48,18 +48,18 @@ const Landing = () => {
                             Our powerful assistant is driven by <a className='text-indigo-500' href='https://cohere.com/'>artificial intelligence.</a> Accelerate your productiveness with cutting edge technologies.
                         </p>
                     </div>
-                    <a href='https://conduitcode.vercel.app/'>
+                    <a href='https://github.com/danmxli/Conduify'>
                         <div className="ml-3 sm:ml-0 bg-gray-100 hover:bg-indigo-50 shadow-md p-1 rounded-xl">
                             <img
                                 className='h-12'
-                                src='/codeBuddy.svg' alt='code'
+                                src='/interviewify.svg' alt='code'
                             >
                             </img>
                             <h2 className="text-sm sm:text-base flex items-center">
-                                Meet conduitCode.
+                                Conduify is open source.
                             </h2>
                             <p className='text-xs text-indigo-500'>
-                                <code>your online code optimization assistant.</code>
+                                <code>Built with passion, available for all.</code>
                             </p>
                         </div>
                     </a>
@@ -92,10 +92,6 @@ const Landing = () => {
                     </button>
                 </motion.div>
             </main>
-            <img
-                className="z-50 fixed top-0 right-[-2px] w-[80%] md:w-1/3 h-screen opacity-0 sm:opacity-20"
-                src='/interviewify.svg' alt='Logo'
-            ></img>
             <div className="h-[60px] bg-gray-950 text-gray-400 fixed bottom-0 z-20 w-full flex flex-row items-center justify-evenly sm:text-2xl pl-2 sm:pl-0 pr-2 sm:pr-0">
                 <>
                     <code className="text-xs sm:text-base">Practice interviews for companies including:</code>
