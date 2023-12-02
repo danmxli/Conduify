@@ -61,6 +61,7 @@ const Landing = () => {
                             <p className='text-xs text-indigo-500'>
                                 <code>Built with passion, available for all.</code>
                             </p>
+                            <span className='text-xs p-0.5 pl-2 pr-2 bg-emerald-100 border border-emerald-500 rounded-xl'>Beta testing phase</span>
                         </div>
                     </a>
 
