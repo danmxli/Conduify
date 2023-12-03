@@ -1,11 +1,9 @@
 'use client'
 import { useRouter } from 'next/navigation';
-import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { AiFillAmazonCircle, AiFillGoogleCircle, AiFillApple } from 'react-icons/ai'
-import { BiLogoMeta, BiLogoMicrosoft, BiLogoShopify } from 'react-icons/bi'
-import { SiNotion, SiCoinbase } from 'react-icons/si'
-import conduify from '../public/conduify.svg'
+import BriefDescription from '@/components/landing/brief-description';
+import UserPortal from '@/components/landing/user-portal';
+import CompanyFooter from '@/components/landing/company-footer';
 
 
 export default function Landing() {
@@ -34,35 +32,7 @@ export default function Landing() {
             ease: [0.165, 0.84, 0.44, 1],
           }}
           className="flex flex-row justify-center z-20 mx-0 mb-0 mt-8 md:mt-0 md:mb-[35px] max-w-3xl md:space-x-8">
-          <div className="w-1/2">
-            <h2 className="flex items-center font-semibold sm:text-xl">
-              Forging the Conduit to Success.
-            </h2>
-            <p className="text-xs sm:text-sm leading-[20px] font-normal">
-              Aspiring engineer or computer scientist? Our mission is to prepare you for the next big step of your career path.
-            </p>
-          </div>
-          <div className="w-1/2 ml-3 sm:ml-0">
-            <h2 className="flex items-center font-semibold sm:text-xl">
-              Coherent and Clear.
-            </h2>
-            <p className="text-xs sm:text-sm leading-[20px] font-normal">
-              Our powerful assistant is driven by <a className='text-indigo-500' href='https://cohere.com/'>artificial intelligence.</a> Accelerate your productiveness with cutting edge technologies.
-            </p>
-          </div>
-          <a href='https://github.com/danmxli/Conduify'>
-            <div className="ml-3 sm:ml-0 bg-gray-100 hover:bg-indigo-50 shadow-md p-1 rounded-xl">
-              <Image src={conduify} alt='conduify' width={35} height={35} />
-              <h2 className="text-sm sm:text-base flex items-center">
-                Conduify is open source.
-              </h2>
-              <p className='text-xs text-indigo-500'>
-                <code>Built with passion, available for all.</code>
-              </p>
-              <span className='text-xs p-0.5 pl-2 pr-2 bg-emerald-100 border border-emerald-500 rounded-xl'>Beta testing phase</span>
-            </div>
-          </a>
-
+          <BriefDescription />
         </motion.div>
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -73,53 +43,11 @@ export default function Landing() {
             ease: [0.075, 0.82, 0.965, 1],
           }}
           className="flex gap-[15px] text-sm sm:text-base mt-8 md:mt-0">
-          <button
-            className='rounded-full w-56 py-4 font-semibold flex items-center justify-center bg-gray-900 text-white hover:cursor-pointer flex gap-x-2'
-            onClick={() => {
-              
-            }}
-          >
-            Begin your journey
-          </button>
-          <button
-            className='rounded-full w-56 py-4 font-semibold flex items-center justify-center bg-gray-400 text-white hover:cursor-pointer flex gap-x-2'
-            onClick={() => {
-                router.push('/about')
-            }}
-          >
-            Learn more
-          </button>
+          <UserPortal />
         </motion.div>
       </main>
       <div className="h-[60px] bg-gray-950 text-gray-400 fixed bottom-0 z-20 w-full flex flex-row items-center justify-evenly sm:text-2xl pl-2 sm:pl-0 pr-2 sm:pr-0">
-        <>
-          <code className="text-xs sm:text-base">Practice interviews for companies including:</code>
-        </>
-        <div className='inline-flex'>
-          <AiFillAmazonCircle className='sm:text-3xl' />
-        </div>
-        <div className='inline-flex'>
-          <AiFillGoogleCircle className='sm:text-3xl' />
-        </div>
-        <div className='inline-flex'>
-          <BiLogoMeta className='sm:text-3xl' />
-        </div>
-        <div className='inline-flex'>
-          <AiFillApple className='sm:text-3xl' />
-        </div>
-        <div className='inline-flex'>
-          <BiLogoMicrosoft className='sm:text-3xl' />
-        </div>
-        <div className='inline-flex'>
-          <SiNotion className='sm:text-3xl' />
-        </div>
-        <div className='inline-flex'>
-          <SiCoinbase className='sm:text-3xl' />
-        </div>
-        <div className='inline-flex'>
-          <BiLogoShopify className='sm:text-3xl' />
-        </div>
-
+        <CompanyFooter />
       </div>
     </div>
   )
