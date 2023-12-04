@@ -1,6 +1,8 @@
 'use client'
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import { useState, useEffect, useRef } from 'react';
+import Loading from '@/components/shared/loading';
+import Sidebar from '@/components/shared/sidebar';
 
 export default withPageAuthRequired(function Dashboard({ user }) {
     const [loading, setLoading] = useState(false)
@@ -38,15 +40,24 @@ export default withPageAuthRequired(function Dashboard({ user }) {
     }
 
     useEffect(() => {
-        if(!fetchExecuted.current) {
+        if (!fetchExecuted.current) {
             access(user.name, user.email)
             fetchExecuted.current = true
         }
     })
 
     return (
-        <div>
-            
-        </div>
+        <>
+            {loading ? (
+                <Loading />
+            ) : (
+                <div className='flex-h-screen'>
+                    <Sidebar name={user.name} email={user.email} picture={user.picture} />
+                    <main className='flex-1'>
+
+                    </main>
+                </div>
+            )}
+        </>
     )
 })
