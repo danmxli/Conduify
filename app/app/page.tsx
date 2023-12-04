@@ -1,5 +1,4 @@
 'use client'
-import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion'
 import BriefDescription from '@/components/landing/brief-description';
 import UserPortal from '@/components/landing/user-portal';
@@ -7,7 +6,6 @@ import CompanyFooter from '@/components/landing/company-footer';
 
 
 export default function Landing() {
-  const router = useRouter()
   return (
     <div className="min-h-[100vh] sm:min-h-screen w-screen flex flex-col mb-8 sm:mb-0">
       <main className="flex flex-col justify-center h-[90%] w-screen overflow-scroll scrollbar-hide grid-rows-3 p-2 sm:p-16">
