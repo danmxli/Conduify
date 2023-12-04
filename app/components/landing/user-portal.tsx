@@ -13,7 +13,7 @@ const UserPortal = () => {
                     <button
                         className='rounded-full w-56 py-4 font-semibold flex items-center justify-center bg-gray-900 text-white hover:cursor-pointer flex gap-x-2'
                         onClick={() => {
-
+                            router.push('/dashboard')
                         }}
                     >
                         <div className='flex items-center gap-3'>
@@ -34,7 +34,7 @@ const UserPortal = () => {
                                     className='rounded-full'
                                 />
                             )}
-                            <h1>Go to dashboard</h1>
+                            Go to Dashboard
                         </div>
                     </button>
                     <a
