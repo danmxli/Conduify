@@ -1,12 +1,22 @@
 'use client'
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Loading from '@/components/shared/loading';
 import Sidebar from '@/components/shared/sidebar';
+import NewSession from '@/components/new-session/new-session';
 
 export default withPageAuthRequired(function Dashboard({ user }) {
     const [loading, setLoading] = useState(false)
     const fetchExecuted = useRef(false)
+
+    // phases for rendering components
+    const [phase, setPhase] = useState('NewSession')
+    interface PagePhases {
+        [key: string]: React.ReactNode;
+    }
+    const currPage: PagePhases = {
+        NewSession: <NewSession />
+    }
 
     // access user information
     const access = async (name: string | null | undefined, email: string | null | undefined) => {
@@ -51,10 +61,10 @@ export default withPageAuthRequired(function Dashboard({ user }) {
             {loading ? (
                 <Loading />
             ) : (
-                <div className='flex-h-screen'>
+                <div className='flex'>
                     <Sidebar name={user.name} email={user.email} picture={user.picture} />
                     <main className='flex-1'>
-
+                        {currPage[phase]}
                     </main>
                 </div>
             )}

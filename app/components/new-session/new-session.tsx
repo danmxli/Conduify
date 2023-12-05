@@ -1,0 +1,45 @@
+import { useState } from "react"
+import InterviewSetup from "./interview-setup";
+
+const NewSession = () => {
+
+    // programming language preference state
+    const [selectedLanguages, setSelectedLanguages] = useState(["Python"]);
+    const updateSelectedLanguages = (newLang: string) => {
+        if (selectedLanguages.includes(newLang)) {
+            setSelectedLanguages(selectedLanguages.filter(lang => lang !== newLang))
+        }
+        else {
+            setSelectedLanguages([...selectedLanguages, newLang])
+        }
+    }
+
+    // company preference state
+    const [company, setCompany] = useState('Cohere');
+    const updateCompany = (newCompany: string) => {
+        setCompany(newCompany)
+    }
+
+    // position preference state
+    const [position, setPosition] = useState('Software Engineer');
+    const updatePosition = (newPosition: string) => {
+        setPosition(newPosition)
+    }
+
+    return (
+        <div className="h-screen overflow-y-scroll scrollbar-hide grid items-center justify-center">
+            <div className="m-3 border rounded">
+                <InterviewSetup
+                    selectedLanguages={selectedLanguages}
+                    updateSelectedLanguages={updateSelectedLanguages}
+                    company={company}
+                    updateCompany={updateCompany}
+                    position={position}
+                    updatePosition={updatePosition}
+                />
+            </div>
+        </div>
+    )
+}
+
+export default NewSession

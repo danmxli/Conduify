@@ -46,7 +46,7 @@ const UserCard: FC<UserCardProps> = (props): JSX.Element => {
             </button>
             {isOpen && (
                 <div className="fixed inset-0 flex items-center justify-center backdrop-blur">
-                    <div className="p-6 border rounded-3xl bg-white">
+                    <div className="p-6 border rounded bg-white">
                         <div className="w-full flex items-center justify-center gap-3 border-b pb-6 mb-3">
                             {props.picture && (
                                 <Image src={props.picture} alt="picture" width={60} height={60} className="rounded-full" />
