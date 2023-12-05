@@ -1,7 +1,11 @@
-import { useState } from "react"
+import React, { FC, useState } from "react"
 import InterviewSetup from "./interview-setup";
 
-const NewSession = () => {
+interface NewSessionProps {
+    updatePhase: (newPhase: string) => void;
+}
+
+const NewSession: FC<NewSessionProps> = (props): JSX.Element => {
 
     // programming language preference state
     const [selectedLanguages, setSelectedLanguages] = useState(["Python"]);

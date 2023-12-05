@@ -6,17 +6,23 @@ import re
 
 def scrape_url(url):
     ...
+    if url is None:
+        return {}
+
     info_dict = {
-        "name": str,
+        "c_name": str,
+        "logo": str,
         "business": str,
-        "description": str
+        "description": str,
     }
 
     response = requests.get(url)
     soup = BeautifulSoup(response.text, "html.parser")
 
     # scrape name
-    info_dict["name"] = scrape_name(soup)
+    info_dict["c_name"] = scrape_name(soup)
+    # scrape logo
+    info_dict["logo"] = scrape_logo(soup)
     # scrape business
     info_dict["business"] = scrape_business(soup)
     # scrape description
@@ -30,6 +36,13 @@ def scrape_name(soup):
     if logo_img:
         next_h1 = logo_img.find_next('h1')
         result = next_h1.get_text(strip=True)
+    return result
+
+def scrape_logo(soup):
+    result = ''
+    logo_img = soup.find('img', class_='company-logo me-3')
+    if logo_img:
+        result = logo_img['src']
     return result
 
 def scrape_business(soup):
@@ -55,4 +68,4 @@ def scrape_description(soup):
     return result
 
 # tests
-# print(scrape_url("https://www.trueup.io/co/doordash"))
+# print(scrape_url("https://www.trueup.io/co/uber"))

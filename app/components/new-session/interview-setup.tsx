@@ -1,4 +1,4 @@
-import React, { FC } from "react"
+import React, { FC, useState } from "react"
 
 interface InterviewSetupProps {
     selectedLanguages: Array<string>
@@ -12,6 +12,18 @@ interface InterviewSetupProps {
 }
 
 const InterviewSetup: FC<InterviewSetupProps> = (props): JSX.Element => {
+
+    const [loading, setLoading] = useState(false)
+
+    const getCompanyDetails = async () => {
+        const requestBody = {
+            position: props.position,
+            languages: props.selectedLanguages,
+            company: props.company
+        }
+        console.log(requestBody)
+        // setLoading(true)
+    }
 
     const positionOptions = [
         'Sofware Engineer', 'ML Engineer', 'Cloud Engineer', 'DevOps Engineer', 'Data Scientist', 'Quantitative Analyst', 'Fullstack Developer', 'Frontend Developer', 'Backend Developer', 'Automation Developer'
@@ -51,7 +63,16 @@ const InterviewSetup: FC<InterviewSetupProps> = (props): JSX.Element => {
                         </option>
                     ))}
                 </select>
-                <button className="mt-6 w-full bg-indigo-500 text-white p-2 rounded hover:bg-indigo-600">Start</button>
+                {loading ? (
+                    <div className="mt-6 w-full bg-indigo-500 text-white p-2 rounded text-center">Loading...
+                    </div>
+                ) : (
+                    <button
+                        className="mt-6 w-full bg-indigo-500 text-white p-2 rounded hover:bg-indigo-600"
+                        onClick={getCompanyDetails}
+                    >Start</button>
+                )}
+
             </div>
             <div>
                 <h1 className="p-3 bg-gray-100">I am proficient in...</h1>

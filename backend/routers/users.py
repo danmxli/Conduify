@@ -21,23 +21,35 @@ def access():
     name = data.get("name")
     email = data.get("email")
 
-    # find an existing user
-    if UserInfo.count_documents({}) > 0:
-        match = UserInfo.find_one({"name": name, "email": email})
-        if match:
-            return (jsonify(match))
+    # for new user, insert document with empty history
+    if UserInfo.count_documents({}) == 0:
+    
+        doc = {
+            "_id": str(uuid4()),
+            "time_created": int(datetime.datetime.now().timestamp()),
+            "name": name,
+            "email": email,
+            "history": []
+        }
+        result = UserInfo.insert_one(doc)
+        if not result.inserted_id:
+            return "failed to insert doc", 400
+        
+        return (jsonify([]))
 
-    # for new user, insert document
-    doc = {
-        "_id": str(uuid4()),
-        "time_created": int(datetime.datetime.now().timestamp()),
-        "name": name,
-        "email": email,
-        "history": []
-    }
-    result = UserInfo.insert_one(doc)
+    # find an existing user and return the simplified history
+    match = UserInfo.find_one({"name": name, "email": email})
+    if not match:
+        return "record not found", 400
 
-    if result.inserted_id:
-        return (doc)
-    else:
-        return (jsonify({"message": "error inserting user"}))
+    curr_history = match.get("history", [])
+    
+    simple_history = [{
+        "_id": item["_id"],
+        "company": item["info"]["c_name"],
+        "position": item["position"],
+        "languages": item["languages"],
+        "c_logo": item["info"]["logo"]
+    } for item in curr_history]        
+
+    return (jsonify(simple_history))
