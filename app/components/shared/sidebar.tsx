@@ -6,6 +6,7 @@ interface SidebarProps {
     name: string | null | undefined
     email: string | null | undefined
     picture: string | null | undefined
+    updatePhase: (newPhase: string) => void;
 
     simpleHistory: Array<{
         _id: string,
@@ -14,20 +15,13 @@ interface SidebarProps {
         languages: Array<string>
         c_logo: string
     }>
-    updateSimpleHistory: (newHistory: Array<{
-        _id: string,
-        company: string,
-        position: string,
-        languages: Array<string>
-        c_logo: string
-    }>) => void;
 }
 
 const Sidebar: FC<SidebarProps> = (props): JSX.Element => {
     return (
         <main className="flex flex-col h-screen w-64 border-r">
             <div className="m-3 pb-3 grid justify-center border-b">
-                <UserCard name={props.name} email={props.email} picture={props.picture} />
+                <UserCard name={props.name} email={props.email} picture={props.picture} updatePhase={props.updatePhase} />
             </div>
             <ul className="m-3 mt-0 flex-grow max-h-fit overflow-scroll scrollbar-hide space-y-3">
                 {props.simpleHistory.map((historyItem) => (

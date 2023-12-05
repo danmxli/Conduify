@@ -1,6 +1,18 @@
 import React, { FC, useState } from "react"
 
 interface InterviewSetupProps {
+    userName: string | null | undefined;
+    userEmail: string | null | undefined;
+    updatePhase: (newPhase: string) => void;
+
+    updateSimpleHistory: (newHistory: Array<{
+        _id: string,
+        company: string,
+        position: string,
+        languages: Array<string>
+        c_logo: string
+    }>) => void;
+
     selectedLanguages: Array<string>
     updateSelectedLanguages: (newLang: string) => void
 
@@ -17,12 +29,43 @@ const InterviewSetup: FC<InterviewSetupProps> = (props): JSX.Element => {
 
     const getCompanyDetails = async () => {
         const requestBody = {
+            email: props.userEmail,
             position: props.position,
             languages: props.selectedLanguages,
-            company: props.company
+            company: props.company,
+            interviewee: props.userName
         }
+        setLoading(true)
         console.log(requestBody)
-        // setLoading(true)
+        try {
+            const response = await fetch('http://127.0.0.1:5000/company/search', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestBody),
+            })
+            if (response.ok) {
+                const data = await response.json();
+                if (data) {
+                    if (data["message"] === "no info") {
+                        setLoading(false)
+                        props.updateCompany('Try entering another company')
+                    }
+                    else {
+                        props.updateSimpleHistory(data["simple_history"])
+                        props.updatePhase('ActiveSession')
+                    }
+
+                }
+            }
+            else {
+                console.error('Request failed with status:', response.status);
+            }
+        }
+        catch (error) {
+            console.error('Fetch request error:', error);
+        }
     }
 
     const positionOptions = [

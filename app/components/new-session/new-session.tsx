@@ -2,7 +2,16 @@ import React, { FC, useState } from "react"
 import InterviewSetup from "./interview-setup";
 
 interface NewSessionProps {
+    userName: string | null | undefined;
+    userEmail: string | null | undefined;
     updatePhase: (newPhase: string) => void;
+    updateSimpleHistory: (newHistory: Array<{
+        _id: string,
+        company: string,
+        position: string,
+        languages: Array<string>
+        c_logo: string
+    }>) => void;
 }
 
 const NewSession: FC<NewSessionProps> = (props): JSX.Element => {
@@ -34,6 +43,11 @@ const NewSession: FC<NewSessionProps> = (props): JSX.Element => {
         <div className="h-screen overflow-y-scroll scrollbar-hide grid items-center justify-center">
             <div className="m-3 border rounded">
                 <InterviewSetup
+                    userName={props.userName}
+                    userEmail={props.userEmail}
+                    updatePhase={props.updatePhase}
+                    updateSimpleHistory={props.updateSimpleHistory}
+
                     selectedLanguages={selectedLanguages}
                     updateSelectedLanguages={updateSelectedLanguages}
                     company={company}

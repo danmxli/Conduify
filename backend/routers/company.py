@@ -34,16 +34,27 @@ def get_company():
     if not info:
         return (jsonify({"message": "no info"}))
 
-    user = UserInfo.find_one({"email": email})
+    user = UserInfo.find_one({"name": interviewee, "email": email})
     if not user:
         return "record not found", 400
 
+    # curr history simplified
+    curr_history = user.get("history", [])
+    simple_history = [{
+        "_id": item["_id"],
+        "company": item["info"]["c_name"],
+        "position": item["position"],
+        "languages": item["languages"],
+        "c_logo": item["info"]["logo"]
+    } for item in curr_history]
+
+    # add to history
+    new_id = str(uuid4())
     new_session = {
-        "_id": str(uuid4()),
+        "_id": new_id,
         "info": info,
         "position": position,
         "languages": languages,
-        "company": company,
         "interviewee": interviewee,
         "interview_sessions": []
     }
@@ -51,6 +62,19 @@ def get_company():
         "$push": {"history": new_session}
     }
     UserInfo.update_one(user, add_to_history)
-    success_message = {"message": "successfully updated"}
+
+    # append to simple_history
+    simple_history.append({
+        "_id": new_id,
+        "company": info["c_name"],
+        "position": position,
+        "languages": languages,
+        "c_logo": info["logo"]
+    })
+
+    success_message = {
+        "message": "successfully updated",
+        "simple_history": simple_history
+    }
 
     return (jsonify({**success_message, **new_session}))

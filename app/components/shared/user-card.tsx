@@ -9,6 +9,7 @@ interface UserCardProps {
     name: string | null | undefined
     email: string | null | undefined
     picture: string | null | undefined
+    updatePhase: (newPhase: string) => void;
 }
 
 const UserCard: FC<UserCardProps> = (props): JSX.Element => {
@@ -40,7 +41,12 @@ const UserCard: FC<UserCardProps> = (props): JSX.Element => {
                 <h2 className="text-xs text-center break-all">{props.email}</h2>
                 <BsThreeDotsVertical />
             </button>
-            <button className="p-0.5 pt-1.5 pb-1.5 rounded flex items-center justify-center gap-3 w-full bg-indigo-50 hover:bg-indigo-100">
+            <button
+                className="p-0.5 pt-1.5 pb-1.5 rounded flex items-center justify-center gap-3 w-full bg-indigo-50 hover:bg-indigo-100"
+                onClick={() => {
+                    props.updatePhase('NewSession')
+                }}
+            >
                 New session
                 <BsPlusSquare />
             </button>
@@ -67,9 +73,9 @@ const UserCard: FC<UserCardProps> = (props): JSX.Element => {
                             Logout <IoIosLogOut />
                         </a>
                         <button className="w-full inline-flex items-center justify-start p-3 gap-1 hover:translate-x-2 duration-300"
-                        onClick={() => {
-                            setIsOpen(false)
-                        }}
+                            onClick={() => {
+                                setIsOpen(false)
+                            }}
                         >
                             Close
                         </button>

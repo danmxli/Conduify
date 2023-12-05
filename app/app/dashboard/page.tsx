@@ -37,9 +37,8 @@ export default withPageAuthRequired(function Dashboard({ user }) {
         [key: string]: React.ReactNode;
     }
     const currPage: PagePhases = {
-        NewSession: <NewSession updatePhase={updatePhase} />,
+        NewSession: <NewSession userName={user.name} userEmail={user.email} updatePhase={updatePhase} updateSimpleHistory={updateSimpleHistory} />,
         ActiveSession: <ActiveSession updatePhase={updatePhase} />
-        
     }
 
     // access user information
@@ -91,7 +90,7 @@ export default withPageAuthRequired(function Dashboard({ user }) {
                 <Loading />
             ) : (
                 <div className='flex'>
-                    <Sidebar name={user.name} email={user.email} picture={user.picture} simpleHistory={simpleHistory} updateSimpleHistory={updateSimpleHistory} />
+                    <Sidebar name={user.name} email={user.email} picture={user.picture} updatePhase={updatePhase} simpleHistory={simpleHistory} />
                     <main className='flex-1'>
                         {currPage[phase]}
                     </main>
