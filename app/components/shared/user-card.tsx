@@ -10,6 +10,7 @@ interface UserCardProps {
     email: string | null | undefined
     picture: string | null | undefined
     updatePhase: (newPhase: string) => void;
+    updateSelectedItem: (newItem: string) => void;
 }
 
 const UserCard: FC<UserCardProps> = (props): JSX.Element => {
@@ -44,6 +45,7 @@ const UserCard: FC<UserCardProps> = (props): JSX.Element => {
             <button
                 className="p-0.5 pt-1.5 pb-1.5 rounded flex items-center justify-center gap-3 w-full bg-indigo-50 hover:bg-indigo-100"
                 onClick={() => {
+                    props.updateSelectedItem('')
                     props.updatePhase('NewSession')
                 }}
             >

@@ -1,4 +1,4 @@
-import { FC } from "react"
+import { FC, useState, useEffect } from "react"
 import UserCard from "./user-card"
 import Image from "next/image"
 
@@ -30,6 +30,11 @@ interface SidebarProps {
 
 const Sidebar: FC<SidebarProps> = (props): JSX.Element => {
 
+    const [selectedItem, setSelectedItem] = useState('')
+    const updateSelectedItem = (newItem: string) => {
+        setSelectedItem(newItem)
+    }
+
     const getItemFromHistory = async (item_id: string) => {
         const requestBody = {
             name: props.name,
@@ -47,6 +52,8 @@ const Sidebar: FC<SidebarProps> = (props): JSX.Element => {
             if (response.ok) {
                 const data = await response.json();
                 if (data) {
+                    setSelectedItem(requestBody._id)
+
                     const chatData: ChatDataItem = {
                         c_business: data["info"]["business"],
                         c_name: data["info"]["c_name"],
@@ -72,13 +79,13 @@ const Sidebar: FC<SidebarProps> = (props): JSX.Element => {
     return (
         <main className="flex flex-col h-screen w-64 border-r">
             <div className="m-3 pb-3 grid justify-center border-b">
-                <UserCard name={props.name} email={props.email} picture={props.picture} updatePhase={props.updatePhase} />
+                <UserCard name={props.name} email={props.email} picture={props.picture} updatePhase={props.updatePhase} updateSelectedItem={updateSelectedItem} />
             </div>
-            <ul className="m-3 mt-0 flex-grow max-h-fit overflow-scroll scrollbar-hide space-y-3">
+            <ul className="flex-grow max-h-fit pl-3 pr-3 overflow-scroll scrollbar-hide">
                 {props.simpleHistory.map((historyItem) => (
                     <li key={historyItem._id}>
                         <button
-                            className="w-full text-left hover:bg-gray-100 rounded"
+                            className={`w-full p-3 text-left ${selectedItem === historyItem._id ? "bg-gray-100" : ""} hover:bg-gray-100 rounded`}
                             onClick={() => {
                                 getItemFromHistory(historyItem._id)
                             }}
