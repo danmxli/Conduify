@@ -5,6 +5,7 @@ interface NewSessionProps {
     userName: string | null | undefined;
     userEmail: string | null | undefined;
     updatePhase: (newPhase: string) => void;
+
     updateSimpleHistory: (newHistory: Array<{
         _id: string,
         company: string,
@@ -12,6 +13,15 @@ interface NewSessionProps {
         languages: Array<string>
         c_logo: string
     }>) => void;
+    updateChatData: (newChatData: {
+        c_business: string,
+        c_name: string,
+        c_description: string,
+        c_logo: string,
+        interview_sessions: Array<any> // TODO  
+        interviewee: string
+        languages: Array<string>
+    }) => void;
 }
 
 const NewSession: FC<NewSessionProps> = (props): JSX.Element => {
@@ -46,7 +56,9 @@ const NewSession: FC<NewSessionProps> = (props): JSX.Element => {
                     userName={props.userName}
                     userEmail={props.userEmail}
                     updatePhase={props.updatePhase}
+
                     updateSimpleHistory={props.updateSimpleHistory}
+                    updateChatData={props.updateChatData}
 
                     selectedLanguages={selectedLanguages}
                     updateSelectedLanguages={updateSelectedLanguages}

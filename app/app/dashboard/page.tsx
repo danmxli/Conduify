@@ -10,35 +10,49 @@ export default withPageAuthRequired(function Dashboard({ user }) {
     const [loading, setLoading] = useState(false)
     const fetchExecuted = useRef(false)
 
-    // phases for rendering components
+    // NewSession, ActiveSession
     const [phase, setPhase] = useState('NewSession')
     const updatePhase = (newPhase: string) => {
         setPhase(newPhase)
     }
+
+    // interfaces
+    interface SimpleHistoryItem {
+        _id: string,
+        company: string,
+        position: string,
+        languages: Array<string>
+        c_logo: string
+    }
+    interface ChatDataItem {
+        c_business: string,
+        c_name: string,
+        c_description: string,
+        c_logo: string,
+        interview_sessions: Array<any> // TODO  
+        interviewee: string
+        languages: Array<string>
+    }
+
     // simple history state
-    const [simpleHistory, setSimpleHistory] = useState(Array<{
-        _id: string,
-        company: string,
-        position: string,
-        languages: Array<string>
-        c_logo: string
-    }>)
-    const updateSimpleHistory = (newHistory: Array<{
-        _id: string,
-        company: string,
-        position: string,
-        languages: Array<string>
-        c_logo: string
-    }>) => {
+    const [simpleHistory, setSimpleHistory] = useState<SimpleHistoryItem[]>([])
+    const updateSimpleHistory = (newHistory: SimpleHistoryItem[]) => {
         setSimpleHistory(newHistory)
     }
 
+    // chat data state
+    const [chatData, setChatData] = useState<ChatDataItem>()
+    const updateChatData = (newChatData: ChatDataItem) => { // TODO sidebar
+        setChatData(newChatData)
+    }
+
+    // component phases
     interface PagePhases {
         [key: string]: React.ReactNode;
     }
     const currPage: PagePhases = {
-        NewSession: <NewSession userName={user.name} userEmail={user.email} updatePhase={updatePhase} updateSimpleHistory={updateSimpleHistory} />,
-        ActiveSession: <ActiveSession updatePhase={updatePhase} />
+        NewSession: <NewSession userName={user.name} userEmail={user.email} updatePhase={updatePhase} updateSimpleHistory={updateSimpleHistory} updateChatData={updateChatData} />,
+        ActiveSession: <ActiveSession updatePhase={updatePhase} chatData={chatData} />
     }
 
     // access user information
@@ -90,7 +104,7 @@ export default withPageAuthRequired(function Dashboard({ user }) {
                 <Loading />
             ) : (
                 <div className='flex'>
-                    <Sidebar name={user.name} email={user.email} picture={user.picture} updatePhase={updatePhase} simpleHistory={simpleHistory} />
+                    <Sidebar name={user.name} email={user.email} picture={user.picture} updatePhase={updatePhase} simpleHistory={simpleHistory} updateChatData={updateChatData} />
                     <main className='flex-1'>
                         {currPage[phase]}
                     </main>

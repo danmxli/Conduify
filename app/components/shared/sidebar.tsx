@@ -2,6 +2,16 @@ import { FC } from "react"
 import UserCard from "./user-card"
 import Image from "next/image"
 
+interface ChatDataItem {
+    c_business: string,
+    c_name: string,
+    c_description: string,
+    c_logo: string,
+    interview_sessions: Array<any> // TODO  
+    interviewee: string
+    languages: Array<string>
+}
+
 interface SidebarProps {
     name: string | null | undefined
     email: string | null | undefined
@@ -15,9 +25,50 @@ interface SidebarProps {
         languages: Array<string>
         c_logo: string
     }>
+    updateChatData: (newChatData: ChatDataItem) => void;
 }
 
 const Sidebar: FC<SidebarProps> = (props): JSX.Element => {
+
+    const getItemFromHistory = async (item_id: string) => {
+        const requestBody = {
+            name: props.name,
+            email: props.email,
+            _id: item_id
+        }
+        try {
+            const response = await fetch('http://127.0.0.1:5000/users/history_item', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestBody),
+            })
+            if (response.ok) {
+                const data = await response.json();
+                if (data) {
+                    const chatData: ChatDataItem = {
+                        c_business: data["info"]["business"],
+                        c_name: data["info"]["c_name"],
+                        c_description: data["info"]["description"],
+                        c_logo: data["info"]["logo"],
+                        interview_sessions: data["languages"],
+                        interviewee: data["interviewee"],
+                        languages: data["languages"]
+                    }
+                    props.updateChatData(chatData)
+                    props.updatePhase('ActiveSession')
+                }
+            }
+            else {
+                console.error('Request failed with status:', response.status);
+            }
+        }
+        catch (error) {
+            console.error('Fetch request error:', error);
+        }
+    }
+
     return (
         <main className="flex flex-col h-screen w-64 border-r">
             <div className="m-3 pb-3 grid justify-center border-b">
@@ -26,7 +77,12 @@ const Sidebar: FC<SidebarProps> = (props): JSX.Element => {
             <ul className="m-3 mt-0 flex-grow max-h-fit overflow-scroll scrollbar-hide space-y-3">
                 {props.simpleHistory.map((historyItem) => (
                     <li key={historyItem._id}>
-                        <button className="w-full text-left hover:bg-gray-100 rounded">
+                        <button
+                            className="w-full text-left hover:bg-gray-100 rounded"
+                            onClick={() => {
+                                getItemFromHistory(historyItem._id)
+                            }}
+                        >
                             <Image
                                 src={historyItem.c_logo}
                                 alt="logo"

@@ -1,5 +1,15 @@
 import React, { FC, useState } from "react"
 
+interface ChatDataItem {
+    c_business: string,
+    c_name: string,
+    c_description: string,
+    c_logo: string,
+    interview_sessions: Array<any> // TODO  
+    interviewee: string
+    languages: Array<string>
+}
+
 interface InterviewSetupProps {
     userName: string | null | undefined;
     userEmail: string | null | undefined;
@@ -12,6 +22,7 @@ interface InterviewSetupProps {
         languages: Array<string>
         c_logo: string
     }>) => void;
+    updateChatData: (newChatData: ChatDataItem) => void;
 
     selectedLanguages: Array<string>
     updateSelectedLanguages: (newLang: string) => void
@@ -53,6 +64,17 @@ const InterviewSetup: FC<InterviewSetupProps> = (props): JSX.Element => {
                         props.updateCompany('Try entering another company')
                     }
                     else {
+                        // TODO updateChatData
+                        const chatData: ChatDataItem = {
+                            c_business: data["info"]["business"],
+                            c_name: data["info"]["c_name"],
+                            c_description: data["info"]["description"],
+                            c_logo: data["info"]["logo"],
+                            interview_sessions: data["languages"],
+                            interviewee: data["interviewee"],
+                            languages: data["languages"]
+                        }
+                        props.updateChatData(chatData)
                         props.updateSimpleHistory(data["simple_history"])
                         props.updatePhase('ActiveSession')
                     }
