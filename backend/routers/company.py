@@ -2,10 +2,8 @@ from dotenv import load_dotenv
 from pymongo.mongo_client import MongoClient
 import os
 from data.search import get_link
-from data.scrape import scrape_url
-from data.generate import interview_question
+from data.scrape import scrape_url, valid_resume
 from uuid import uuid4
-import datetime
 from flask import Blueprint, jsonify, request
 
 load_dotenv('.env')
@@ -26,6 +24,11 @@ def get_company():
     languages = data.get("languages")
     company = data.get("company")
     interviewee = data.get("interviewee")
+    resume_url = data.get("resume")    
+
+    # validate resume
+    if not valid_resume(resume_url):
+        return(jsonify({"message": "invalid resume"}))
 
     # obtain url of resource
     url = get_link(company)
@@ -56,7 +59,8 @@ def get_company():
         "position": position,
         "languages": languages,
         "interviewee": interviewee,
-        "interview_sessions": []
+        "interview_sessions": [],
+        "resume_url": resume_url
     }
     add_to_history = {
         "$push": {"history": new_session}

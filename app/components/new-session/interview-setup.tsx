@@ -33,6 +33,9 @@ interface InterviewSetupProps {
     position: string
     updatePosition: (newPosition: string) => void
 
+    resumeUrl: string
+    updateResumeUrl: (newResumeUrl: string) => void
+
     updateSelectedItem: (newItem: string) => void;
 }
 
@@ -46,7 +49,8 @@ const InterviewSetup: FC<InterviewSetupProps> = (props): JSX.Element => {
             position: props.position,
             languages: props.selectedLanguages,
             company: props.company,
-            interviewee: props.userName
+            interviewee: props.userName,
+            resume: props.resumeUrl
         }
         setLoading(true)
         console.log(requestBody)
@@ -61,27 +65,31 @@ const InterviewSetup: FC<InterviewSetupProps> = (props): JSX.Element => {
             if (response.ok) {
                 const data = await response.json();
                 if (data) {
+                    if (data["message"] === "invalid resume") {
+                        setLoading(false)
+                        props.updateResumeUrl('Invalid resume url')
+                        return
+                    }
                     if (data["message"] === "no info") {
                         setLoading(false)
                         props.updateCompany('Try entering another company')
-                    }
-                    else {
-                        // TODO updateChatData
-                        const chatData: ChatDataItem = {
-                            c_business: data["info"]["business"],
-                            c_name: data["info"]["c_name"],
-                            c_description: data["info"]["description"],
-                            c_logo: data["info"]["logo"],
-                            interview_sessions: data["languages"],
-                            interviewee: data["interviewee"],
-                            languages: data["languages"]
-                        }
-                        props.updateChatData(chatData)
-                        props.updateSimpleHistory(data["simple_history"])
-                        props.updatePhase('ActiveSession')
-                        props.updateSelectedItem(data["_id"])
+                        return
                     }
 
+                    // TODO updateChatData
+                    const chatData: ChatDataItem = {
+                        c_business: data["info"]["business"],
+                        c_name: data["info"]["c_name"],
+                        c_description: data["info"]["description"],
+                        c_logo: data["info"]["logo"],
+                        interview_sessions: data["languages"],
+                        interviewee: data["interviewee"],
+                        languages: data["languages"]
+                    }
+                    props.updateChatData(chatData)
+                    props.updateSimpleHistory(data["simple_history"])
+                    props.updatePhase('ActiveSession')
+                    props.updateSelectedItem(data["_id"])
                 }
             }
             else {
@@ -102,7 +110,7 @@ const InterviewSetup: FC<InterviewSetupProps> = (props): JSX.Element => {
 
     return (
         <div className="grid sm:grid-cols-2">
-            <div className="p-3">
+            <div className="grid p-3">
                 <label htmlFor="company" className="block">I am interested in applying to...</label>
                 <input
                     className="w-full border-b focus:border-indigo-500 focus:outline-none"
@@ -131,6 +139,18 @@ const InterviewSetup: FC<InterviewSetupProps> = (props): JSX.Element => {
                         </option>
                     ))}
                 </select>
+                <label htmlFor="resume" className="mt-6 block">Enter resume link </label>
+                <input
+                    className="w-full border-b focus:border-indigo-500 focus:outline-none"
+                    type="text"
+                    id="resume"
+                    name="resume"
+                    value={props.resumeUrl}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        props.updateResumeUrl(e.target.value)
+                    }}
+                >
+                </input>
                 {loading ? (
                     <div className="mt-6 w-full bg-indigo-500 text-white p-2 rounded text-center">Loading...
                     </div>

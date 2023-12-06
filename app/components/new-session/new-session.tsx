@@ -51,6 +51,12 @@ const NewSession: FC<NewSessionProps> = (props): JSX.Element => {
         setPosition(newPosition)
     }
 
+    // resume url state
+    const [resumeUrl, setResumeUrl] = useState('')
+    const updateResumeUrl = (newResumeUrl: string) => {
+        setResumeUrl(newResumeUrl)
+    }
+
     return (
         <div className="h-screen overflow-y-scroll scrollbar-hide grid items-center justify-center">
             <div className="m-3 border rounded">
@@ -68,6 +74,8 @@ const NewSession: FC<NewSessionProps> = (props): JSX.Element => {
                     updateCompany={updateCompany}
                     position={position}
                     updatePosition={updatePosition}
+                    resumeUrl={resumeUrl}
+                    updateResumeUrl={updateResumeUrl}
 
                     updateSelectedItem={props.updateSelectedItem}  
                 />
