@@ -1,5 +1,6 @@
 import React, { FC, useState } from "react"
 import Image from "next/image"
+import ExpandingInput from "./expanding-input"
 
 interface ChatDataItem {
     c_business: string,
@@ -17,17 +18,22 @@ interface ActiveSessionProps {
 }
 
 const ActiveSession: FC<ActiveSessionProps> = (props): JSX.Element => {
+
+    const handleInputSubmit = (text: string) => {
+        console.log(text)
+    }
+
     return (
         <div className="h-screen grid grid-cols-3">
             {props.chatData && (
                 <>
                     <div className="col-span-2 h-screen">
                         <div className="flex flex-col h-screen">
-                            <div className="flex-grow max-h-fit overflow-scroll">
+                            <div className="flex-grow max-h-fit overflow- scrollbar-hide">
 
                             </div>
-                            <div className="pb-12 flex items-center justify-center">
-                                input here
+                            <div className="pb-12 pl-12 pr-12 flex items-center justify-center">
+                                <ExpandingInput onSubmit={handleInputSubmit} />
                             </div>
                         </div>
 
