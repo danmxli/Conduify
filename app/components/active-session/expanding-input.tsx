@@ -33,6 +33,15 @@ const ExpandingInput: FC<ExpandingInputProps> = (props): JSX.Element => {
         if (inputRef.current) {
             inputRef.current.style.height = 'auto';
             inputRef.current.style.height = inputRef.current.scrollHeight + 'px';
+
+            // Limit the height to a maximum of 24rem
+            const maxHeight = 24 * 16; // 1rem = 16px
+            if (inputRef.current.scrollHeight > maxHeight) {
+                inputRef.current.style.overflowY = 'auto';
+                inputRef.current.style.height = maxHeight + 'px';
+            } else {
+                inputRef.current.style.overflowY = 'hidden';
+            }
         }
     }, [inputValue]);
 
@@ -45,11 +54,11 @@ const ExpandingInput: FC<ExpandingInputProps> = (props): JSX.Element => {
                 onKeyDown={handleKeyDown}
 
                 placeholder="Type your message..."
-                className="w-full p-3 border border-gray-300 focus:outline-none rounded resize-none scrollbar-hide"
+                className="w-full p-3 border focus:border-indigo-600 shadow-lg focus:outline-none rounded-2xl resize-none scrollbar-hide"
             />
             <button
                 onClick={handleSubmit}
-                className="absolute bottom-1 right-1 bg-indigo-600 text-white py-2 px-4 rounded"
+                className="absolute bottom-0 right-0 p-3"
             >
                 <LuSendHorizonal />
             </button>
