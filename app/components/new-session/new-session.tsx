@@ -22,6 +22,8 @@ interface NewSessionProps {
         interviewee: string
         languages: Array<string>
     }) => void;
+
+    updateSelectedItem: (newItem: string) => void;
 }
 
 const NewSession: FC<NewSessionProps> = (props): JSX.Element => {
@@ -66,6 +68,8 @@ const NewSession: FC<NewSessionProps> = (props): JSX.Element => {
                     updateCompany={updateCompany}
                     position={position}
                     updatePosition={updatePosition}
+
+                    updateSelectedItem={props.updateSelectedItem}  
                 />
             </div>
         </div>

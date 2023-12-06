@@ -46,12 +46,18 @@ export default withPageAuthRequired(function Dashboard({ user }) {
         setChatData(newChatData)
     }
 
+    // sidebar item selection state
+    const [selectedItem, setSelectedItem] = useState('')
+    const updateSelectedItem = (newItem: string) => {
+        setSelectedItem(newItem)
+    }
+
     // component phases
     interface PagePhases {
         [key: string]: React.ReactNode;
     }
     const currPage: PagePhases = {
-        NewSession: <NewSession userName={user.name} userEmail={user.email} updatePhase={updatePhase} updateSimpleHistory={updateSimpleHistory} updateChatData={updateChatData} />,
+        NewSession: <NewSession userName={user.name} userEmail={user.email} updatePhase={updatePhase} updateSimpleHistory={updateSimpleHistory} updateChatData={updateChatData} updateSelectedItem={updateSelectedItem} />,
         ActiveSession: <ActiveSession updatePhase={updatePhase} chatData={chatData} />
     }
 
@@ -104,7 +110,7 @@ export default withPageAuthRequired(function Dashboard({ user }) {
                 <Loading />
             ) : (
                 <div className='flex'>
-                    <Sidebar name={user.name} email={user.email} picture={user.picture} updatePhase={updatePhase} simpleHistory={simpleHistory} updateChatData={updateChatData} />
+                    <Sidebar name={user.name} email={user.email} picture={user.picture} updatePhase={updatePhase} simpleHistory={simpleHistory} updateChatData={updateChatData} selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} />
                     <main className='flex-1'>
                         {currPage[phase]}
                     </main>

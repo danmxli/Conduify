@@ -32,6 +32,8 @@ interface InterviewSetupProps {
 
     position: string
     updatePosition: (newPosition: string) => void
+
+    updateSelectedItem: (newItem: string) => void;
 }
 
 const InterviewSetup: FC<InterviewSetupProps> = (props): JSX.Element => {
@@ -77,6 +79,7 @@ const InterviewSetup: FC<InterviewSetupProps> = (props): JSX.Element => {
                         props.updateChatData(chatData)
                         props.updateSimpleHistory(data["simple_history"])
                         props.updatePhase('ActiveSession')
+                        props.updateSelectedItem(data["_id"])
                     }
 
                 }
