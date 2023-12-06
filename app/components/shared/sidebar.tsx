@@ -91,8 +91,8 @@ const Sidebar: FC<SidebarProps> = (props): JSX.Element => {
                             <Image
                                 src={historyItem.c_logo}
                                 alt="logo"
-                                width={40}
-                                height={40}
+                                width={30}
+                                height={30}
                                 className="w-fit rounded"
                             />
                             <div>
