@@ -19,6 +19,15 @@ interface ActiveSessionProps {
 
 const ActiveSession: FC<ActiveSessionProps> = (props): JSX.Element => {
 
+    // shallow copy of interview_sessions
+    const [chatHistory, setChatHistory] = useState<Array<any>>(props.chatData?.interview_sessions || []);
+
+    // input phase, Write or Code
+    const [inputPhase, setInputPhase] = useState('Write')
+    const updateInputPhase = (newPhase: string) => {
+        setInputPhase(newPhase)
+    }
+
     // user response state
     const [userResponse, setUserResponse] = useState('')
     const updateUserResponse = (newResponse: string) => {
@@ -42,7 +51,7 @@ const ActiveSession: FC<ActiveSessionProps> = (props): JSX.Element => {
 
                             </div>
                             <div className="pb-12 pl-12 pr-12 flex items-center justify-center">
-                                <ExpandingInput userResponse={userResponse} updateUserResponse={updateUserResponse} onSubmit={handleInputSubmit} />
+                                <ExpandingInput userResponse={userResponse} updateUserResponse={updateUserResponse} onSubmit={handleInputSubmit} inputPhase={inputPhase} updateInputPhase={updateInputPhase} />
                             </div>
                         </div>
 
