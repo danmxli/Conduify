@@ -2,15 +2,16 @@ import React, { FC, useState, useEffect, useRef } from 'react';
 import { LuSendHorizonal } from "react-icons/lu";
 
 interface ExpandingInputProps {
+    userResponse: string;
+    updateUserResponse: (newResponse: string) => void;
     onSubmit: (text: string) => void;
 }
 
 const ExpandingInput: FC<ExpandingInputProps> = (props): JSX.Element => {
-    const [inputValue, setInputValue] = useState<string>('');
     const inputRef = useRef<HTMLTextAreaElement>(null);
 
     const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-        setInputValue(event.target.value);
+        props.updateUserResponse(event.target.value);
     };
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -22,9 +23,9 @@ const ExpandingInput: FC<ExpandingInputProps> = (props): JSX.Element => {
     };
 
     const handleSubmit = () => {
-        if (inputValue.trim() !== '') {
-            props.onSubmit(inputValue);
-            setInputValue('');
+        if (props.userResponse.trim() !== '') {
+            props.onSubmit(props.userResponse);
+            props.updateUserResponse('');
         }
     };
 
@@ -43,13 +44,13 @@ const ExpandingInput: FC<ExpandingInputProps> = (props): JSX.Element => {
                 inputRef.current.style.overflowY = 'hidden';
             }
         }
-    }, [inputValue]);
+    }, [props.userResponse]);
 
     return (
         <div className="relative w-full flex">
             <textarea
                 ref={inputRef}
-                value={inputValue}
+                value={props.userResponse}
                 onChange={handleInputChange}
                 onKeyDown={handleKeyDown}
 

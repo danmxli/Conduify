@@ -83,7 +83,7 @@ const Sidebar: FC<SidebarProps> = (props): JSX.Element => {
                 {props.simpleHistory.map((historyItem) => (
                     <li key={historyItem._id}>
                         <button
-                            className={`w-full p-3 text-left ${props.selectedItem === historyItem._id ? "bg-gray-100" : ""} hover:bg-gray-100 rounded`}
+                            className={`w-full p-3 text-left ${props.selectedItem === historyItem._id ? "bg-gray-100" : ""} rounded`}
                             onClick={() => {
                                 getItemFromHistory(historyItem._id)
                             }}

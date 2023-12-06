@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react"
+import React, { FC, useEffect, useState } from "react"
 import Image from "next/image"
 import ExpandingInput from "./expanding-input"
 
@@ -19,6 +19,15 @@ interface ActiveSessionProps {
 
 const ActiveSession: FC<ActiveSessionProps> = (props): JSX.Element => {
 
+    // user response state
+    const [userResponse, setUserResponse] = useState('')
+    const updateUserResponse = (newResponse: string) => {
+        setUserResponse(newResponse)
+    }
+    useEffect(() => {
+        setUserResponse('')
+    }, [props.chatData])
+
     const handleInputSubmit = (text: string) => {
         console.log(text)
     }
@@ -33,7 +42,7 @@ const ActiveSession: FC<ActiveSessionProps> = (props): JSX.Element => {
 
                             </div>
                             <div className="pb-12 pl-12 pr-12 flex items-center justify-center">
-                                <ExpandingInput onSubmit={handleInputSubmit} />
+                                <ExpandingInput userResponse={userResponse} updateUserResponse={updateUserResponse} onSubmit={handleInputSubmit} />
                             </div>
                         </div>
 
