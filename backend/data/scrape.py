@@ -3,19 +3,7 @@ from bs4 import BeautifulSoup
 from urllib.parse import quote, urlparse
 import re
 
-from llmsherpa.readers import LayoutPDFReader
-llmsherpa_api_url = "https://readers.llmsherpa.com/api/document/developer/parseDocument?renderFormat=all"
-
-
-def parse_pdf(pdf_url):
-
-    # read pdf, obtain list of texts
-    pdf_reader = LayoutPDFReader(llmsherpa_api_url)
-    doc = pdf_reader.read_pdf(pdf_url)
-
-    texts = [chunk.to_context_text() for chunk in doc.chunks()]
-    return texts
-
+"""scrape company information from trueup.io, validate resume hyperlink"""
 
 def scrape_url(url):
     ...
