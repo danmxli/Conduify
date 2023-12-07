@@ -2,10 +2,8 @@ from dotenv import load_dotenv
 from pymongo.mongo_client import MongoClient
 import os
 from data.search import get_link
-from data.info import scrape_url
-from data.generate import interview_question
+from data.scrape import parse_pdf, scrape_url, valid_resume
 from uuid import uuid4
-import datetime
 from flask import Blueprint, jsonify, request
 
 load_dotenv('.env')
@@ -17,113 +15,73 @@ UserInfo = db['UserInfo']
 
 company_blueprint = Blueprint('company', __name__)
 
+
 @company_blueprint.route('/search', methods=["POST"])
 def get_company():
-    session_list = []
     data = request.get_json()
-    name = data.get("name")
+    email = data.get("email")
     position = data.get("position")
     languages = data.get("languages")
+    company = data.get("company")
     interviewee = data.get("interviewee")
-    ...
-    # scrape the company details first
-    info_dict = {
-        "name": str,
-        "business": str,
-        "description": str,
-    }
-    url = get_link(name)
-    if url is None:
-        return {
-            "information": "not found"
-        }
-    # populat info_dict with company details
-    info_dict = scrape_url(url)
-    
-    filter = { # add company name to filter
-        "name": info_dict['name'],
+    resume_url = data.get("resume")    
+
+    # validate resume
+    if not valid_resume(resume_url):
+        return(jsonify({"message": "invalid resume"}))
+
+    # obtain url of resource
+    url = get_link(company)
+    info = scrape_url(url)
+
+    if not info:
+        return (jsonify({"message": "no info"}))
+
+    user = UserInfo.find_one({"name": interviewee, "email": email})
+    if not user:
+        return "record not found", 400
+
+    # curr history simplified
+    curr_history = user.get("history", [])
+    simple_history = [{
+        "_id": item["_id"],
+        "company": item["info"]["c_name"],
+        "position": item["position"],
+        "languages": item["languages"],
+        "c_logo": item["info"]["logo"]
+    } for item in curr_history]
+
+    # parse the pdf
+    texts = parse_pdf(resume_url)
+
+    # add to history
+    new_id = str(uuid4())
+    new_session = {
+        "_id": new_id,
+        "info": info,
         "position": position,
         "languages": languages,
-        "interviewee": interviewee
+        "interviewee": interviewee,
+        "interview_sessions": [],
+        "resume_texts": texts
     }
-    print(filter)
-    
-    result = CompanyInfo.find_one(filter)
-    if result:
-        # generate interview_question
-        new_question = interview_question(
-            info_dict, position, languages)
-        # update the question and interview_sessions list
-        CompanyInfo.update_one(filter, {"$set": {"question": new_question}})
-        CompanyInfo.update_one(filter, {"$set": {"interview_session": []}})
+    add_to_history = {
+        "$push": {"history": new_session}
+    }
+    UserInfo.update_one(user, add_to_history)
 
-
-        found = CompanyInfo.find_one(filter)
-        for i in update_user_session(found["_id"], found["name"], found["position"], found["languages"], interviewee):
-            if i not in session_list:
-                session_list.append(i)
-
-        return {
-            "information": found,
-            "user_session": session_list
-        }
-
-    else:
-        question = interview_question(
-            info_dict, position, languages)
-
-        doc = {
-            "_id": str(uuid4()),
-            "time_created": int(datetime.datetime.now().timestamp()),
-            "name": info_dict["name"],
-            "business": info_dict["business"],
-            "description": info_dict["description"],
-            "position": position,
-            "languages": languages,
-            "interviewee": interviewee,
-            "question": question,
-            "interview_session": []
-        }
-
-        for i in update_user_session(doc["_id"], doc["name"], doc["position"], doc["languages"], interviewee):
-            if i not in session_list:
-                session_list.append(i)
-
-        result = CompanyInfo.insert_one(doc)
-        if result.inserted_id:
-            return {
-                "information": doc,
-                "user_session": session_list
-            }
-        else:
-            return {
-                "information": "not found"
-            }
-
-
-def update_user_session(interview_id, company_name, position, languages, interviewee):
-    doc_list = []
-    doc = {
-        "interview_id": interview_id,
-        "company_name": company_name,
+    # append to simple_history
+    simple_history.append({
+        "_id": new_id,
+        "company": info["c_name"],
         "position": position,
-        "languages": languages
+        "languages": languages,
+        "c_logo": info["logo"]
+    })
+
+    success_message = {
+        "message": "successfully updated",
+        "simple_history": simple_history
     }
-    # find document corresponding to that interviewee
-    user = UserInfo.find_one({"username": interviewee})
-    if not user:
-        return {"message": "user not found"}  
 
-    # insert one if doc with matching criteria does not exist
-    history = user.get("history", [])
-    if doc not in history:
-        history.append(doc)
-    UserInfo.update_one({"username": interviewee}, {"$set": {"history": history}})
-    
-    # append the doc_list
-    for i in UserInfo.find_one({"username": interviewee}).get("history", []):
-        doc_list.append(i)
-
-    return doc_list
-
-    
+    return (jsonify({**success_message, **new_session}))

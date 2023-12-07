@@ -13,68 +13,63 @@ UserInfo = db['UserInfo']
 
 users_blueprint = Blueprint('users', __name__)
 
-@users_blueprint.route('/info', methods=["POST"])
-def userInfo():
-    data = request.get_json()
-    user_id = data.get("user_id")
-    match = UserInfo.find_one({"_id": user_id})
-    if match:
-        return (match)
-    return (jsonify({"_id": "not found"}))
 
-@users_blueprint.route('/signup', methods=["POST"])
-def signup():
-    data = request.get_json()
-    username = data.get("username")
-    password = data.get("password")
-    background = data.get("background")
-
-    match = UserInfo.find_one({"username": username})
-    if match:
-        return (jsonify({"username": "existing"}))
-
-    doc = {
-        "_id": str(uuid4()),
-        "time_created": int(datetime.datetime.now().timestamp()),
-        "username": username,
-        "password": password,
-        "background": background,
-        "history": []
-    }
-    result = UserInfo.insert_one(doc)
-
-    if result.inserted_id:
-        return (doc)
-
-
-@users_blueprint.route('/signin', methods=["POST"])
-def signin():
-    data = request.get_json()
-    username = data.get("username")
-    password = data.get("password")
-
-    match = UserInfo.find_one({"username": username, "password": password})
-    if not match:
-        return (jsonify({"username": "not_found"}))
-    return (match)
-
-
-@users_blueprint.route('/home_registration', methods=["POST"])
-def home_registration():
-    ...
+@users_blueprint.route('/access', methods=["POST"])
+def access():
+    # from auth0
     data = request.get_json()
     name = data.get("name")
-    match = UserInfo.find_one({"username": name})
-    if match:
-        return match
+    email = data.get("email")
 
-    doc = {
-        "_id": str(uuid4()),
-        "time_created": int(datetime.datetime.now().timestamp()),
-        "username": name,
-        "history": []
-    }
-    result = UserInfo.insert_one(doc)
+    # for new user, insert document with empty history
+    if UserInfo.count_documents({}) == 0:
+    
+        doc = {
+            "_id": str(uuid4()),
+            "time_created": int(datetime.datetime.now().timestamp()),
+            "name": name,
+            "email": email,
+            "history": []
+        }
+        result = UserInfo.insert_one(doc)
+        if not result.inserted_id:
+            return "failed to insert doc", 400
+        
+        return (jsonify([]))
 
-    if result.inserted_id:
-        return (doc)
+    # find an existing user and return the simplified history
+    match = UserInfo.find_one({"name": name, "email": email})
+    if not match:
+        return "record not found", 400
+
+    curr_history = match.get("history", [])
+    
+    simple_history = [{
+        "_id": item["_id"],
+        "company": item["info"]["c_name"],
+        "position": item["position"],
+        "languages": item["languages"],
+        "c_logo": item["info"]["logo"]
+    } for item in curr_history]        
+
+    return (jsonify(simple_history))
+
+
+@users_blueprint.route('/history_item', methods=["POST"])
+def history_item():
+    # get session data by _id
+    data = request.get_json()
+    name = data.get("name")
+    email = data.get("email")
+    item_id = data.get("_id")
+
+    match = UserInfo.find_one({"name": name, "email": email})
+    if not match:
+        return "record not found", 400
+
+    curr_history = match.get("history", [])
+    res = next((item for item in curr_history if item["_id"] == item_id), None)
+    if res is None:
+        return f"history item not found for {item_id}", 400
+    
+    return(jsonify(res))
