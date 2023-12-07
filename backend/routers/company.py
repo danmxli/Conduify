@@ -2,7 +2,7 @@ from dotenv import load_dotenv
 from pymongo.mongo_client import MongoClient
 import os
 from data.search import get_link
-from data.scrape import scrape_url, valid_resume
+from data.scrape import parse_pdf, scrape_url, valid_resume
 from uuid import uuid4
 from flask import Blueprint, jsonify, request
 
@@ -51,6 +51,9 @@ def get_company():
         "c_logo": item["info"]["logo"]
     } for item in curr_history]
 
+    # parse the pdf
+    texts = parse_pdf(resume_url)
+
     # add to history
     new_id = str(uuid4())
     new_session = {
@@ -60,7 +63,7 @@ def get_company():
         "languages": languages,
         "interviewee": interviewee,
         "interview_sessions": [],
-        "resume_url": resume_url
+        "resume_texts": texts
     }
     add_to_history = {
         "$push": {"history": new_session}

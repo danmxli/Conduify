@@ -34,6 +34,7 @@ const ActiveSession: FC<ActiveSessionProps> = (props): JSX.Element => {
         setUserResponse(newResponse)
     }
     useEffect(() => {
+        setInputPhase('Write')
         setUserResponse('')
     }, [props.chatData])
 
@@ -48,7 +49,7 @@ const ActiveSession: FC<ActiveSessionProps> = (props): JSX.Element => {
                     <div className="col-span-2 h-screen">
                         <div className="flex flex-col h-screen">
                             <div className="flex-grow max-h-fit overflow- scrollbar-hide">
-
+                                
                             </div>
                             <div className="pb-12 pl-12 pr-12 flex items-center justify-center">
                                 <ExpandingInput userResponse={userResponse} updateUserResponse={updateUserResponse} onSubmit={handleInputSubmit} inputPhase={inputPhase} updateInputPhase={updateInputPhase} />

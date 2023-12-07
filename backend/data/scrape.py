@@ -3,6 +3,19 @@ from bs4 import BeautifulSoup
 from urllib.parse import quote, urlparse
 import re
 
+from llmsherpa.readers import LayoutPDFReader
+llmsherpa_api_url = "https://readers.llmsherpa.com/api/document/developer/parseDocument?renderFormat=all"
+
+
+def parse_pdf(pdf_url):
+
+    # read pdf, obtain list of texts
+    pdf_reader = LayoutPDFReader(llmsherpa_api_url)
+    doc = pdf_reader.read_pdf(pdf_url)
+
+    texts = [chunk.to_context_text() for chunk in doc.chunks()]
+    return texts
+
 
 def scrape_url(url):
     ...
@@ -82,7 +95,7 @@ def valid_resume(pdf_url):
 
     try:
         response = requests.get(pdf_url)
-        response.raise_for_status() # raise HTTPError
+        response.raise_for_status()  # raise HTTPError
 
         # successful (status code 200)
         return True
