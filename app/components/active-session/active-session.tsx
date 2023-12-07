@@ -1,5 +1,6 @@
 import React, { FC, useEffect, useState } from "react"
 import Image from "next/image"
+import SessionOptions from "./session-options"
 import ExpandingInput from "./expanding-input"
 
 interface ChatDataItem {
@@ -49,7 +50,7 @@ const ActiveSession: FC<ActiveSessionProps> = (props): JSX.Element => {
                     <div className="col-span-2 h-screen">
                         <div className="flex flex-col h-screen">
                             <div className="flex-grow max-h-fit overflow- scrollbar-hide">
-                                
+                                <SessionOptions />
                             </div>
                             <div className="pb-12 pl-12 pr-12 flex items-center justify-center">
                                 <ExpandingInput userResponse={userResponse} updateUserResponse={updateUserResponse} onSubmit={handleInputSubmit} inputPhase={inputPhase} updateInputPhase={updateInputPhase} />
