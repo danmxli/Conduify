@@ -22,7 +22,7 @@ const ChatHistory: FC<ChatHistoryProps> = (props): JSX.Element => {
                         {item.role === 'user' ? (
 
                             <div className="flex gap-1.5">
-                                <div className="p-3 rounded-2xl bg-indigo-600 shadow-inner shadow-indigo-400 text-white font-light tracking-wide leading-7 whitespace-pre-line">
+                                <div className="p-3 rounded-2xl bg-indigo-600 shadow-inner shadow-indigo-400 text-white tracking-wide leading-7 whitespace-pre-line">
                                     {item.content}
                                 </div>
                                 {props.picture && (
@@ -40,7 +40,7 @@ const ChatHistory: FC<ChatHistoryProps> = (props): JSX.Element => {
                                         <Image src={conduify} alt="bot" width={30} height={30} className="rounded-full shadow" />
                                     </div>
                                 )}
-                                <div className="p-3 rounded-2xl bg-gray-50/75 shadow font-light tracking-wide leading-7 whitespace-pre-line">
+                                <div className="p-3 rounded-2xl bg-gray-50 shadow text-gray-800 tracking-wide leading-7 whitespace-pre-line">
                                     {item.content}
                                 </div>
                             </div>
