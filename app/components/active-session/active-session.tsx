@@ -2,6 +2,7 @@ import React, { FC, useRef, useEffect, useState } from "react"
 import SessionOptions from "./session-options"
 import ChatHistory from "./chat-history"
 import ExpandingInput from "./expanding-input"
+import DisabledInput from "../shared/disabled-input"
 
 interface DialogItem {
     role: string
@@ -9,6 +10,7 @@ interface DialogItem {
 }
 
 interface ChatDataItem {
+    _id: string,
     c_business: string,
     c_name: string,
     c_description: string,
@@ -19,6 +21,8 @@ interface ChatDataItem {
 }
 
 interface ActiveSessionProps {
+    userName: string | null | undefined,
+    userEmail: string | null | undefined,
     picture: string | null | undefined
 
     chatData: ChatDataItem | undefined;
@@ -34,8 +38,8 @@ const ActiveSession: FC<ActiveSessionProps> = (props): JSX.Element => {
         setChatHistory([...(props.chatData?.interview_sessions || [])])
     }, [props.chatData?.interview_sessions])
 
-    // input phase, Write or Code
-    const [inputPhase, setInputPhase] = useState('Write')
+    // input phase, write or code
+    const [inputPhase, setInputPhase] = useState('write')
     const updateInputPhase = (newPhase: string) => {
         setInputPhase(newPhase)
     }
@@ -45,13 +49,18 @@ const ActiveSession: FC<ActiveSessionProps> = (props): JSX.Element => {
     const updateUserResponse = (newResponse: string) => {
         setUserResponse(newResponse)
     }
-    useEffect(() => {
-        setInputPhase('Write')
-        setUserResponse('')
-    }, [props.chatData])
 
-    const handleInputSubmit = (text: string) => {
-        console.log(text)
+
+    const [loading, setLoading] = useState(false)
+
+    const handleInputSubmit = async (text: string) => {
+        const requestBody = {
+            _id: props.chatData?._id,
+            name: props.userName,
+            email: props.userEmail,
+            input: text,
+        }
+        console.log(requestBody)
     }
 
     // ref to scroll to bottom whenever historyCopy value updates
@@ -61,6 +70,12 @@ const ActiveSession: FC<ActiveSessionProps> = (props): JSX.Element => {
             chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
         }
     }, [chatHistory]);
+
+    // reset active session state
+    useEffect(() => {
+        setInputPhase('write')
+        setUserResponse('')
+    }, [props.chatData])
 
     return (
         <div className="h-screen grid grid-cols-3">
@@ -78,7 +93,11 @@ const ActiveSession: FC<ActiveSessionProps> = (props): JSX.Element => {
                                 )}
                             </div>
                             <div className="pb-12 pl-12 pr-12 flex items-center justify-center">
-                                <ExpandingInput userResponse={userResponse} updateUserResponse={updateUserResponse} onSubmit={handleInputSubmit} inputPhase={inputPhase} updateInputPhase={updateInputPhase} />
+                                {loading ? (
+                                    <DisabledInput />
+                                ) : (
+                                    <ExpandingInput userResponse={userResponse} updateUserResponse={updateUserResponse} onSubmit={handleInputSubmit} inputPhase={inputPhase} updateInputPhase={updateInputPhase} />
+                                )}
                             </div>
                         </div>
 

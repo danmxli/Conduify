@@ -36,11 +36,11 @@ const ExpandingInput: FC<ExpandingInputProps> = (props): JSX.Element => {
 
     const handleWriteButtonClick = () => {
         props.updateUserResponse('');
-        props.updateInputPhase('Write');
+        props.updateInputPhase('write');
     }
     const handleCodeButtonClick = () => {
         props.updateUserResponse('');
-        props.updateInputPhase('Code');
+        props.updateInputPhase('code');
     };
     function handleEditorChange(value: any) {
         props.updateUserResponse(value)
@@ -66,7 +66,7 @@ const ExpandingInput: FC<ExpandingInputProps> = (props): JSX.Element => {
         [key: string]: React.ReactNode;
     }
     const currInput: UserInputPhase = {
-        Write:
+        write:
             <div className="relative w-full flex">
                 <textarea
                     ref={inputRef}
@@ -84,7 +84,7 @@ const ExpandingInput: FC<ExpandingInputProps> = (props): JSX.Element => {
                     <LuSendHorizonal />
                 </button>
             </div>,
-        Code:
+        code:
             <div className='relative w-full p-3 flex border shadow focus:outline-none rounded-2xl'>
                 <Editor
                     height={250}

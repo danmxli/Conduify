@@ -25,6 +25,7 @@ export default withPageAuthRequired(function Dashboard({ user }) {
         c_logo: string
     }
     interface ChatDataItem {
+        _id: string,
         c_business: string,
         c_name: string,
         c_description: string,
@@ -58,7 +59,7 @@ export default withPageAuthRequired(function Dashboard({ user }) {
     }
     const currPage: PagePhases = {
         NewSession: <NewSession userName={user.name} userEmail={user.email} updatePhase={updatePhase} updateSimpleHistory={updateSimpleHistory} updateChatData={updateChatData} updateSelectedItem={updateSelectedItem} />,
-        ActiveSession: <ActiveSession picture={user.picture} updatePhase={updatePhase} chatData={chatData} />
+        ActiveSession: <ActiveSession userName={user.name} userEmail={user.email} picture={user.picture} updatePhase={updatePhase} chatData={chatData} />
     }
 
     // access user information

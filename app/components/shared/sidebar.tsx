@@ -3,6 +3,7 @@ import UserCard from "./user-card"
 import Image from "next/image"
 
 interface ChatDataItem {
+    _id: string,
     c_business: string,
     c_name: string,
     c_description: string,
@@ -53,6 +54,7 @@ const Sidebar: FC<SidebarProps> = (props): JSX.Element => {
                     props.updateSelectedItem(requestBody._id)
 
                     const chatData: ChatDataItem = {
+                        _id: data["_id"],
                         c_business: data["info"]["business"],
                         c_name: data["info"]["c_name"],
                         c_description: data["info"]["description"],

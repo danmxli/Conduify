@@ -14,6 +14,7 @@ interface NewSessionProps {
         c_logo: string
     }>) => void;
     updateChatData: (newChatData: {
+        _id: string,
         c_business: string,
         c_name: string,
         c_description: string,

@@ -1,6 +1,7 @@
 import React, { FC, useState } from "react"
 
 interface ChatDataItem {
+    _id: string,
     c_business: string,
     c_name: string,
     c_description: string,
@@ -77,6 +78,7 @@ const InterviewSetup: FC<InterviewSetupProps> = (props): JSX.Element => {
 
                     // TODO updateChatData
                     const chatData: ChatDataItem = {
+                        _id: data["_id"],
                         c_business: data["info"]["business"],
                         c_name: data["info"]["c_name"],
                         c_description: data["info"]["description"],
