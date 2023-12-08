@@ -58,7 +58,7 @@ export default withPageAuthRequired(function Dashboard({ user }) {
     }
     const currPage: PagePhases = {
         NewSession: <NewSession userName={user.name} userEmail={user.email} updatePhase={updatePhase} updateSimpleHistory={updateSimpleHistory} updateChatData={updateChatData} updateSelectedItem={updateSelectedItem} />,
-        ActiveSession: <ActiveSession updatePhase={updatePhase} chatData={chatData} />
+        ActiveSession: <ActiveSession picture={user.picture} updatePhase={updatePhase} chatData={chatData} />
     }
 
     // access user information

@@ -53,7 +53,6 @@ const InterviewSetup: FC<InterviewSetupProps> = (props): JSX.Element => {
             resume: props.resumeUrl
         }
         setLoading(true)
-        console.log(requestBody)
         try {
             const response = await fetch('http://127.0.0.1:5000/company/search', {
                 method: 'POST',
@@ -82,7 +81,7 @@ const InterviewSetup: FC<InterviewSetupProps> = (props): JSX.Element => {
                         c_name: data["info"]["c_name"],
                         c_description: data["info"]["description"],
                         c_logo: data["info"]["logo"],
-                        interview_sessions: data["languages"],
+                        interview_sessions: data["interview_sessions"],
                         interviewee: data["interviewee"],
                         languages: data["languages"]
                     }

@@ -57,7 +57,7 @@ const Sidebar: FC<SidebarProps> = (props): JSX.Element => {
                         c_name: data["info"]["c_name"],
                         c_description: data["info"]["description"],
                         c_logo: data["info"]["logo"],
-                        interview_sessions: data["languages"],
+                        interview_sessions: data["interview_sessions"],
                         interviewee: data["interviewee"],
                         languages: data["languages"]
                     }
