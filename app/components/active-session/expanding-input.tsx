@@ -75,7 +75,7 @@ const ExpandingInput: FC<ExpandingInputProps> = (props): JSX.Element => {
                     onKeyDown={handleKeyDown}
 
                     placeholder="Type your message..."
-                    className="w-full p-3 border focus:border-indigo-600 shadow-lg focus:outline-none rounded-2xl resize-none scrollbar-hide"
+                    className="w-full p-3 border focus:border-indigo-600 shadow focus:outline-none rounded-2xl resize-none scrollbar-hide"
                 />
                 <button onClick={handleCodeButtonClick} className="absolute bottom-3 right-9">
                     <FaCode />
@@ -85,7 +85,7 @@ const ExpandingInput: FC<ExpandingInputProps> = (props): JSX.Element => {
                 </button>
             </div>,
         Code:
-            <div className='relative w-full p-3 flex border shadow-lg focus:outline-none rounded-2xl'>
+            <div className='relative w-full p-3 flex border shadow focus:outline-none rounded-2xl'>
                 <Editor
                     height={250}
                     onChange={handleEditorChange}

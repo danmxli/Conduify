@@ -59,7 +59,7 @@ const NewSession: FC<NewSessionProps> = (props): JSX.Element => {
 
     return (
         <div className="h-screen overflow-y-scroll scrollbar-hide grid items-center justify-center">
-            <div className="m-3 border rounded">
+            <div className="m-3 border rounded shadow">
                 <InterviewSetup
                     userName={props.userName}
                     userEmail={props.userEmail}

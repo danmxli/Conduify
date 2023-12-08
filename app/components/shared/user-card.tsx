@@ -17,7 +17,7 @@ const UserCard: FC<UserCardProps> = (props): JSX.Element => {
 
     return (
         <div>
-            <div className="flex items-center gap-3 bg-gray-100 p-3 mb-3 rounded">
+            <div className="flex items-center gap-3 bg-gray-50 shadow p-3 mb-3 rounded">
                 {props.picture && (
                     <Image src={props.picture} alt="picture" width={60} height={60} className="rounded" />
                 )}
@@ -34,7 +34,7 @@ const UserCard: FC<UserCardProps> = (props): JSX.Element => {
 
             </div>
             <button
-                className="p-0.5 pt-1.5 pb-1.5 rounded flex items-center justify-center gap-3 w-full bg-indigo-500 hover:bg-indigo-600 text-white"
+                className="p-0.5 pt-1.5 pb-1.5 rounded flex items-center justify-center gap-3 w-full bg-indigo-600 shadow-inner shadow-indigo-400 hover:bg-indigo-800 text-white"
                 onClick={() => {
                     props.updateSelectedItem('')
                     props.updatePhase('NewSession')

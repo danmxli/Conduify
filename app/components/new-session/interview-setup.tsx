@@ -110,7 +110,7 @@ const InterviewSetup: FC<InterviewSetupProps> = (props): JSX.Element => {
 
     return (
         <div className="grid sm:grid-cols-2">
-            <div className="grid p-3">
+            <div className="p-6">
                 <label htmlFor="company" className="block">I am interested in applying to...</label>
                 <input
                     className="w-full border-b focus:border-indigo-500 focus:outline-none"
@@ -139,7 +139,7 @@ const InterviewSetup: FC<InterviewSetupProps> = (props): JSX.Element => {
                         </option>
                     ))}
                 </select>
-                <label htmlFor="resume" className="mt-6 block">Enter resume link </label>
+                <label htmlFor="resume" className="mt-6 block">Enter resume PDF link: </label>
                 <input
                     className="w-full border-b focus:border-indigo-500 focus:outline-none"
                     type="text"
@@ -156,18 +156,18 @@ const InterviewSetup: FC<InterviewSetupProps> = (props): JSX.Element => {
                     </div>
                 ) : (
                     <button
-                        className="mt-6 w-full bg-indigo-500 text-white p-2 rounded hover:bg-indigo-600"
+                        className="mt-6 w-full bg-indigo-600 shadow-inner shadow-indigo-400 text-white p-2 rounded hover:bg-indigo-800"
                         onClick={getCompanyDetails}
                     >Start</button>
                 )}
 
             </div>
-            <div>
-                <h1 className="p-3 bg-gray-100">I am proficient in...</h1>
-                <div className='inline-grid grid-cols-1 md:grid-cols-3 gap-6 p-0 sm:p-3 break-words bg-gray-50'>
+            <div className="border-l">
+                <h1 className="p-6 border-b">Programming skills of applicant:</h1>
+                <div className='inline-grid grid-cols-1 md:grid-cols-3 gap-3 p-0 sm:p-6 break-words'>
                     {languageOptions.map((language, index) => (
-                        <div key={index} className="">
-                            <label>
+                        <div key={index} className="bg-gray-50 rounded shadow">
+                            <label className="flex items-center gap-1.5  p-1.5 pl-3 pr-3 hover:cursor-pointer">
                                 <input
                                     type="checkbox"
                                     value={language}
