@@ -120,7 +120,7 @@ const ActiveSession: FC<ActiveSessionProps> = (props): JSX.Element => {
                                         <ChatHistory picture={props.picture} interview_sessions={chatHistory} />
                                     </>
                                 ) : (
-                                    <SessionOptions />
+                                    <SessionOptions onChoose={handleInputSubmit} />
                                 )}
                             </div>
                             <div className="pb-12 pl-12 pr-12 flex items-center justify-center">

@@ -7,7 +7,7 @@ import { Editor } from '@monaco-editor/react';
 interface ExpandingInputProps {
     userResponse: string;
     updateUserResponse: (newResponse: string) => void;
-    onSubmit: (text: string) => void;
+    onSubmit: (text: string) => Promise<void>;
     inputPhase: string
     updateInputPhase: (newPhase: string) => void;
 }
