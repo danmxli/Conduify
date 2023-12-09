@@ -16,7 +16,8 @@ interface ChatDataItem {
     c_description: string,
     c_logo: string,
     interview_sessions: Array<DialogItem> // TODO  
-    interviewee: string
+    interviewee: string,
+    resume: string,
     languages: Array<string>
 }
 

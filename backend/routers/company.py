@@ -80,6 +80,7 @@ def get_company():
         "interviewee": interviewee,
         "session_status": "ask",
         "interview_sessions": [],
+        "resume_url": resume_url,
         "resume_contexts": resume_contexts,
         "resume_embeddings": resume_embeddings,
         "interview_info": interview_info,

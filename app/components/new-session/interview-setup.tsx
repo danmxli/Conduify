@@ -7,7 +7,8 @@ interface ChatDataItem {
     c_description: string,
     c_logo: string,
     interview_sessions: Array<any> // TODO  
-    interviewee: string
+    interviewee: string,
+    resume: string,
     languages: Array<string>
 }
 
@@ -85,6 +86,7 @@ const InterviewSetup: FC<InterviewSetupProps> = (props): JSX.Element => {
                         c_logo: data["info"]["logo"],
                         interview_sessions: data["interview_sessions"],
                         interviewee: data["interviewee"],
+                        resume: data["resume_url"],
                         languages: data["languages"]
                     }
                     props.updateChatData(chatData)

@@ -31,7 +31,8 @@ export default withPageAuthRequired(function Dashboard({ user }) {
         c_description: string,
         c_logo: string,
         interview_sessions: Array<any> // TODO  
-        interviewee: string
+        interviewee: string,
+        resume: string,
         languages: Array<string>
     }
 
