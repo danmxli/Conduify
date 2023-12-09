@@ -19,6 +19,11 @@ company_blueprint = Blueprint('company', __name__)
 
 @company_blueprint.route('/search', methods=["POST"])
 def get_company():
+    """
+    scrape desired company details.
+    embed resume and interview information.
+    session_status 'ask' and 'conversation' initialize 'ask'
+    """
     data = request.get_json()
     email = data.get("email")
     position = data.get("position")
@@ -73,6 +78,7 @@ def get_company():
         "position": position,
         "languages": languages,
         "interviewee": interviewee,
+        "session_status": "ask",
         "interview_sessions": [],
         "resume_contexts": resume_contexts,
         "resume_embeddings": resume_embeddings,
