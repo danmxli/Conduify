@@ -115,7 +115,7 @@ const ActiveSession: FC<ActiveSessionProps> = (props): JSX.Element => {
                     <div className="col-span-2 h-screen">
                         <div className="flex flex-col h-screen">
                             <div ref={chatContainerRef} className="flex-grow max-h-fit overflow-scroll scrollbar-hide">
-                                {props.chatData.interview_sessions.length > 0 ? (
+                                {chatHistory.length > 0 ? (
                                     <>
                                         <ChatHistory picture={props.picture} interview_sessions={chatHistory} />
                                     </>
