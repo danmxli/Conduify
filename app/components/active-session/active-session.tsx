@@ -34,9 +34,17 @@ const ActiveSession: FC<ActiveSessionProps> = (props): JSX.Element => {
     // copy of interview_sessions
     const [chatHistory, setChatHistory] = useState<Array<DialogItem>>([]);
 
+    const appendToChatHistory = (role: string, content: string) => {
+        const newDialogItem: DialogItem = {
+            role,
+            content,
+        };
+        setChatHistory((prevChatHistory) => [...prevChatHistory, newDialogItem]);
+    };
+
     useEffect(() => {
-        setChatHistory([...(props.chatData?.interview_sessions || [])])
-    }, [props.chatData?.interview_sessions])
+        setChatHistory(props.chatData?.interview_sessions || []);
+    }, [props.chatData?.interview_sessions]);
 
     // input phase, write or code
     const [inputPhase, setInputPhase] = useState('write')
@@ -60,7 +68,30 @@ const ActiveSession: FC<ActiveSessionProps> = (props): JSX.Element => {
             email: props.userEmail,
             input: text,
         }
-        console.log(requestBody)
+        appendToChatHistory('user', text)
+        setLoading(true)
+        try {
+            const response = await fetch('http://127.0.0.1:5000/session/new', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestBody),
+            })
+            if (response.ok) {
+                const data = await response.json();
+                if (data) {
+                    appendToChatHistory('bot', data["response"]["content"])
+                    setLoading(false)
+                }
+            }
+            else {
+                console.error('Request failed with status:', response.status);
+            }
+        }
+        catch (error) {
+            console.error('Fetch request error:', error);
+        }
     }
 
     // ref to scroll to bottom whenever historyCopy value updates
