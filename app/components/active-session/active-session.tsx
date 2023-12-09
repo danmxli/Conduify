@@ -3,6 +3,7 @@ import SessionOptions from "./session-options"
 import ChatHistory from "./chat-history"
 import ExpandingInput from "./expanding-input"
 import DisabledInput from "../shared/disabled-input"
+import SessionInfo from "./session-info"
 
 interface DialogItem {
     role: string
@@ -134,16 +135,7 @@ const ActiveSession: FC<ActiveSessionProps> = (props): JSX.Element => {
                         </div>
 
                     </div>
-                    <div>
-                        <div className="flex p-6 items-center bg-gray-200 h-screen">
-                            <div>
-                                <h1 className="text-3xl">{props.chatData.c_name}</h1>
-                                <a href="https://www.trueup.io/" className="text-xs text-indigo-600">citations: trueup.io</a>
-                                <p className="text-gray-400 text-xs mb-3">{props.chatData.c_business}</p>
-                                <p className="text-gray-600">{props.chatData.c_description}</p>
-                            </div>
-                        </div>
-                    </div>
+                    <SessionInfo companyName={props.chatData.c_name} companyBusiness={props.chatData.c_business} companyDescription={props.chatData.c_description} userResume={props.chatData.resume} />
                 </>
             )}
 
