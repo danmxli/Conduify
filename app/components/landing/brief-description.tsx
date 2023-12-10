@@ -6,11 +6,11 @@ const BriefDescription = () => {
 
     return (
         <div className='p-3 flex flex-col'>
-            <div className='flex justify-center'>
-                <Image src={conduify} alt='conduify' priority className='w-72' />
+            <div className='flex justify-center mb-6'>
+                <Image src={conduify} alt='conduify' priority className='w-72 rounded-full shadow-2xl shadow-indigo-600' />
             </div>
 
-            <div className='p-6 border rounded shadow max-w-xl'>
+            <div className='p-6 max-w-xl'>
                 <h1 className='sm:text-3xl'>
                     Interview <span className='text-indigo-800'>Guidance</span> and Resume <span className='text-indigo-800'>Evaluation</span> powered by AI.
                 </h1>
