@@ -9,16 +9,23 @@ const UserPortal = () => {
 
     return (
         <div className='p-3'>
-            <h1 className='text-2xl sm:text-7xl text-center mb-9'>Introducing <br/>
+            <h1 className='text-2xl sm:text-7xl text-center mb-9'>Introducing <br />
                 <span className="text-indigo-800">Conduify.</span>
             </h1>
             {user ? (
-                <div className='grid sm:grid-cols-3 gap-3'>
-                    
+                <div className='grid grid-cols-2 gap-3'>
                     <button
-                        className='sm:col-span-2 rounded p-3 flex items-center justify-center bg-indigo-600 shadow-inner shadow-indigo-400 hover:bg-indigo-800 text-white'
+                        className='rounded p-3 flex items-center justify-center bg-indigo-600 shadow-inner shadow-indigo-400 hover:bg-indigo-800 text-white'
                         onClick={() => {
                             router.push('/dashboard')
+                        }}
+                    >
+                        Dashboard
+                    </button>
+                    <button
+                        className='rounded p-3 flex items-center justify-center bg-gray-500 hover:bg-gray-600 shadow-inner shadow-gray-300 text-white'
+                        onClick={() => {
+                            router.push('/user')
                         }}
                     >
                         <div className='flex items-center gap-3'>
@@ -39,17 +46,9 @@ const UserPortal = () => {
                                     className='rounded-full'
                                 />
                             )}
-                            Go to Dashboard
+                            User Info
                         </div>
                     </button>
-                    <a
-                        className='rounded p-3 flex items-center justify-center bg-gray-400 hover:bg-gray-500/75 shadow text-white'
-                        href="/api/auth/logout"
-                    >
-                        <div className='flex items-center gap-3'>
-                            Logout
-                        </div>
-                    </a>
                 </div>
 
             ) : (
