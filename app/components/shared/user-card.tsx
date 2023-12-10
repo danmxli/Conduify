@@ -1,4 +1,6 @@
+'use client'
 import { FC } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { BsPlusSquare } from "react-icons/bs";
 import { RxAvatar } from "react-icons/rx";
@@ -14,6 +16,7 @@ interface UserCardProps {
 }
 
 const UserCard: FC<UserCardProps> = (props): JSX.Element => {
+    const router = useRouter()
 
     return (
         <div>
@@ -22,7 +25,12 @@ const UserCard: FC<UserCardProps> = (props): JSX.Element => {
                     <Image src={props.picture} alt="picture" width={60} height={60} className="rounded" />
                 )}
                 <div className="space-y-1.5">
-                    <button className="w-full inline-flex items-center justify-start gap-1 hover:translate-x-2 duration-300">
+                    <button
+                        className="w-full inline-flex items-center justify-start gap-1 hover:translate-x-2 duration-300"
+                        onClick={() => {
+                            router.push('/user')
+                        }}
+                    >
                         User Info <RxAvatar />
                     </button>
                     <a className="w-full inline-flex items-center justify-start gap-1 hover:translate-x-2 duration-300"
