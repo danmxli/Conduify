@@ -44,8 +44,28 @@ def new_session():
     # session_status
     session_status = res["session_status"]
 
+    # session_status is conversation, evaluate response of user
+    if session_status == 'conversation':
+        ...
+        interview_bot = InterviewBot()
+        bot_message = interview_bot.evaluate_response(message_history, input)
+
+        # insert bot message into interview_sessions
+        result = update_chat_history(input, bot_message, email, item_id)
+        if result.modified_count == 0:
+            return "error updating database", 400
+
+        # update session_status
+        result = update_session_status('ask', email, item_id)
+        return jsonify({"response": {
+            "role": "assistant",
+            "content": bot_message
+        },
+            "session_status": "ask"
+        })
+
     # session_status is ask, determine intent of user
-    if session_status == 'ask':
+    elif session_status == 'ask':
         ...
         intent = user_intent(input)[0]
         # contexts and embeddings
@@ -71,7 +91,8 @@ def new_session():
                 "response": {
                     "role": "assistant",
                     "content": bot_message
-                }
+                },
+                "session_status": "conversation"
             })
 
         elif intent == 'analyze resume':
@@ -90,28 +111,11 @@ def new_session():
                 "response": {
                     "role": "assistant",
                     "content": bot_message
-                }
+                },
+                "session_status": "ask"
             })
 
         return "intent not found", 400
-
-    # session_status is conversation, evaluate response of user
-    elif session_status == 'conversation':
-        ...
-        interview_bot = InterviewBot()
-        bot_message = interview_bot.evaluate_response(message_history, input)
-
-        # insert bot message into interview_sessions
-        result = update_chat_history(input, bot_message, email, item_id)
-        if result.modified_count == 0:
-            return "error updating database", 400
-
-        # update session_status
-        result = update_session_status('ask', email, item_id)
-        return jsonify({"response": {
-            "role": "assistant",
-            "content": bot_message
-        }})
 
     return "session status error", 400
 

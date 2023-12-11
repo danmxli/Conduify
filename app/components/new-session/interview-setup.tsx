@@ -38,6 +38,7 @@ interface InterviewSetupProps {
     resumeUrl: string
     updateResumeUrl: (newResumeUrl: string) => void
 
+    updateInputState: (newInputState: string) => void;
     updateSelectedItem: (newItem: string) => void;
 }
 
@@ -91,6 +92,7 @@ const InterviewSetup: FC<InterviewSetupProps> = (props): JSX.Element => {
                     }
                     props.updateChatData(chatData)
                     props.updateSimpleHistory(data["simple_history"])
+                    props.updateInputState("ask")
                     props.updatePhase('ActiveSession')
                     props.updateSelectedItem(data["_id"])
                 }

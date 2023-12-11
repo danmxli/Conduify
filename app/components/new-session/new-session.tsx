@@ -25,6 +25,7 @@ interface NewSessionProps {
         languages: Array<string>
     }) => void;
 
+    updateInputState: (newInputState: string) => void;
     updateSelectedItem: (newItem: string) => void;
 }
 
@@ -79,6 +80,7 @@ const NewSession: FC<NewSessionProps> = (props): JSX.Element => {
                     resumeUrl={resumeUrl}
                     updateResumeUrl={updateResumeUrl}
 
+                    updateInputState={props.updateInputState}
                     updateSelectedItem={props.updateSelectedItem}  
                 />
             </div>

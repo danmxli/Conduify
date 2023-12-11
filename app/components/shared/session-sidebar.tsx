@@ -29,6 +29,8 @@ interface SidebarProps {
     }>
     updateChatData: (newChatData: ChatDataItem) => void;
 
+    updateInputState: (newInputState: string) => void;
+
     selectedItem: string
     updateSelectedItem: (newItem: string) => void;
 }
@@ -66,6 +68,7 @@ const Sidebar: FC<SidebarProps> = (props): JSX.Element => {
                         languages: data["languages"]
                     }
                     props.updateChatData(chatData)
+                    props.updateInputState(data["session_status"])
                     props.updatePhase('ActiveSession')
                 }
             }

@@ -48,6 +48,12 @@ export default withPageAuthRequired(function Dashboard({ user }) {
         setChatData(newChatData)
     }
 
+    // user input state
+    const [inputState, setInputState] = useState('ask')
+    const updateInputState = (newInputState: string) => {
+        setInputState(newInputState)
+    }
+
     // sidebar item selection state
     const [selectedItem, setSelectedItem] = useState('')
     const updateSelectedItem = (newItem: string) => {
@@ -59,8 +65,8 @@ export default withPageAuthRequired(function Dashboard({ user }) {
         [key: string]: React.ReactNode;
     }
     const currPage: PagePhases = {
-        NewSession: <NewSession userName={user.name} userEmail={user.email} updatePhase={updatePhase} updateSimpleHistory={updateSimpleHistory} updateChatData={updateChatData} updateSelectedItem={updateSelectedItem} />,
-        ActiveSession: <ActiveSession userName={user.name} userEmail={user.email} picture={user.picture} updatePhase={updatePhase} chatData={chatData} />
+        NewSession: <NewSession userName={user.name} userEmail={user.email} updatePhase={updatePhase} updateSimpleHistory={updateSimpleHistory} updateChatData={updateChatData} updateInputState={updateInputState} updateSelectedItem={updateSelectedItem} />,
+        ActiveSession: <ActiveSession userName={user.name} userEmail={user.email} picture={user.picture} chatData={chatData} inputState={inputState} updateInputState={updateInputState} updatePhase={updatePhase} />
     }
 
     // access user information
@@ -112,7 +118,7 @@ export default withPageAuthRequired(function Dashboard({ user }) {
                 <Loading />
             ) : (
                 <div className='flex'>
-                    <Sidebar name={user.name} email={user.email} picture={user.picture} updatePhase={updatePhase} simpleHistory={simpleHistory} updateChatData={updateChatData} selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} />
+                    <Sidebar name={user.name} email={user.email} picture={user.picture} updatePhase={updatePhase} simpleHistory={simpleHistory} updateChatData={updateChatData} updateInputState={updateInputState} selectedItem={selectedItem} updateSelectedItem={updateSelectedItem} />
                     <main className='flex-1'>
                         {currPage[phase]}
                     </main>

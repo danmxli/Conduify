@@ -28,6 +28,9 @@ interface ActiveSessionProps {
     picture: string | null | undefined
 
     chatData: ChatDataItem | undefined;
+
+    inputState: string;
+    updateInputState: (newInputState: string) => void;
     updatePhase: (newPhase: string) => void;
 }
 
@@ -84,6 +87,7 @@ const ActiveSession: FC<ActiveSessionProps> = (props): JSX.Element => {
                 const data = await response.json();
                 if (data) {
                     appendToChatHistory('bot', data["response"]["content"])
+                    props.updateInputState(data["session_status"])
                     setLoading(false)
                 }
             }
@@ -125,6 +129,7 @@ const ActiveSession: FC<ActiveSessionProps> = (props): JSX.Element => {
                                     <SessionOptions onChoose={handleInputSubmit} />
                                 )}
                             </div>
+                            {props.inputState}
                             <div className="pb-12 pl-12 pr-12 flex items-center justify-center">
                                 {loading ? (
                                     <DisabledInput />
