@@ -2,7 +2,7 @@
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import React, { useState, useEffect, useRef } from 'react';
 import Loading from '@/components/shared/loading';
-import Sidebar from '@/components/shared/sidebar';
+import Sidebar from '@/components/shared/session-sidebar';
 import NewSession from '@/components/new-session/new-session';
 import ActiveSession from '@/components/active-session/active-session';
 

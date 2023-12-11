@@ -1,5 +1,5 @@
 import { FC, useState, useEffect } from "react"
-import UserCard from "./user-card"
+import UserCard from "./sidebar/card"
 import Image from "next/image"
 
 interface ChatDataItem {
