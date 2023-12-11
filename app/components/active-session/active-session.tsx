@@ -2,6 +2,7 @@ import React, { FC, useRef, useEffect, useState } from "react"
 import SessionOptions from "./session-options"
 import ChatHistory from "./chat-history"
 import ExpandingInput from "./expanding-input"
+import ConversationPopup from "./conversation/conversation-popup"
 import DisabledInput from "../shared/disabled-input"
 import SessionInfo from "./session-info"
 
@@ -114,6 +115,15 @@ const ActiveSession: FC<ActiveSessionProps> = (props): JSX.Element => {
         setUserResponse('')
     }, [props.chatData])
 
+    // user phases
+    interface UserPhases {
+        [key: string]: React.ReactNode;
+    }
+    const currUserPhase: UserPhases = {
+        ask: <ExpandingInput userResponse={userResponse} updateUserResponse={updateUserResponse} onSubmit={handleInputSubmit} inputPhase={inputPhase} updateInputPhase={updateInputPhase} />,
+        conversation: <ConversationPopup question={chatHistory.slice(-1)[0]} userResponse={userResponse} updateUserResponse={updateUserResponse} onSubmit={handleInputSubmit} />
+    }
+
     return (
         <div className="h-screen grid grid-cols-3">
             {props.chatData && (
@@ -129,12 +139,13 @@ const ActiveSession: FC<ActiveSessionProps> = (props): JSX.Element => {
                                     <SessionOptions onChoose={handleInputSubmit} />
                                 )}
                             </div>
-                            {props.inputState}
                             <div className="pb-12 pl-12 pr-12 flex items-center justify-center">
                                 {loading ? (
                                     <DisabledInput />
                                 ) : (
-                                    <ExpandingInput userResponse={userResponse} updateUserResponse={updateUserResponse} onSubmit={handleInputSubmit} inputPhase={inputPhase} updateInputPhase={updateInputPhase} />
+                                    <>
+                                    {currUserPhase[props.inputState]}
+                                    </>
                                 )}
                             </div>
                         </div>
