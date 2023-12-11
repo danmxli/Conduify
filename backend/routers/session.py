@@ -6,6 +6,7 @@ from flask import Blueprint, jsonify, request
 
 from data.config.classify import user_intent
 from data.chatbot.interview_bot import InterviewBot
+from data.chatbot.resume_analysis_bot import ResumeBot
 
 load_dotenv('.env')
 client = MongoClient(os.getenv("MONGODB_URI"))
@@ -47,17 +48,14 @@ def new_session():
     if session_status == 'ask':
         ...
         intent = user_intent(input)[0]
+        # contexts and embeddings
+        resume_contexts = res["resume_contexts"]
+        resume_embeddings = res["resume_embeddings"]
+        interview_info = res["interview_info"]
+        interview_info_embeddings = res["interview_info_embeddings"]
 
         if intent == 'conduct interview':
             ...
-            # get resume contexts and embeddings
-            resume_contexts = res["resume_contexts"]
-            resume_embeddings = res["resume_embeddings"]
-
-            # get interview info contexts and embeddings
-            interview_info = res["interview_info"]
-            interview_info_embeddings = res["interview_info_embeddings"]
-
             interview_bot = InterviewBot()
             bot_message = interview_bot.generate_question(
                 resume_contexts, resume_embeddings, interview_info, interview_info_embeddings, message_history)
@@ -79,7 +77,21 @@ def new_session():
         elif intent == 'analyze resume':
             ...
             # TODO
-            return jsonify({})
+            resume_bot = ResumeBot()
+            bot_message = resume_bot.generate_analysis(
+                resume_contexts, resume_embeddings, interview_info, interview_info_embeddings, message_history)
+
+            # insert bot message into interview_sessions
+            result = update_chat_history(input, bot_message, email, item_id)
+            if result.modified_count == 0:
+                return "error updating database", 400
+
+            return jsonify({
+                "response": {
+                    "role": "assistant",
+                    "content": bot_message
+                }
+            })
 
         return "intent not found", 400
 
