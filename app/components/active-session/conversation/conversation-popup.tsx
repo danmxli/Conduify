@@ -1,7 +1,11 @@
 import { FC, useState, useEffect, useRef, useCallback } from "react"
 import Webcam from "react-webcam";
+import { FFmpeg } from "@ffmpeg/ffmpeg";
+import { fetchFile, toBlobURL } from "@ffmpeg/util";
+import { v4 as uuidv4 } from 'uuid';
 import { GoRocket } from "react-icons/go";
 import { RiLoader2Line, RiWebcamLine, RiVideoUploadLine } from "react-icons/ri";
+import { TbLayoutGridRemove } from "react-icons/tb";
 
 
 interface DialogItem {
@@ -17,6 +21,8 @@ interface ConversationPopupProps {
 }
 
 const ConversationPopup: FC<ConversationPopupProps> = (props): JSX.Element => {
+    const ffmpegRef = useRef(new FFmpeg());
+
     // webcam
     const webcamRef = useRef<Webcam | null>(null);
     const mediaRecorderRef = useRef<MediaRecorder | null>(null);
@@ -54,21 +60,31 @@ const ConversationPopup: FC<ConversationPopupProps> = (props): JSX.Element => {
         setCapturing(false);
     }, [mediaRecorderRef, setCapturing]);
 
-    const handleDownload = useCallback(() => {
+    const handleDownload = async () => {
+        const baseURL = 'https://unpkg.com/@ffmpeg/core@0.12.4/dist/umd'
+        const ffmpeg = ffmpegRef.current;
+        await ffmpeg.load({
+            coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, 'text/javascript'),
+            wasmURL: await toBlobURL(`${baseURL}/ffmpeg-core.wasm`, 'application/wasm'),
+        });
+
         if (recordedChunks.length) {
             const blob = new Blob(recordedChunks, {
                 type: "video/webm"
             });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement("a");
-            document.body.appendChild(a);
-            a.href = url;
-            a.download = "react-webcam-stream-capture.webm";
-            a.click();
-            window.URL.revokeObjectURL(url);
-            setRecordedChunks([]);
+
+            // write file to mem
+            const unique_id = uuidv4();
+            await ffmpeg.writeFile(`${unique_id}.webm`, await fetchFile(blob));
+            await ffmpeg.exec(
+                ["-i",
+                    `${unique_id}.webm`,
+                    `${unique_id}.mp3`]
+            );
+
+            const data = await ffmpeg.readFile(`${unique_id}.mp3`)
         }
-    }, [recordedChunks]);
+    };
 
     const stop = () => {
         const videoElement = webcamRef.current?.video;
@@ -129,15 +145,24 @@ const ConversationPopup: FC<ConversationPopupProps> = (props): JSX.Element => {
                                     ><RiLoader2Line className="animate-spin" />Stop Capture</button>
                                 ) : (
                                     <>
-                                        <button
-                                            className="bg-gray-50 hover:bg-gray-100 p-3 pt-1.5 pb-1.5 rounded shadow flex items-center justify-center gap-3"
-                                            onClick={handleStartCaptureClick}
-                                        ><RiWebcamLine />Capture</button>
-                                        {recordedChunks.length > 0 && (
+                                        {recordedChunks.length > 0 ? (
+                                            <>
+                                                <button
+                                                    className="bg-gray-50 hover:bg-gray-100 p-3 pt-1.5 pb-1.5 rounded shadow flex items-center justify-center gap-3"
+                                                    onClick={handleDownload}
+                                                ><RiVideoUploadLine />Submit</button>
+                                                <button
+                                                    className="bg-gray-50 hover:bg-gray-100 p-3 pt-1.5 pb-1.5 rounded shadow flex items-center justify-center gap-3"
+                                                    onClick={() => {
+                                                        setRecordedChunks([])
+                                                    }}
+                                                ><TbLayoutGridRemove />Redo</button>
+                                            </>
+                                        ) : (
                                             <button
                                                 className="bg-gray-50 hover:bg-gray-100 p-3 pt-1.5 pb-1.5 rounded shadow flex items-center justify-center gap-3"
-                                                onClick={handleDownload}
-                                            ><RiVideoUploadLine />Submit</button>
+                                                onClick={handleStartCaptureClick}
+                                            ><RiWebcamLine />New Capture</button>
                                         )}
                                     </>
 
