@@ -82,7 +82,7 @@ const ConversationPopup: FC<ConversationPopupProps> = (props): JSX.Element => {
                     `${unique_id}.mp3`]
             );
 
-            const data = await ffmpeg.readFile(`${unique_id}.mp3`)
+
         }
     };
 
