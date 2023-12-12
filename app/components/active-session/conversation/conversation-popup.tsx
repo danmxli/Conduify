@@ -1,6 +1,9 @@
 import React, { FC, useState, useEffect } from "react"
 import Image from "next/image";
+import WebcamSession from "./webcam";
 import { GoRocket } from "react-icons/go";
+import { RiWebcamLine } from "react-icons/ri";
+import { FaRegEyeSlash } from "react-icons/fa";
 
 interface DialogItem {
     role: string
@@ -19,6 +22,9 @@ interface ConversationPopupProps {
 }
 
 const ConversationPopup: FC<ConversationPopupProps> = (props): JSX.Element => {
+    // webcam session state
+    const [openWebcam, setOpenWebcam] = useState(false)
+
     // handle open, close conversation popup
     const [openConversation, setOpenConversation] = useState(false)
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -66,34 +72,61 @@ const ConversationPopup: FC<ConversationPopupProps> = (props): JSX.Element => {
                                 <h1>{props.question.content}</h1>
                             </div>
 
-                            <div className="border-t pt-6 flex items-center justify-start gap-3">
-                                <Image
-                                    src={props.c_logo || "https://logo.clearbit.com/cohere.ai"}
-                                    alt="logo"
-                                    width={60}
-                                    height={60}
-                                    className="w-fit rounded"
-                                />
-                                <div>
-                                    <h1>{props.c_name}</h1>
-                                    <p className="text-xs">{props.position}</p>
-                                    <p className="text-xs">{props.languages?.join(', ')}
-
-                                    </p>
+                            <div className="border-t pt-6 flex items-center justify-between">
+                                <div className="flex items-center justify-start gap-3">
+                                    <Image
+                                        src={props.c_logo || "https://logo.clearbit.com/cohere.ai"}
+                                        alt="logo"
+                                        width={60}
+                                        height={60}
+                                        className="w-fit rounded"
+                                    />
+                                    <div>
+                                        <h1>{props.c_name}</h1>
+                                        <p className="text-xs">{props.position}</p>
+                                        <p className="text-xs">{props.languages?.join(', ')}
+                                        </p>
+                                    </div>
                                 </div>
+                                <div>
+                                    <button
+                                        className="bg-gray-50 hover:bg-gray-100 p-3 pt-1.5 pb-1.5 rounded shadow flex items-center justify-center gap-3"
+                                        onClick={() => {
+                                            setOpenWebcam(!openWebcam)
+                                        }}
+                                    >
+                                        {openWebcam ? (
+                                            <>
+                                                <FaRegEyeSlash />Close
+                                            </>
+                                        ) : (
+                                            <>
+                                                <RiWebcamLine />Webcam
+                                            </>
+                                        )}
 
+                                    </button>
+                                </div>
                             </div>
-
                         </div>
 
                         <div className="col-span-2 pl-6 flex items-center justify-center">
                             <div>
-                                <textarea
-                                    value={props.userResponse}
-                                    onChange={handleInputChange}
-                                >
-                                </textarea>
-                                <button onClick={handleSubmit}>submit</button>
+                                {openWebcam ? (
+                                    <>
+                                        <WebcamSession />
+                                    </>
+                                ) : (
+                                    <>
+                                        <textarea
+                                            value={props.userResponse}
+                                            onChange={handleInputChange}
+                                        >
+                                        </textarea>
+                                        <button onClick={handleSubmit}>submit</button>
+                                    </>
+                                )}
+
                             </div>
                         </div>
                     </div>

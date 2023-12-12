@@ -7,20 +7,12 @@ import { GoRocket } from "react-icons/go";
 import { RiLoader2Line, RiWebcamLine, RiVideoUploadLine } from "react-icons/ri";
 import { TbLayoutGridRemove } from "react-icons/tb";
 
-
-interface DialogItem {
-    role: string
-    content: string
-}
-
 interface WebcamSessionProps {
-    question: DialogItem;
-    userResponse: string;
     updateUserResponse: (newResponse: string) => void;
     onSubmit: (text: string) => Promise<void>;
 }
 
-const WebcamSession: FC<WebcamSessionProps> = (props): JSX.Element => {
+const WebcamSession = () => {
     const ffmpegRef = useRef(new FFmpeg());
 
     // webcam
@@ -99,14 +91,11 @@ const WebcamSession: FC<WebcamSessionProps> = (props): JSX.Element => {
     };
 
 
-    // handle open, close conversation popup
-    const [openConversation, setOpenConversation] = useState(false)
     const handleKeyDown = (event: KeyboardEvent) => {
         if (event.key === 'Escape') {
             setCapturing(false)
             stop
             setRecordedChunks([])
-            setOpenConversation(false)
         }
     }
     useEffect(() => {
@@ -122,35 +111,38 @@ const WebcamSession: FC<WebcamSessionProps> = (props): JSX.Element => {
             <div>
                 <Webcam mirrored audio={true} ref={webcamRef} />
             </div>
-            {capturing ? (
-                <button
-                    className="bg-gray-50 hover:bg-gray-100 p-3 pt-1.5 pb-1.5 rounded shadow flex items-center justify-center gap-3"
-                    onClick={handleStopCaptureClick}
-                ><RiLoader2Line className="animate-spin" />Stop Capture</button>
-            ) : (
-                <>
-                    {recordedChunks.length > 0 ? (
-                        <>
+            <div className="mt-3 flex items-center justify-center gap-3">
+                {capturing ? (
+                    <button
+                        className="bg-gray-50 hover:bg-gray-100 p-3 pt-1.5 pb-1.5 rounded shadow flex items-center justify-center gap-3"
+                        onClick={handleStopCaptureClick}
+                    ><RiLoader2Line className="animate-spin" />Stop Capture</button>
+                ) : (
+                    <>
+                        {recordedChunks.length > 0 ? (
+                            <>
+                                <button
+                                    className="bg-gray-50 hover:bg-gray-100 p-3 pt-1.5 pb-1.5 rounded shadow flex items-center justify-center gap-3"
+                                    onClick={handleDownload}
+                                ><RiVideoUploadLine />Submit</button>
+                                <button
+                                    className="bg-gray-50 hover:bg-gray-100 p-3 pt-1.5 pb-1.5 rounded shadow flex items-center justify-center gap-3"
+                                    onClick={() => {
+                                        setRecordedChunks([])
+                                    }}
+                                ><TbLayoutGridRemove />Redo</button>
+                            </>
+                        ) : (
                             <button
                                 className="bg-gray-50 hover:bg-gray-100 p-3 pt-1.5 pb-1.5 rounded shadow flex items-center justify-center gap-3"
-                                onClick={handleDownload}
-                            ><RiVideoUploadLine />Submit</button>
-                            <button
-                                className="bg-gray-50 hover:bg-gray-100 p-3 pt-1.5 pb-1.5 rounded shadow flex items-center justify-center gap-3"
-                                onClick={() => {
-                                    setRecordedChunks([])
-                                }}
-                            ><TbLayoutGridRemove />Redo</button>
-                        </>
-                    ) : (
-                        <button
-                            className="bg-gray-50 hover:bg-gray-100 p-3 pt-1.5 pb-1.5 rounded shadow flex items-center justify-center gap-3"
-                            onClick={handleStartCaptureClick}
-                        ><RiWebcamLine />New Capture</button>
-                    )}
-                </>
+                                onClick={handleStartCaptureClick}
+                            ><RiWebcamLine />New Capture</button>
+                        )}
+                    </>
 
-            )}
+                )}
+            </div>
+
         </>
     )
 }
