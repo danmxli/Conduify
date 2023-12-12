@@ -33,7 +33,8 @@ export default withPageAuthRequired(function Dashboard({ user }) {
         interview_sessions: Array<any> // TODO  
         interviewee: string,
         resume: string,
-        languages: Array<string>
+        languages: Array<string>,
+        position: string
     }
 
     // simple history state

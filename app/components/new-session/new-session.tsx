@@ -22,7 +22,8 @@ interface NewSessionProps {
         interview_sessions: Array<any> // TODO  
         interviewee: string,
         resume: string,
-        languages: Array<string>
+        languages: Array<string>,
+        position: string
     }) => void;
 
     updateInputState: (newInputState: string) => void;

@@ -11,7 +11,8 @@ interface ChatDataItem {
     interview_sessions: Array<any> // TODO  
     interviewee: string,
     resume: string,
-    languages: Array<string>
+    languages: Array<string>,
+    position: string
 }
 
 interface SidebarProps {
@@ -65,7 +66,8 @@ const Sidebar: FC<SidebarProps> = (props): JSX.Element => {
                         interview_sessions: data["interview_sessions"],
                         interviewee: data["interviewee"],
                         resume: data["resume_url"],
-                        languages: data["languages"]
+                        languages: data["languages"],
+                        position: data["position"]
                     }
                     props.updateChatData(chatData)
                     props.updateInputState(data["session_status"])

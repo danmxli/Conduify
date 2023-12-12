@@ -1,6 +1,6 @@
-import { FC, useState, useEffect } from "react"
+import React, { FC, useState, useEffect } from "react"
+import Image from "next/image";
 import { GoRocket } from "react-icons/go";
-
 
 interface DialogItem {
     role: string
@@ -9,6 +9,10 @@ interface DialogItem {
 
 interface ConversationPopupProps {
     question: DialogItem;
+    c_logo: string | undefined;
+    c_name: string | undefined;
+    position: string | undefined;
+    languages: Array<string> | undefined;
     userResponse: string;
     updateUserResponse: (newResponse: string) => void;
     onSubmit: (text: string) => Promise<void>;
@@ -30,6 +34,18 @@ const ConversationPopup: FC<ConversationPopupProps> = (props): JSX.Element => {
         };
     })
 
+    // handle textarea change
+    const handleInputChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        props.updateUserResponse(event.target.value)
+    }
+    const handleSubmit = () => {
+        if (props.userResponse.trim() !== '') {
+            props.onSubmit(props.userResponse);
+            props.updateUserResponse('');
+            setOpenConversation(false)
+        }
+    };
+
     return (
         <>
             <button
@@ -50,7 +66,21 @@ const ConversationPopup: FC<ConversationPopupProps> = (props): JSX.Element => {
                                 <h1>{props.question.content}</h1>
                             </div>
 
-                            <div className="border-t pt-6 flex items-center justify-end gap-3">
+                            <div className="border-t pt-6 flex items-center justify-start gap-3">
+                                <Image
+                                    src={props.c_logo || "https://logo.clearbit.com/cohere.ai"}
+                                    alt="logo"
+                                    width={60}
+                                    height={60}
+                                    className="w-fit rounded"
+                                />
+                                <div>
+                                    <h1>{props.c_name}</h1>
+                                    <p className="text-xs">{props.position}</p>
+                                    <p className="text-xs">{props.languages?.join(', ')}
+
+                                    </p>
+                                </div>
 
                             </div>
 
@@ -58,6 +88,12 @@ const ConversationPopup: FC<ConversationPopupProps> = (props): JSX.Element => {
 
                         <div className="col-span-2 pl-6 flex items-center justify-center">
                             <div>
+                                <textarea
+                                    value={props.userResponse}
+                                    onChange={handleInputChange}
+                                >
+                                </textarea>
+                                <button onClick={handleSubmit}>submit</button>
                             </div>
                         </div>
                     </div>

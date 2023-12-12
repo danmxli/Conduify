@@ -20,7 +20,8 @@ interface ChatDataItem {
     interview_sessions: Array<DialogItem> // TODO  
     interviewee: string,
     resume: string,
-    languages: Array<string>
+    languages: Array<string>,
+    position: string
 }
 
 interface ActiveSessionProps {
@@ -121,7 +122,7 @@ const ActiveSession: FC<ActiveSessionProps> = (props): JSX.Element => {
     }
     const currUserPhase: UserPhases = {
         ask: <ExpandingInput userResponse={userResponse} updateUserResponse={updateUserResponse} onSubmit={handleInputSubmit} inputPhase={inputPhase} updateInputPhase={updateInputPhase} />,
-        conversation: <ConversationPopup question={chatHistory.slice(-1)[0]} userResponse={userResponse} updateUserResponse={updateUserResponse} onSubmit={handleInputSubmit} />
+        conversation: <ConversationPopup c_logo={props.chatData?.c_logo} c_name={props.chatData?.c_name} position={props.chatData?.position} languages={props.chatData?.languages} question={chatHistory.slice(-1)[0]} userResponse={userResponse} updateUserResponse={updateUserResponse} onSubmit={handleInputSubmit} />
     }
 
     return (
@@ -144,7 +145,7 @@ const ActiveSession: FC<ActiveSessionProps> = (props): JSX.Element => {
                                     <DisabledInput />
                                 ) : (
                                     <>
-                                    {currUserPhase[props.inputState]}
+                                        {currUserPhase[props.inputState]}
                                     </>
                                 )}
                             </div>
