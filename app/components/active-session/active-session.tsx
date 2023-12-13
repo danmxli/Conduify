@@ -121,8 +121,9 @@ const ActiveSession: FC<ActiveSessionProps> = (props): JSX.Element => {
         [key: string]: React.ReactNode;
     }
     const currUserPhase: UserPhases = {
-        ask: <ExpandingInput userResponse={userResponse} updateUserResponse={updateUserResponse} onSubmit={handleInputSubmit} inputPhase={inputPhase} updateInputPhase={updateInputPhase} />,
-        conversation: <ConversationPopup c_logo={props.chatData?.c_logo} c_name={props.chatData?.c_name} position={props.chatData?.position} languages={props.chatData?.languages} question={chatHistory.slice(-1)[0]} userResponse={userResponse} updateUserResponse={updateUserResponse} onSubmit={handleInputSubmit} />
+        ask: <ExpandingInput userResponse={userResponse} updateUserResponse={updateUserResponse} onSubmit={handleInputSubmit} />,
+
+        conversation: <ConversationPopup c_logo={props.chatData?.c_logo} c_name={props.chatData?.c_name} position={props.chatData?.position} languages={props.chatData?.languages} question={chatHistory.slice(-1)[0]} inputPhase={inputPhase} updateInputPhase={updateInputPhase} userResponse={userResponse} updateUserResponse={updateUserResponse} onSubmit={handleInputSubmit} />
     }
 
     return (
