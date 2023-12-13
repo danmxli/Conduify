@@ -3,7 +3,6 @@ import Webcam from "react-webcam";
 import { FFmpeg } from "@ffmpeg/ffmpeg";
 import { fetchFile, toBlobURL } from "@ffmpeg/util";
 import { v4 as uuidv4 } from 'uuid';
-import { GoRocket } from "react-icons/go";
 import { RiLoader2Line, RiWebcamLine, RiVideoUploadLine } from "react-icons/ri";
 import { TbLayoutGridRemove } from "react-icons/tb";
 
@@ -19,6 +18,7 @@ const WebcamSession = () => {
     const webcamRef = useRef<Webcam | null>(null);
     const mediaRecorderRef = useRef<MediaRecorder | null>(null);
     const [capturing, setCapturing] = useState(false);
+    const [cameraLoaded, setCameraLoaded] = useState(false)
     const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]);
 
     const handleDataAvailable = useCallback(
@@ -29,6 +29,12 @@ const WebcamSession = () => {
         },
         [setRecordedChunks]
     );
+
+    const handleUserMedia = () => {
+        setTimeout(() => {
+            setCameraLoaded(true);
+        }, 1000);
+    };
 
     const handleStartCaptureClick = useCallback(() => {
         setCapturing(true);
@@ -65,7 +71,7 @@ const WebcamSession = () => {
                 type: "video/webm"
             });
 
-            // write file to mem
+            // TODO write file to mem, remove video, convert audio to .mp3
             const unique_id = uuidv4();
             await ffmpeg.writeFile(`${unique_id}.webm`, await fetchFile(blob));
             await ffmpeg.exec(
@@ -74,7 +80,17 @@ const WebcamSession = () => {
                     `${unique_id}.mp3`]
             );
 
+            // TODO read and create new file from file system
 
+            // for now, download blob as .webm
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            document.body.appendChild(a);
+            a.href = url;
+            a.download = "session-capture.webm";
+            a.click();
+            window.URL.revokeObjectURL(url);
+            setRecordedChunks([]);
         }
     };
 
@@ -109,37 +125,47 @@ const WebcamSession = () => {
     return (
         <>
             <div>
-                <Webcam mirrored audio={true} ref={webcamRef} />
+                <Webcam
+                    mirrored
+                    audio={true}
+                    ref={webcamRef}
+                    onUserMedia={handleUserMedia}
+                />
             </div>
             <div className="mt-3 flex items-center justify-center gap-3">
-                {capturing ? (
-                    <button
-                        className="bg-gray-50 hover:bg-gray-100 p-3 pt-1.5 pb-1.5 rounded shadow flex items-center justify-center gap-3"
-                        onClick={handleStopCaptureClick}
-                    ><RiLoader2Line className="animate-spin" />Stop Capture</button>
-                ) : (
+                {cameraLoaded ? (
                     <>
-                        {recordedChunks.length > 0 ? (
-                            <>
-                                <button
-                                    className="bg-gray-50 hover:bg-gray-100 p-3 pt-1.5 pb-1.5 rounded shadow flex items-center justify-center gap-3"
-                                    onClick={handleDownload}
-                                ><RiVideoUploadLine />Submit</button>
-                                <button
-                                    className="bg-gray-50 hover:bg-gray-100 p-3 pt-1.5 pb-1.5 rounded shadow flex items-center justify-center gap-3"
-                                    onClick={() => {
-                                        setRecordedChunks([])
-                                    }}
-                                ><TbLayoutGridRemove />Redo</button>
-                            </>
-                        ) : (
+                        {capturing ? (
                             <button
                                 className="bg-gray-50 hover:bg-gray-100 p-3 pt-1.5 pb-1.5 rounded shadow flex items-center justify-center gap-3"
-                                onClick={handleStartCaptureClick}
-                            ><RiWebcamLine />New Capture</button>
+                                onClick={handleStopCaptureClick}
+                            ><RiLoader2Line className="animate-spin" />Stop Capture</button>
+                        ) : (
+                            <>
+                                {recordedChunks.length > 0 ? (
+                                    <>
+                                        <button
+                                            className="bg-gray-50 hover:bg-gray-100 p-3 pt-1.5 pb-1.5 rounded shadow flex items-center justify-center gap-3"
+                                            onClick={handleDownload}
+                                        ><RiVideoUploadLine />Submit</button>
+                                        <button
+                                            className="bg-gray-50 hover:bg-gray-100 p-3 pt-1.5 pb-1.5 rounded shadow flex items-center justify-center gap-3"
+                                            onClick={() => {
+                                                setRecordedChunks([])
+                                            }}
+                                        ><TbLayoutGridRemove />Redo</button>
+                                    </>
+                                ) : (
+                                    <button
+                                        className="bg-gray-50 hover:bg-gray-100 p-3 pt-1.5 pb-1.5 rounded shadow flex items-center justify-center gap-3"
+                                        onClick={handleStartCaptureClick}
+                                    ><RiWebcamLine />New Capture</button>
+                                )}
+                            </>
                         )}
                     </>
-
+                ) : (
+                    <><RiLoader2Line className="animate-spin" />loading...</>
                 )}
             </div>
 
