@@ -39,7 +39,12 @@ def new_session():
     res = next((item for item in curr_history if item["_id"] == item_id), None)
     if res is None:
         return f"history item not found for {item_id}", 400
-    message_history = res["interview_sessions"]
+    
+    # remove "message_type" key value
+    message_history = [
+        {k: v for k, v in msg.items() if k != "message_type"} for msg in res["interview_sessions"]
+    ]
+    print(message_history)
 
     # session_status
     session_status = res["session_status"]
@@ -51,7 +56,7 @@ def new_session():
         bot_message = interview_bot.evaluate_response(message_history, input)
 
         # insert bot message into interview_sessions
-        result = update_chat_history(input, bot_message, email, item_id)
+        result = update_chat_history(input, bot_message, "response_evaluation", email, item_id)
         if result.modified_count == 0:
             return "error updating database", 400
 
@@ -59,7 +64,8 @@ def new_session():
         result = update_session_status('ask', email, item_id)
         return jsonify({"response": {
             "role": "assistant",
-            "content": bot_message
+            "content": bot_message,
+            "message_type": "resume_analysis"
         },
             "session_status": "ask"
         })
@@ -81,7 +87,7 @@ def new_session():
                 resume_contexts, resume_embeddings, interview_info, interview_info_embeddings, message_history)
 
             # insert bot message into interview_sessions
-            result = update_chat_history(input, bot_message, email, item_id)
+            result = update_chat_history(input, bot_message, "interview", email, item_id)
             if result.modified_count == 0:
                 return "error updating database", 400
 
@@ -90,7 +96,8 @@ def new_session():
             return jsonify({
                 "response": {
                     "role": "assistant",
-                    "content": bot_message
+                    "content": bot_message,
+                    "message_type": "interview"
                 },
                 "session_status": "conversation"
             })
@@ -103,14 +110,15 @@ def new_session():
                 resume_contexts, resume_embeddings, interview_info, interview_info_embeddings, message_history)
 
             # insert bot message into interview_sessions
-            result = update_chat_history(input, bot_message, email, item_id)
+            result = update_chat_history(input, bot_message, "resume_analysis", email, item_id)
             if result.modified_count == 0:
                 return "error updating database", 400
 
             return jsonify({
                 "response": {
                     "role": "assistant",
-                    "content": bot_message
+                    "content": bot_message,
+                    "message_type": "resume_analysis"
                 },
                 "session_status": "ask"
             })
@@ -125,7 +133,7 @@ helpers
 """
 
 
-def update_chat_history(input, bot_message, email, item_id):
+def update_chat_history(input, bot_message, message_type, email, item_id):
     ...
     filter = {
         "email": email,
@@ -138,11 +146,13 @@ def update_chat_history(input, bot_message, email, item_id):
                 "$each": [
                     {
                         "role": "user",
-                        "content": input
+                        "content": input,
+                        "message_type": "user"
                     },
                     {
                         "role": "assistant",
-                        "content": bot_message
+                        "content": bot_message,
+                        "message_type": message_type
                     }
                 ]
             }
