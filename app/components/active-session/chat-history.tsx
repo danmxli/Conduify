@@ -1,6 +1,7 @@
 import React, { FC } from "react"
 import Image from "next/image"
 import conduify from "../../public/conduify.svg"
+import { parseResponse } from "@/modules/chatbot-response"
 
 interface DialogItem {
     role: string
@@ -13,6 +14,10 @@ interface ChatHistoryProps {
 }
 
 const ChatHistory: FC<ChatHistoryProps> = (props): JSX.Element => {
+
+    interface BotEvaluation {
+        [key: string]: Array<string>
+    }
 
     return (
         <div className="p-20 space-y-6">
