@@ -65,7 +65,7 @@ def new_session():
         return jsonify({"response": {
             "role": "assistant",
             "content": bot_message,
-            "message_type": "resume_analysis"
+            "message_type": "response_evaluation"
         },
             "session_status": "ask"
         })
