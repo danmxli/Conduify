@@ -1,11 +1,13 @@
 import React, { FC } from "react"
 import Image from "next/image"
 import conduify from "../../public/conduify.svg"
+import MessageIndication from "./conversation/message-indication"
 import { parseResponse } from "@/modules/chatbot-response"
 
 interface DialogItem {
     role: string
     content: string
+    message_type: string
 }
 
 interface ChatHistoryProps {
@@ -45,8 +47,11 @@ const ChatHistory: FC<ChatHistoryProps> = (props): JSX.Element => {
                                         <Image src={conduify} alt="bot" width={30} height={30} className="rounded-full shadow" />
                                     </div>
                                 )}
-                                <div className="p-3 rounded-2xl shadow text-gray-800 whitespace-pre-line">
-                                    {item.content}
+                                <div className="rounded-2xl shadow bg-indigo-50 text-gray-800 whitespace-pre-line">
+                                    <MessageIndication message_type={item.message_type} />
+                                    <div className="p-3 bg-white rounded-b-2xl">
+                                        {item.content}
+                                    </div>
                                 </div>
                             </div>
                         )}

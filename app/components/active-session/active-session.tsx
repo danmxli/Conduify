@@ -9,6 +9,7 @@ import SessionInfo from "./session-info"
 interface DialogItem {
     role: string
     content: string
+    message_type: string
 }
 
 interface ChatDataItem {
@@ -41,10 +42,11 @@ const ActiveSession: FC<ActiveSessionProps> = (props): JSX.Element => {
     // copy of interview_sessions
     const [chatHistory, setChatHistory] = useState<Array<DialogItem>>([]);
 
-    const appendToChatHistory = (role: string, content: string) => {
+    const appendToChatHistory = (role: string, content: string, message_type: string) => {
         const newDialogItem: DialogItem = {
             role,
             content,
+            message_type
         };
         setChatHistory((prevChatHistory) => [...prevChatHistory, newDialogItem]);
     };
@@ -75,7 +77,7 @@ const ActiveSession: FC<ActiveSessionProps> = (props): JSX.Element => {
             email: props.userEmail,
             input: text,
         }
-        appendToChatHistory('user', text)
+        appendToChatHistory('user', text, 'user')
         setLoading(true)
         try {
             const response = await fetch('http://127.0.0.1:5000/session/new', {
@@ -88,7 +90,7 @@ const ActiveSession: FC<ActiveSessionProps> = (props): JSX.Element => {
             if (response.ok) {
                 const data = await response.json();
                 if (data) {
-                    appendToChatHistory('bot', data["response"]["content"])
+                    appendToChatHistory('bot', data["response"]["content"], data["response"]["message_type"])
                     props.updateInputState(data["session_status"])
                     setLoading(false)
                 }
