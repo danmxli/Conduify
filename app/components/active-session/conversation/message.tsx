@@ -1,5 +1,5 @@
 import React, { FC } from "react"
-import { parseResponse } from "@/modules/chatbot-response"
+import InterviewEvaluation from "./response/interview-evaluation";
 import { MdOutlineAnalytics, MdChecklistRtl, MdHdrStrong } from "react-icons/md";
 
 
@@ -25,7 +25,7 @@ const BotMessage: FC<BotMessageProps> = (props): JSX.Element => {
             <div className="rounded-2xl bg-indigo-100 shadow text-gray-800 whitespace-pre-line">
                 <h1 className="p-3 text-indigo-800 flex items-center justify-between">Response Evaluation <MdChecklistRtl /></h1>
                 <div className="p-3 bg-white rounded-b-2xl">
-                    {props.content}
+                    <InterviewEvaluation content={props.content} />
                 </div>
             </div>,
         interview:

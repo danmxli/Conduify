@@ -1,4 +1,3 @@
-'use server'
 interface BotEvaluation {
     [key: string]: Array<string>
 }
