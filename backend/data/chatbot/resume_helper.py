@@ -21,19 +21,22 @@ class ResumeHelper:
         groups = []
 
         docs = list(self.nlp.pipe(contexts))
+        texts = [{'text': doc.text, 'matched': False} for doc in docs]
 
-        for i in range(len(docs)):
-            # Each group is a list of similar strings, initialized with the current string
-            group = [docs[i].text]
-            for j in range(i + 1, len(docs)):
+        for i, e in enumerate(docs):
+            if not texts[i]['matched']:
+                group = [e.text]
+                texts[i]['matched'] = True
 
-                if docs[i].similarity(docs[j]) > SIMILARITY_THRESHOLD:
-                    group.append(docs[j].text)
+                for j in range(i+1, len(docs)):
 
-            groups.append(group)
+                    if not texts[j]['matched'] and docs[i].similarity(docs[j]) > SIMILARITY_THRESHOLD and docs[j].text not in group:
+                        group.append(docs[j].text)
+                        texts[j]['matched'] = True
+
+                groups.append(group)
 
         # test
-        print(groups)
         return groups
 
     def analyze_chunk(self):

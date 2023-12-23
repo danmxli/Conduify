@@ -34,5 +34,5 @@ class ResumeBot:
 
         groups = self.resume_helper.group(resume_contexts)
         
-        response = ["\n".join(chunk) for chunk in groups]
+        response = ["\n///break///\n".join(chunk) for chunk in groups]
         return response
