@@ -1,3 +1,7 @@
+from data.chatbot.resume_helper import ResumeHelper
+import os
+from pymongo.mongo_client import MongoClient
+from dotenv import load_dotenv
 mock_contexts = [
     "\n | Dan Li | Email : d22li@uwaterloo.ca\n | Github | Mobile : +1-647-675-6975\n | Education • University of Waterloo | Waterloo, ON\n | Bachelor of Applied Science - BASc, Computer Engineering | Sept 2022 – Apr 2027\n | Experience • Onlia Insurance | Toronto, ON\n | Automation Developer | May 2023 - Aug 2023\n",
     "\n◦ WebDriver Testing Application: Developed a scalable front-end project to automate client-to-site interactions using the Selenium and TestNG frameworks.",
@@ -25,9 +29,23 @@ mock_contexts = [
     "Programming Skills\nLanguages: Python, Javascript, Typescript, C, C++, SQL, Java, Bash Tools and Databases: Git, Docker, Linux, MongoDB, PostgreSQL Frameworks and Libraries: Flask, Django, FastAPI, Next.js, Selenium WebDriver, React.js, NumPy, Pandas"
 ]
 
-from data.chatbot.resume_helper import ResumeHelper
+
+load_dotenv('.env')
+client = MongoClient(os.getenv("MONGODB_URI"))
+db = client['AppData']
+UserInfo = db['UserInfo']
+
+NAME = 'Samson Alexander'
+EMAIL = 'samsalexdrrr@gmail.com'
+ITEM_ID = 'f662c25e-d328-4a15-ae25-6b97af5e90e8'
+
+match = UserInfo.find_one({"name": NAME, "email": EMAIL})
+curr_history = match.get("history", [])
+res = next((item for item in curr_history if item["_id"] == ITEM_ID), None)
+
 
 resume_helper = ResumeHelper()
 
-resume_helper.group(mock_contexts)
+test = resume_helper.group(mock_contexts, res["interview_info_embeddings"])
+print(test)
 

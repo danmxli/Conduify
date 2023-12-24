@@ -32,7 +32,8 @@ class ResumeBot:
         if not GPT:
             return (mock()["ordered_content"])
 
-        groups = self.resume_helper.group(resume_contexts)
+        groups = self.resume_helper.group(resume_contexts, interview_info)
         
-        response = ["\n///break///\n".join(chunk) for chunk in groups]
+        response = "\n///BREAK///\n".join(groups)
+
         return response

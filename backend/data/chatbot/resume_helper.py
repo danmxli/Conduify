@@ -6,6 +6,7 @@ import numpy as np
 load_dotenv('.env')
 
 SIMILARITY_THRESHOLD = 0.7
+GPT = True
 
 
 class ResumeHelper:
@@ -14,7 +15,7 @@ class ResumeHelper:
         self.nlp = spacy.load("en_core_web_md")
         self.helper = OpenAI(api_key=os.getenv('OPENAI_KEY'))
 
-    def group(self, contexts):
+    def group(self, contexts, interview_info):
         """
         Group resume chunks together by string context similarity.
         """
@@ -24,22 +25,34 @@ class ResumeHelper:
         texts = [{'text': doc.text, 'matched': False} for doc in docs]
 
         for i, e in enumerate(docs):
-            if not texts[i]['matched']:
-                group = [e.text]
-                texts[i]['matched'] = True
+            if texts[i]['matched']:
+                continue
 
-                for j in range(i+1, len(docs)):
+            group = [e.text]
+            texts[i]['matched'] = True
 
-                    if not texts[j]['matched'] and docs[i].similarity(docs[j]) > SIMILARITY_THRESHOLD and docs[j].text not in group:
-                        group.append(docs[j].text)
-                        texts[j]['matched'] = True
+            for j in range(i+1, len(docs)):
 
-                groups.append(group)
+                if texts[j]['matched'] or docs[i].similarity(docs[j]) <= SIMILARITY_THRESHOLD or docs[j].text in group:
+                    continue
 
-        # test
+                group.append(docs[j].text)
+                texts[j]['matched'] = True
+
+            grouped_chunk = "\n".join(group)
+            groups.append(grouped_chunk)
+
         return groups
 
-    def analyze_chunk(self):
+    def cleanup_chunk(self, chunk):
+        """
+        Clean up formatting errors by summarizing the chunk.
+        """
+
+
+    def analyze_chunk(self, chunk, interview_info):
         """
         Adds similarity ranking, chunk summary, and suggestions to the chunk.
         """
+
+        chunk.append('///EVALUATION///')
