@@ -8,6 +8,13 @@ load_dotenv('.env')
 SIMILARITY_THRESHOLD = 0.7
 GPT = True
 
+SYSTEM_MESSAGE_PROMPT = """
+        You are an assistant whose job is to cleanup and summarize a chunk of a resume document.
+        You have access to all the important details of the chunk. You must include ALL the details in your summary.
+        Your response must include ONLY the summary of the chunk. You must respond in third person PASSIVE point of view.
+        Do not begin your summary with "this individual...". Instead, construct the summary as if you are rewriting the chunk for a resume.
+        """
+
 
 class ResumeHelper:
 
@@ -40,15 +47,30 @@ class ResumeHelper:
                 texts[j]['matched'] = True
 
             grouped_chunk = "\n".join(group)
-            groups.append(grouped_chunk)
+            cleaned_chunk = self.cleanup_chunk(grouped_chunk)
+            groups.append(cleaned_chunk)
 
         return groups
 
-    def cleanup_chunk(self, chunk):
+    def cleanup_chunk(self, grouped_chunk):
         """
         Clean up formatting errors by summarizing the chunk.
         """
-
+        helper_config = [
+            {
+                "role": "system",
+                "content": f"{SYSTEM_MESSAGE_PROMPT}"
+            },
+            {
+                "role": "user",
+                "content": f"Cleanup and summarize the following chunk:\n\n{grouped_chunk}"
+            }
+        ]
+        response = self.helper.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=helper_config
+        )
+        return (response.choices[0].message.content)
 
     def analyze_chunk(self, chunk, interview_info):
         """
