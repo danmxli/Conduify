@@ -2,13 +2,12 @@ from data.chatbot.tests import mock
 import os
 from openai import OpenAI
 from dotenv import load_dotenv
-import numpy as np
 from data.chatbot.resume_helper import ResumeHelper
 
 load_dotenv('../../.env')
 
 # True to use OpenAI api, False to send mock data
-GPT = True
+GPT = False
 
 SYSTEM_MESSAGE_PROMPT = """
         TODO
