@@ -2,6 +2,11 @@ interface BotEvaluation {
     [key: string]: Array<string>
 }
 
+interface BotAnalysis {
+    chunk: string
+    feedback: string
+}
+
 export function parseResponse(input: String): any {
     const evaluation: BotEvaluation = {};
 
@@ -10,7 +15,7 @@ export function parseResponse(input: String): any {
 
 
     for (const section of sections) {
-    
+
         const lines = section.split('\n');
 
         // first line is key
@@ -22,4 +27,21 @@ export function parseResponse(input: String): any {
     }
 
     return evaluation;
+}
+
+export function parseAnalysis(input: string): any {
+    const analysis: BotAnalysis[] = []
+
+    const sections = input.split(/\n\/\/\/BREAK\/\/\/\n/);
+
+    for (const section of sections) {
+        const lines = section.split(/\/\/\/EVALUATION\/\/\//)
+
+        analysis.push({
+            chunk: lines[0],
+            feedback: lines[1]
+        })
+    }
+
+    return analysis
 }

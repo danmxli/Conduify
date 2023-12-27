@@ -5,7 +5,7 @@ import spacy
 import numpy as np
 load_dotenv('.env')
 
-SIMILARITY_THRESHOLD = 0.5
+SIMILARITY_THRESHOLD = 0.8
 
 CLEANUP_MESSAGE_PROMPT = """
         You are an assistant whose job is to cleanup and summarize a chunk of a resume document.
@@ -97,5 +97,5 @@ class ResumeHelper:
             model="gpt-3.5-turbo",
             messages=helper_config
         )
-        res_chunk = f"{chunk}///EVALUATION///{response.choices[0].message.content}///END OF EVALUATION///"
+        res_chunk = f"{chunk}///EVALUATION///{response.choices[0].message.content}"
         return res_chunk
