@@ -5,14 +5,20 @@ import spacy
 import numpy as np
 load_dotenv('.env')
 
-SIMILARITY_THRESHOLD = 0.7
-GPT = True
+SIMILARITY_THRESHOLD = 0.5
 
-SYSTEM_MESSAGE_PROMPT = """
+CLEANUP_MESSAGE_PROMPT = """
         You are an assistant whose job is to cleanup and summarize a chunk of a resume document.
         You have access to all the important details of the chunk. You must include ALL the details in your summary.
         Your response must include ONLY the summary of the chunk. You must respond in third person PASSIVE point of view.
         Do not begin your summary with "this individual...". Instead, construct the summary as if you are rewriting the chunk for a resume.
+        """
+
+ANALYSIS_MESSAGE_PROMPT = """
+        You are an assistant whose job is to provide a short and concise analysis of a chunk of a resume document.
+        You have access to all the important details of the chunk, as well as all the details of the job description the author of the resume is currently applying to.
+        Your task is to provide concise suggestions for enhancing the content to align better with the requirements of the target job.
+        Construct your analysis in point form. You must respond in third person PASSIVE point of view.
         """
 
 
@@ -48,7 +54,7 @@ class ResumeHelper:
 
             grouped_chunk = "\n".join(group)
             cleaned_chunk = self.cleanup_chunk(grouped_chunk)
-            groups.append(cleaned_chunk)
+            groups.append(self.analyze_chunk(cleaned_chunk, interview_info))
 
         return groups
 
@@ -59,7 +65,7 @@ class ResumeHelper:
         helper_config = [
             {
                 "role": "system",
-                "content": f"{SYSTEM_MESSAGE_PROMPT}"
+                "content": f"{CLEANUP_MESSAGE_PROMPT}"
             },
             {
                 "role": "user",
@@ -74,7 +80,22 @@ class ResumeHelper:
 
     def analyze_chunk(self, chunk, interview_info):
         """
-        Adds similarity ranking, chunk summary, and suggestions to the chunk.
+        Adds similarity ranking, chunk summary, and suggestions to the chunk. Returns new string object
         """
 
-        chunk.append('///EVALUATION///')
+        helper_config = [
+            {
+                "role": "system",
+                "content": f"{ANALYSIS_MESSAGE_PROMPT}"
+            },
+            {
+                "role": "user",
+                "content": f"Analyze the following chunk:\n\n{chunk}\n\nProvided is the job description:\n\n{interview_info}"
+            }
+        ]
+        response = self.helper.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=helper_config
+        )
+        res_chunk = f"{chunk}///EVALUATION///{response.choices[0].message.content}///END OF EVALUATION///"
+        return res_chunk
