@@ -1,4 +1,5 @@
 import React, { useState } from "react"
+import ChangeResume from "./resume/change-resume"
 
 interface SessionInfoProps {
     companyName: string,
@@ -10,6 +11,11 @@ interface SessionInfoProps {
 const SessionInfo: React.FC<SessionInfoProps> = (props): JSX.Element => {
     const [openResume, setOpenResume] = useState(false)
 
+    const [toggleChangeResume, setToggleChangeResume] = useState(false)
+    const updateToggleChangeResume = (isChanging: boolean) => {
+        setToggleChangeResume(isChanging)
+    }
+
     return (
         <div>
             {openResume ? (
@@ -18,9 +24,9 @@ const SessionInfo: React.FC<SessionInfoProps> = (props): JSX.Element => {
                     </iframe>
                     <div className="m-6 flex justify-center">
                         <button
-                        onClick={() => {
-                            setOpenResume(false)
-                        }}
+                            onClick={() => {
+                                setOpenResume(false)
+                            }}
                             className="border-b border-black hover:border-indigo-600"
                         >
                             Return to company info
@@ -34,16 +40,27 @@ const SessionInfo: React.FC<SessionInfoProps> = (props): JSX.Element => {
                         <a href="https://www.trueup.io/" className="text-xs text-indigo-600">citations: trueup.io</a>
                         <p className="text-gray-400 text-xs mb-3">{props.companyBusiness}</p>
                         <p className="text-gray-600 mb-3">{props.companyDescription}</p>
-                        <button
-                            onClick={() => {
-                                setOpenResume(true)
-                            }}
-                            className="border-b border-black hover:border-indigo-600"
 
-                        >
-                            View my resume
-                        </button>
+                        <div className="w-full flex items-center gap-3">
+                            <button
+                                onClick={() => {
+                                    setOpenResume(true)
+                                }}
+                                className="border-b border-black hover:border-indigo-600"
+                            >
+                                View resume
+                            </button>
+                            <button
+                                onClick={() => {
+                                    setToggleChangeResume(true)
+                                }}
+                                className="border-b border-black hover:border-indigo-600"
+                            >
+                                Change resume
+                            </button>
+                        </div>
                     </div>
+                    {toggleChangeResume && <ChangeResume updateToggleChangeResume={updateToggleChangeResume} />}
                 </div>
 
             )}
