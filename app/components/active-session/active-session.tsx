@@ -35,6 +35,9 @@ interface ActiveSessionProps {
     inputState: string;
     updateInputState: (newInputState: string) => void;
     updatePhase: (newPhase: string) => void;
+
+    // update resume
+    updateResume: (chatData: ChatDataItem, newResume: string) => void;
 }
 
 const ActiveSession: FC<ActiveSessionProps> = (props): JSX.Element => {
@@ -155,7 +158,7 @@ const ActiveSession: FC<ActiveSessionProps> = (props): JSX.Element => {
                         </div>
 
                     </div>
-                    <SessionInfo companyName={props.chatData.c_name} companyBusiness={props.chatData.c_business} companyDescription={props.chatData.c_description} userResume={props.chatData.resume} />
+                    <SessionInfo _id={props.chatData?._id} userName={props.userName} userEmail={props.userEmail} companyName={props.chatData.c_name} companyBusiness={props.chatData.c_business} companyDescription={props.chatData.c_description} userResume={props.chatData.resume} chatData={props.chatData} updateResume={props.updateResume}/>
                 </>
             )}
 

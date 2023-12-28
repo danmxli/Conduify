@@ -61,13 +61,24 @@ export default withPageAuthRequired(function Dashboard({ user }) {
         setSelectedItem(newItem)
     }
 
+    // update resume
+    const updateResume = (chatData: ChatDataItem, newResume: string) => {
+        if (chatData) {
+            const newChatData = {
+                ...chatData,
+                resume: newResume,
+            };
+            setChatData(newChatData)
+        }
+    }
+
     // component phases
     interface PagePhases {
         [key: string]: React.ReactNode;
     }
     const currPage: PagePhases = {
         NewSession: <NewSession userName={user.name} userEmail={user.email} updatePhase={updatePhase} updateSimpleHistory={updateSimpleHistory} updateChatData={updateChatData} updateInputState={updateInputState} updateSelectedItem={updateSelectedItem} />,
-        ActiveSession: <ActiveSession userName={user.name} userEmail={user.email} picture={user.picture} chatData={chatData} inputState={inputState} updateInputState={updateInputState} updatePhase={updatePhase} />
+        ActiveSession: <ActiveSession userName={user.name} userEmail={user.email} picture={user.picture} chatData={chatData} inputState={inputState} updateInputState={updateInputState} updatePhase={updatePhase} updateResume={updateResume} />
     }
 
     // access user information

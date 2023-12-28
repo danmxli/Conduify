@@ -1,11 +1,37 @@
 import React, { useState } from "react"
 import ChangeResume from "./resume/change-resume"
 
+interface DialogItem {
+    role: string
+    content: string
+    message_type: string
+}
+
+interface ChatDataItem {
+    _id: string,
+    c_business: string,
+    c_name: string,
+    c_description: string,
+    c_logo: string,
+    interview_sessions: Array<DialogItem> // TODO  
+    interviewee: string,
+    resume: string,
+    languages: Array<string>,
+    position: string
+}
+
 interface SessionInfoProps {
+    _id: string,
+    userName: string | null | undefined;
+    userEmail: string | null | undefined;
     companyName: string,
     companyBusiness: string,
     companyDescription: string,
     userResume: string
+
+    // update resume
+    chatData: ChatDataItem | undefined;
+    updateResume: (chatData: ChatDataItem, newResume: string) => void;
 }
 
 const SessionInfo: React.FC<SessionInfoProps> = (props): JSX.Element => {
@@ -22,14 +48,22 @@ const SessionInfo: React.FC<SessionInfoProps> = (props): JSX.Element => {
                 <div className="flex flex-col h-screen bg-gray-200">
                     <iframe className="w-full h-full" src={props.userResume}>
                     </iframe>
-                    <div className="m-6 flex justify-center">
+                    <div className="m-6 flex items-center justify-center gap-3">
                         <button
                             onClick={() => {
                                 setOpenResume(false)
                             }}
                             className="border-b border-black hover:border-indigo-600"
                         >
-                            Return to company info
+                            Company info
+                        </button>
+                        <button
+                            onClick={() => {
+                                setToggleChangeResume(true)
+                            }}
+                            className="border-b border-black hover:border-indigo-600"
+                        >
+                            Change resume
                         </button>
                     </div>
                 </div>
@@ -60,11 +94,10 @@ const SessionInfo: React.FC<SessionInfoProps> = (props): JSX.Element => {
                             </button>
                         </div>
                     </div>
-                    {toggleChangeResume && <ChangeResume updateToggleChangeResume={updateToggleChangeResume} />}
                 </div>
 
             )}
-
+            {toggleChangeResume && <ChangeResume _id={props._id} userName={props.userName} userEmail={props.userEmail} updateToggleChangeResume={updateToggleChangeResume} chatData={props.chatData} updateResume={props.updateResume} />}
         </div>
     )
 }
