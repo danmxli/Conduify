@@ -46,6 +46,5 @@ res = next((item for item in curr_history if item["_id"] == ITEM_ID), None)
 
 resume_helper = ResumeHelper()
 
-test = resume_helper.group(mock_contexts, res["interview_info_embeddings"])
-print(test)
+resume_helper.rag("https://www.danli.dev/Base_Resume_1.pdf")
 

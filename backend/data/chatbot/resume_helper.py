@@ -1,11 +1,19 @@
 import os
+import openai
 from openai import OpenAI
 from dotenv import load_dotenv
 import spacy
-import numpy as np
+from llama_index.readers.schema.base import Document
+from llama_index import VectorStoreIndex
+from data.config.embed import embed_pdf
 load_dotenv('.env')
 
 SIMILARITY_THRESHOLD = 0.8
+
+RESUME_HEADER_PROMPT = """
+        """
+
+
 
 CLEANUP_MESSAGE_PROMPT = """
         You are an assistant whose job is to cleanup and summarize a chunk of a resume document.
@@ -27,6 +35,25 @@ class ResumeHelper:
     def __init__(self) -> None:
         self.nlp = spacy.load("en_core_web_md")
         self.helper = OpenAI(api_key=os.getenv('OPENAI_KEY'))
+
+        # vector store index for rag
+        openai.api_key = os.getenv('OPENAI_KEY')
+        self.index = VectorStoreIndex([])
+        
+
+    def rag(self, resume_url):
+        """
+        Retrieve contexual information from resume document url.
+        """
+        doc = embed_pdf(resume_url)["doc"]
+        
+        # LlamaIndex query engine from LayoutPDFReader document chunks
+        for chunk in doc.chunks():
+            self.index.insert(Document(text=chunk.to_context_text(), extra_info={}))
+        query_engine = self.index.as_query_engine()
+
+        print(query_engine.query("ONLY list the name, contact information, and education of the author of the resume in point form. Exclude filler words."))
+
 
     def group(self, contexts, interview_info):
         """

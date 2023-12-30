@@ -21,6 +21,7 @@ def embed_pdf(pdf_url):
     doc_emb = co.embed(texts, input_type="search_document",
                        model="embed-english-v3.0").embeddings
     return {
+        "doc": doc,
         "texts": texts,
         "embedded": doc_emb
     }
