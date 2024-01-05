@@ -46,12 +46,12 @@ class UserInfoCollection:
                 {
                     "$each": [
                         {
-                            "role": "user",
-                            "content": input
+                            "role": "USER",
+                            "message": input
                         },
                         {
-                            "role": "assistant",
-                            "content": bot_message
+                            "role": "CHATBOT",
+                            "message": bot_message
                         }
                     ]
                 }

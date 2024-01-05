@@ -1,12 +1,12 @@
 from data.chatbot.tests import mock
 import os
-from openai import OpenAI
+import cohere
 from dotenv import load_dotenv
 import numpy as np
 load_dotenv('../../.env')
 
 # True to use OpenAI api, False to send mock data
-GPT = False
+GPT = True
 
 SYSTEM_MESSAGE_PROMPT = """
         You are a job recruiter who will be interviewing an applicant.
@@ -35,55 +35,48 @@ EVALUATE_RESPONSE_PROMPT = """
 class InterviewBot:
 
     def __init__(self) -> None:
-        self.interviewer = OpenAI(api_key=os.getenv('OPENAI_KEY'))
+        self.co = cohere.Client(os.getenv('COHERE_KEY'))
 
-    def generate_question(self, resume_contexts, resume_embeddings, interview_info, interview_info_embeddings, message_history):
+    def generate_question(self, resume_contexts, resume_embeddings, interview_info, interview_info_embeddings, message_history) -> str:
         """
         Generate interview question.
         """
         if not GPT:
             return (mock()["starter_message"])
 
-        # embeddings as np array
         doc_emb = np.asarray(resume_embeddings)
         query_emb = np.asarray(interview_info_embeddings)
         query_emb.shape
 
-        # compute dot product between both embeddings
+        # cosine similarity and top k
         scores = np.dot(query_emb, doc_emb.T)[0]
 
-        # Find the highest scores
         max_idx = np.argsort(-scores)
-        most_relevant_contexts = []
         top_k = 5
-        for idx in max_idx[0:top_k]:
-            most_relevant_contexts.append(resume_contexts[idx])
+        
+        most_relevant_contexts = [
+            {"snippet": resume_contexts[idx]} for idx in max_idx[0:top_k]]
 
-        # test
-        # print(most_relevant_contexts)
-
-        passages = "\n".join(most_relevant_contexts)
-
-        # prompt the GPT
         evaluation_system_config = [
             {
-                "role": "system",
-                "content": f"{SYSTEM_MESSAGE_PROMPT} {GENERATE_INTERVIEW_PROMPT}"
+                "role": "USER",
+                "message": f"{SYSTEM_MESSAGE_PROMPT} {GENERATE_INTERVIEW_PROMPT}"
+            },
+            {
+                "role": "CHATBOT",
+                "message": "Understood. I am a job recruiter who will be interviewing an applicant, based on information about my company and the resume of the applicant."
             }
         ]
+        updated_history = evaluation_system_config + message_history
 
-        initial_prompt = f"Here is the interview information: {interview_info}. Here are the important details from the resume of the applicant: {passages}. Generate an interview question for the applicant."
-
-        updated_history = evaluation_system_config + message_history + [{
-            "role": "user", "content": initial_prompt
-        }]
-        print(updated_history)
-
-        response = self.interviewer.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=updated_history
+        response = self.co.chat(
+            message=f"Here is the interview information: {interview_info}. Generate an interview question for the applicant.",
+            model="command-nightly",
+            chat_history=updated_history,
+            documents=most_relevant_contexts
         )
-        return (response.choices[0].message.content)
+
+        return response.text
 
     def evaluate_response(self, message_history, user_input):
         """
@@ -94,18 +87,19 @@ class InterviewBot:
 
         evaluation_system_config = [
             {
-                "role": "system",
-                "content": f"{SYSTEM_MESSAGE_PROMPT} {EVALUATE_RESPONSE_PROMPT}"
+                "role": "USER",
+                "message": f"{SYSTEM_MESSAGE_PROMPT} {EVALUATE_RESPONSE_PROMPT}"
+            },
+            {
+                "role": "CHATBOT",
+                "message": "Understood."
             }
         ]
-        updated_history = evaluation_system_config + message_history + [{
-            "role": "user", "content": user_input
-        }]
+        updated_history = evaluation_system_config + message_history
 
-        response = self.interviewer.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=updated_history
+        response = self.co.chat(
+            message=user_input,
+            model="command-nightly",
+            chat_history=updated_history
         )
-
-        # parse the response of the user
-        return (response.choices[0].message.content)
+        return response.text

@@ -63,8 +63,8 @@ def new_session():
         # update session_status
         result = update_session_status('ask', email, item_id)
         return jsonify({"response": {
-            "role": "assistant",
-            "content": bot_message,
+            "role": "CHATBOT",
+            "message": bot_message,
             "message_type": "response_evaluation"
         },
             "session_status": "ask"
@@ -95,8 +95,8 @@ def new_session():
             result = update_session_status('conversation', email, item_id)
             return jsonify({
                 "response": {
-                    "role": "assistant",
-                    "content": bot_message,
+                    "role": "CHATBOT",
+                    "message": bot_message,
                     "message_type": "interview"
                 },
                 "session_status": "conversation"
@@ -116,8 +116,8 @@ def new_session():
 
             return jsonify({
                 "response": {
-                    "role": "assistant",
-                    "content": bot_message,
+                    "role": "CHATBOT",
+                    "message": bot_message,
                     "message_type": "resume_analysis"
                 },
                 "session_status": "ask"
@@ -145,13 +145,13 @@ def update_chat_history(input, bot_message, message_type, email, item_id):
             {
                 "$each": [
                     {
-                        "role": "user",
-                        "content": input,
+                        "role": "USER",
+                        "message": input,
                         "message_type": "user"
                     },
                     {
-                        "role": "assistant",
-                        "content": bot_message,
+                        "role": "CHATBOT",
+                        "message": bot_message,
                         "message_type": message_type
                     }
                 ]

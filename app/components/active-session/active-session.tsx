@@ -93,7 +93,7 @@ const ActiveSession: FC<ActiveSessionProps> = (props): JSX.Element => {
             if (response.ok) {
                 const data = await response.json();
                 if (data) {
-                    appendToChatHistory('bot', data["response"]["content"], data["response"]["message_type"])
+                    appendToChatHistory('bot', data["response"]["message"], data["response"]["message_type"])
                     props.updateInputState(data["session_status"])
                     setLoading(false)
                 }

@@ -92,11 +92,11 @@ class ResumeHelper:
         helper_config = [
             {
                 "role": "system",
-                "content": f"{CLEANUP_MESSAGE_PROMPT}"
+                "message": f"{CLEANUP_MESSAGE_PROMPT}"
             },
             {
-                "role": "user",
-                "content": f"Cleanup and summarize the following chunk:\n\n{grouped_chunk}"
+                "role": "USER",
+                "message": f"Cleanup and summarize the following chunk:\n\n{grouped_chunk}"
             }
         ]
         response = self.helper.chat.completions.create(
@@ -113,11 +113,11 @@ class ResumeHelper:
         helper_config = [
             {
                 "role": "system",
-                "content": f"{ANALYSIS_MESSAGE_PROMPT}"
+                "message": f"{ANALYSIS_MESSAGE_PROMPT}"
             },
             {
-                "role": "user",
-                "content": f"Analyze the following chunk:\n\n{chunk}\n\nProvided is the job description:\n\n{interview_info}"
+                "role": "USER",
+                "message": f"Analyze the following chunk:\n\n{chunk}\n\nProvided is the job description:\n\n{interview_info}"
             }
         ]
         response = self.helper.chat.completions.create(

@@ -1,4 +1,5 @@
 import numpy as np
+from typing import List, Dict
 
 
 class InterviewHelper:
@@ -9,27 +10,22 @@ class InterviewHelper:
         self.interview_info = interview_info
         self.interview_info_embeddings = interview_info_embeddings
 
-    def relevant_contexts(self):
+    def relevant_contexts(self) -> List[Dict[str, str]]:
         """
-        Returns a string of resume contexts that are relevant to the interview.
+        Returns list of most relevant resume contexts to be used for RAG
         """
         # embeddings as np array
         doc_emb = np.asarray(self.resume_embeddings)
         query_emb = np.asarray(self.interview_info_embeddings)
         query_emb.shape
 
-        # compute dot product between both embeddings
+        # cosine similarity and top k
         scores = np.dot(query_emb, doc_emb.T)[0]
 
-        # Find the highest scores
         max_idx = np.argsort(-scores)
-        most_relevant_contexts = []
         top_k = 5
-        for idx in max_idx[0:top_k]:
-            most_relevant_contexts.append(self.resume_contexts[idx])
 
-        # test
-        # print(most_relevant_contexts)
+        most_relevant_contexts = [
+            {"snippet": self.resume_contexts[idx]} for idx in max_idx[0:top_k]]
 
-        passages = "\n".join(most_relevant_contexts)
-        return passages
+        return most_relevant_contexts

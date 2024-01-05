@@ -20,8 +20,8 @@ const ChatHistory: FC<ChatHistoryProps> = (props): JSX.Element => {
         <div className="p-20 space-y-6">
             {props.interview_sessions.map((item, index) => (
                 <div key={index}>
-                    <div className={`flex ${item.role === 'user' ? 'justify-end ml-12' : 'mr-12'}`}>
-                        {item.role === 'user' ? (
+                    <div className={`flex ${item.role === 'USER' ? 'justify-end ml-12' : 'mr-12'}`}>
+                        {item.role === 'USER' ? (
 
                             <div className="flex gap-1.5">
                                 <div className="p-3 rounded-2xl bg-indigo-600 shadow-inner shadow-indigo-400 text-white whitespace-pre-line">
