@@ -38,7 +38,7 @@ const ResumeAnalysis: FC<ResumeAnalysisProps> = (props): JSX.Element => {
                         Analysis
                     </button>
                     {expandedItems.includes(index) && (
-                        <div className="mt-3 text-gray-700">{item.feedback}</div>
+                        <div className="mt-3 text-black bg-gray-200 p-3 rounded-2xl">{item.feedback}</div>
                     )}
                 </div>
             ))}
