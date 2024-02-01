@@ -25,7 +25,7 @@ const UserPortal = () => {
                     <button
                         className='rounded p-3 flex items-center justify-center bg-gray-500 hover:bg-gray-600 shadow-inner shadow-gray-300 text-white'
                         onClick={() => {
-                            router.push('/user')
+                            // router.push('/user')
                         }}
                     >
                         <div className='flex items-center gap-3'>

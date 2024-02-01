@@ -28,7 +28,7 @@ const UserItem: FC<UserItemProps> = (props): JSX.Element => {
                     <button
                         className="w-full inline-flex items-center justify-start gap-1 hover:translate-x-2 duration-300"
                         onClick={() => {
-                            router.push('/user')
+                            // router.push('/user')
                         }}
                     >
                         User Info <RxAvatar />
@@ -37,7 +37,7 @@ const UserItem: FC<UserItemProps> = (props): JSX.Element => {
                     <button
                         className="w-full inline-flex items-center justify-start gap-1 hover:translate-x-2 duration-300"
                         onClick={() => {
-                            router.push('/dashboard')
+                            // router.push('/dashboard')
                         }}
                     >
                         Dashboard <MdOutlineSpaceDashboard />
