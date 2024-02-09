@@ -83,7 +83,7 @@ const ActiveSession: FC<ActiveSessionProps> = (props): JSX.Element => {
         appendToChatHistory('user', text, 'user')
         setLoading(true)
         try {
-            const response = await fetch('http://127.0.0.1:5000/session/new', {
+            const response = await fetch('https://conduify-production.up.railway.app//session/new', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -158,7 +158,7 @@ const ActiveSession: FC<ActiveSessionProps> = (props): JSX.Element => {
                         </div>
 
                     </div>
-                    <SessionInfo _id={props.chatData?._id} userName={props.userName} userEmail={props.userEmail} companyName={props.chatData.c_name} companyBusiness={props.chatData.c_business} companyDescription={props.chatData.c_description} userResume={props.chatData.resume} chatData={props.chatData} updateResume={props.updateResume}/>
+                    <SessionInfo _id={props.chatData?._id} userName={props.userName} userEmail={props.userEmail} companyName={props.chatData.c_name} companyBusiness={props.chatData.c_business} companyDescription={props.chatData.c_description} userResume={props.chatData.resume} chatData={props.chatData} updateResume={props.updateResume} />
                 </>
             )}
 

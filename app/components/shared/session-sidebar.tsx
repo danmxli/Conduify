@@ -45,7 +45,7 @@ const Sidebar: FC<SidebarProps> = (props): JSX.Element => {
             _id: item_id
         }
         try {
-            const response = await fetch('http://127.0.0.1:5000/users/history_item', {
+            const response = await fetch('https://conduify-production.up.railway.app//users/history_item', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
