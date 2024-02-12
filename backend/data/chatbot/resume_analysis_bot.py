@@ -7,7 +7,7 @@ from data.chatbot.resume_helper import ResumeHelper
 load_dotenv('../../.env')
 
 # True to use OpenAI api, False to send mock data
-GPT = False
+GPT = True
 
 SYSTEM_MESSAGE_PROMPT = """
         TODO

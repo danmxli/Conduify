@@ -6,7 +6,7 @@ import numpy as np
 load_dotenv('../../.env')
 
 # True to use OpenAI api, False to send mock data
-GPT = False
+GPT = True
 
 SYSTEM_MESSAGE_PROMPT = """
         You are a job recruiter who will be interviewing an applicant.
