@@ -63,7 +63,7 @@ const ChangeResume: FC<ChangeResumeProps> = (props): JSX.Element => {
         }
         setLoading(true)
         try {
-            const response = await fetch('https://conduify-production.up.railway.app//users/change_resume', {
+            const response = await fetch('http://127.0.0.1:5000/users/change_resume', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

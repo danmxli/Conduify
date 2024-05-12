@@ -83,7 +83,7 @@ const ActiveSession: FC<ActiveSessionProps> = (props): JSX.Element => {
         appendToChatHistory('user', text, 'user')
         setLoading(true)
         try {
-            const response = await fetch('https://conduify-production.up.railway.app//session/new', {
+            const response = await fetch('http://127.0.0.1:5000/session/new', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

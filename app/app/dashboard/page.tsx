@@ -93,7 +93,7 @@ export default withPageAuthRequired(function Dashboard({ user }) {
         }
         setLoading(true)
         try {
-            const response = await fetch('https://conduify-production.up.railway.app//users/access', {
+            const response = await fetch('http://127.0.0.1:5000/users/access', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
