@@ -1,6 +1,9 @@
 'use client'
 import { useRouter } from 'next/navigation';
 import { useUser } from '@auth0/nextjs-auth0/client';
+import { useAppDispatch } from '@/lib/hooks';
+import { AppDispatch } from '@/lib/store';
+import { updateCurrentPage } from '@/lib/features/userSlice';
 
 import Image from 'next/image';
 import conduify from '../../public/conduify.svg'
@@ -17,6 +20,7 @@ import { Button } from "@/components/ui/button"
 const UserPortal = () => {
     const router = useRouter()
     const { user, isLoading } = useUser()
+    const dispatch = useAppDispatch<AppDispatch>();
 
     return (
         <main className='w-full h-screen flex items-center justify-center bg-gray-100'>
@@ -31,10 +35,11 @@ const UserPortal = () => {
                 <CardContent>
                     {user ? (
                         <div className='grid grid-cols-2 gap-3'>
-                            
+
                             <Button
                                 onClick={() => {
                                     router.push('/dashboard')
+                                    dispatch(updateCurrentPage('dashboard'))
                                 }}
                             >
                                 Dashboard
@@ -42,6 +47,7 @@ const UserPortal = () => {
                             <Button variant="secondary"
                                 onClick={() => {
                                     router.push('/user')
+                                    dispatch(updateCurrentPage('user'))
                                 }}
                             >
                                 <div className='flex items-center gap-3'>

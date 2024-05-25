@@ -1,6 +1,7 @@
 import { useRouter } from "next/navigation";
-import { RootState } from "@/lib/store"
-import { useAppSelector } from "@/lib/hooks"
+import { RootState, AppDispatch } from "@/lib/store"
+import { useAppSelector, useAppDispatch } from "@/lib/hooks"
+import { updateCurrentPage } from "@/lib/features/userSlice";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,7 +10,30 @@ import { parseDateTime } from "@/lib/utils";
 
 const UserItem = (): JSX.Element => {
     const router = useRouter()
+    const dispatch = useAppDispatch<AppDispatch>();
     const info = useAppSelector((state: RootState) => state.user.info)
+    const currentPage = useAppSelector((state: RootState) => state.user.currentPage)
+
+    interface NavPhases {
+        [key: string]: React.ReactNode;
+    }
+
+    const navOptions: NavPhases = {
+        dashboard: (<Button onClick={() => {
+            router.push('/user')
+            dispatch(updateCurrentPage('user'))
+
+        }}>
+            User Info
+        </Button>),
+        user: (<Button onClick={() => {
+            router.push('/dashboard')
+            dispatch(updateCurrentPage('dashboard'))
+
+        }}>
+            Dashboard
+        </Button>)
+    }
 
     return (
         <Popover>
@@ -28,7 +52,7 @@ const UserItem = (): JSX.Element => {
                         <CardDescription>{info?.email}</CardDescription>
                     </CardHeader>
                     <CardContent className="flex gap-2">
-                        <Button>Dashboard</Button>
+                        {navOptions[currentPage]}
                         <Button asChild variant="secondary">
                             <a href="/api/auth/logout">Logout</a>
                         </Button>

@@ -1,15 +1,15 @@
 'use client'
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
 import React, { useState, useEffect, useRef } from 'react';
+import { useAppDispatch } from '@/lib/hooks';
+import { AppDispatch } from '@/lib/store';
+import { updateInfo } from '@/lib/features/userSlice';
+
+import Sidebar from '@/components/shared/info-sidebar'
 
 export default withPageAuthRequired(function Dashboard({ user }) {
     const fetchExecuted = useRef(false)
-
-    // NewSession, ActiveSession
-    const [phase, setPhase] = useState('NewSession')
-    const updatePhase = (newPhase: string) => {
-        setPhase(newPhase)
-    }
+    const dispatch = useAppDispatch<AppDispatch>();
 
     // interfaces
     interface SimpleHistoryItem {
@@ -39,13 +39,17 @@ export default withPageAuthRequired(function Dashboard({ user }) {
 
     useEffect(() => {
         if (!fetchExecuted.current) {
+            dispatch(updateInfo(user))
             fetchExecuted.current = true
         }
     })
 
     return (
-        <>
-            
-        </>
+        <div className='flex'>
+            <Sidebar />
+            <main className='flex-1'>
+                
+            </main>
+        </div>
     )
 })

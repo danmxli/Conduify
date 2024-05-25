@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 import userReducer from '@/lib/features/userSlice'
+import dashboardReducer from '@/lib/features/dashboardSlice'
 
 export const makeStore = () => {
     return configureStore({
         reducer: {
-            user: userReducer
+            user: userReducer,
+            dashboard: dashboardReducer,
         }
     })
 }
