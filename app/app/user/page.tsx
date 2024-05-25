@@ -1,16 +1,25 @@
 'use client'
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client'
 import React, { useState, useEffect, useRef } from 'react';
-import Loading from '@/components/shared/loading';
 import Sidebar from '@/components/shared/info-sidebar'
+import { useAppDispatch } from '@/lib/hooks';
+import { AppDispatch } from '@/lib/store';
+import { updateInfo } from '@/lib/features/userSlice';
 
 export default withPageAuthRequired(function User({ user }) {
-    const [loading, setLoading] = useState(false)
     const fetchExecuted = useRef(false)
+    const dispatch = useAppDispatch<AppDispatch>();
+
+    useEffect(() => {
+        if (!fetchExecuted.current) {
+            dispatch(updateInfo(user))
+            fetchExecuted.current = true;
+        }
+    })
 
     return (
         <div className='flex'>
-            <Sidebar name={user.name} email={user.email} picture={user.picture} />
+            <Sidebar />
             <main className='flex-1'>
                 user info
             </main>

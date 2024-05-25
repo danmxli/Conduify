@@ -1,18 +1,19 @@
-import React, { FC } from "react"
+import React from "react"
+import { RootState } from "@/lib/store"
+import { useAppSelector } from "@/lib/hooks"
 import UserItem from "./sidebar/user-item"
 
-interface SidebarProps {
-    name: string | null | undefined
-    email: string | null | undefined
-    picture: string | null | undefined
-}
+const Sidebar = (): JSX.Element => {
 
-const Sidebar: FC<SidebarProps> = (props): JSX.Element => {
+    const info = useAppSelector((state: RootState) => state.user.info)
+
     return (
-        <main className="flex flex-col h-screen w-64 border-r">
-            <div className="m-3 grid justify-center border-b">
-                <UserItem name={props.name} picture={props.picture} action="dashboard" />
-                
+        <main className="flex flex-col h-screen w-64 border-r p-2">
+            <div className="flex flex-grow">
+
+            </div>
+            <div className="flex-none w-full">
+                <UserItem />
             </div>
         </main>
     )
