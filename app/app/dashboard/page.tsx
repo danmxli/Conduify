@@ -1,15 +1,18 @@
 'use client'
 import { withPageAuthRequired } from '@auth0/nextjs-auth0/client';
-import React, { useState, useEffect, useRef } from 'react';
-import { useAppDispatch } from '@/lib/hooks';
-import { AppDispatch } from '@/lib/store';
+import React, { useEffect, useRef } from 'react';
+import { useAppDispatch, useAppSelector } from '@/lib/hooks';
+import { RootState, AppDispatch } from '@/lib/store';
 import { updateInfo } from '@/lib/features/userSlice';
 
 import Sidebar from '@/components/shared/info-sidebar'
+import NewSession from '@/components/dashboard/new-session';
+import ExploreAgents from '@/components/dashboard/explore-agents';
 
 export default withPageAuthRequired(function Dashboard({ user }) {
     const fetchExecuted = useRef(false)
     const dispatch = useAppDispatch<AppDispatch>();
+    const navPhase = useAppSelector((state: RootState) => state.dashboard.navPhase)
 
     // interfaces
     interface SimpleHistoryItem {
@@ -32,9 +35,12 @@ export default withPageAuthRequired(function Dashboard({ user }) {
         position: string
     }
 
-    // component phases
-    interface PagePhases {
+    interface dashboardNavPhases {
         [key: string]: React.ReactNode;
+    }
+    const dashboardNav: dashboardNavPhases = {
+        newSession: <NewSession />,
+        explore: <ExploreAgents />
     }
 
     useEffect(() => {
@@ -48,7 +54,7 @@ export default withPageAuthRequired(function Dashboard({ user }) {
         <div className='flex'>
             <Sidebar />
             <main className='flex-1'>
-                
+                {dashboardNav[navPhase]}
             </main>
         </div>
     )
